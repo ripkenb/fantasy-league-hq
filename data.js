@@ -5,7 +5,8 @@ const teams = [
     logo: "assets/logos/angry-apples.png.png",
     record: "4-10",
     titles: 0,
-    pointsFor: 1375
+    pointsFor: 1375,
+    page: "angry-apples.html"
   },
 
   {
@@ -17,5 +18,3 @@ const teams = [
     pointsFor: 1878
   }
 ];
-
-console.log(teams);
