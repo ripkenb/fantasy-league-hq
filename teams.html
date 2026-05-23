@@ -1,25 +1,218 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Team Pages | The Dynasty League HQ</title>
+  <title>Team Pages | Dynasty League HQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #050505;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: 42px;
+    }
+
+    .title p {
+      color: #c9b98d;
+      margin-top: 8px;
+    }
+
+    .back {
+      background: #161616;
+      border: 1px solid #b38628;
+      padding: 12px 18px;
+      border-radius: 14px;
+      color: #f0d58b;
+      font-weight: bold;
+    }
+
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .team-card {
+      background: linear-gradient(145deg, #111, #1b1b1b);
+      border: 1px solid rgba(227, 188, 90, .25);
+      border-radius: 26px;
+      padding: 24px;
+      transition: .2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .team-card:hover {
+      transform: translateY(-4px);
+      border-color: #e2c875;
+      box-shadow: 0 18px 40px rgba(0,0,0,.4);
+    }
+
+    .team-logo {
+      width: 90px;
+      height: 90px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #c91f1f, #b38628);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .team-name {
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .owner {
+      color: #c8b68d;
+      margin-bottom: 20px;
+    }
+
+    .team-stats {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .stat-box {
+      flex: 1;
+      background: #0b0b0b;
+      border: 1px solid rgba(227,188,90,.15);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .stat-box h3 {
+      margin: 0;
+      font-size: 11px;
+      color: #e2c875;
+      text-transform: uppercase;
+    }
+
+    .stat-box p {
+      margin: 8px 0 0;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 700px) {
+      .title h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
 </head>
 
-<body style="background:#050505; color:white; font-family:Arial; padding:40px;">
-  <h1>Team Pages</h1>
-  <p>This page will become the franchise hub for every team.</p>
+<body>
 
-  <ul>
-    <li>Angry Apples</li>
-    <li>Big Ben Banditos</li>
-    <li>Bryley the Builder</li>
-    <li>The Boarder Patrollers</li>
-    <li>Jake the Snake</li>
-    <li>Bradshaw Bunch</li>
-    <li>McLovin</li>
-    <li>Lake Cle Elum</li>
-    <li>Purple Reign</li>
-  </ul>
+  <div class="topbar">
+    <div class="title">
+      <h1>Franchise Pages</h1>
+      <p>League history, trophies, rivalries, records, and team lore.</p>
+    </div>
 
-  <p><a href="index.html" style="color:#e2c875;">Back to Dashboard</a></p>
+    <a class="back" href="index.html">← Back to Dashboard</a>
+  </div>
+
+  <div class="teams-grid">
+
+    <div class="team-card">
+      <div class="team-logo">AA</div>
+      <div class="team-name">Angry Apples</div>
+      <div class="owner">Owner: Ripken</div>
+
+      <div class="team-stats">
+        <div class="stat-box">
+          <h3>Record</h3>
+          <p>4-10</p>
+        </div>
+
+        <div class="stat-box">
+          <h3>Titles</h3>
+          <p>0</p>
+        </div>
+
+        <div class="stat-box">
+          <h3>PF</h3>
+          <p>1375</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-logo">BB</div>
+      <div class="team-name">Big Ben Banditos</div>
+      <div class="owner">Owner: Ben</div>
+
+      <div class="team-stats">
+        <div class="stat-box">
+          <h3>Record</h3>
+          <p>8-6</p>
+        </div>
+
+        <div class="stat-box">
+          <h3>Titles</h3>
+          <p>0</p>
+        </div>
+
+        <div class="stat-box">
+          <h3>PF</h3>
+          <p>1641</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-logo">DL</div>
+      <div class="team-name">Lake Cle Elum</div>
+      <div class="owner">Owner: Ritch</div>
+
+      <div class="team-stats">
+        <div class="stat-box">
+          <h3>Record</h3>
+          <p>9-5</p>
+        </div>
+
+        <div class="stat-box">
+          <h3>Titles</h3>
+          <p>0</p>
+        </div>
+
+        <div class="stat-box">
+          <h3>PF</h3>
+          <p>1672</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </body>
 </html>
