@@ -2,13 +2,185 @@
 <html>
 <head>
   <title>Fantasy League HQ</title>
+  <style>
+    body {
+      margin: 0;
+      background: #070a12;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .app {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+    .sidebar {
+      background: #0d1323;
+      padding: 24px;
+      border-right: 1px solid #1f2a44;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+    .nav div {
+      padding: 12px;
+      border-radius: 12px;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+    .nav .active {
+      background: #7c3aed;
+      color: white;
+      font-weight: bold;
+    }
+    .main {
+      padding: 28px;
+    }
+    .hero {
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: #111827;
+      border: 1px solid #253047;
+      border-radius: 20px;
+      padding: 20px;
+    }
+    .card h3 {
+      margin: 0;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    .card p {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 10px 0 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid #253047;
+    }
+    th {
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid #1f2a44;
+      }
+      .cards, .grid {
+        grid-template-columns: 1fr;
+      }
+      .nav {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
 </head>
 
-<body style="background:black; color:white; font-family:Arial; padding:40px;">
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo">Fantasy League HQ</div>
+      <div class="nav">
+        <div class="active">Dashboard</div>
+        <div>League Records</div>
+        <div>Season Awards</div>
+        <div>Team Pages</div>
+        <div>Draft History</div>
+        <div>Trade History</div>
+        <div>Hall of Fame</div>
+      </div>
+    </aside>
 
-  <h1>Fantasy League HQ</h1>
+    <main class="main">
+      <section class="hero">
+        <h1>Dynasty Command Center</h1>
+        <p>Records, awards, trades, drafts, team pages, and league chaos in one place.</p>
+      </section>
 
-  <p>The dynasty app is officially live.</p>
+      <section class="cards">
+        <div class="card">
+          <h3>Current Season</h3>
+          <p>2026</p>
+        </div>
+        <div class="card">
+          <h3>League Teams</h3>
+          <p>12</p>
+        </div>
+        <div class="card">
+          <h3>Tracked Records</h3>
+          <p>42</p>
+        </div>
+        <div class="card">
+          <h3>Total Trades</h3>
+          <p>186</p>
+        </div>
+      </section>
 
+      <section class="grid">
+        <div class="card">
+          <h2>League Records</h2>
+          <table>
+            <tr>
+              <th>Record</th>
+              <th>Holder</th>
+              <th>Value</th>
+            </tr>
+            <tr>
+              <td>Highest Weekly Score</td>
+              <td>Angry Apples</td>
+              <td>184.72</td>
+            </tr>
+            <tr>
+              <td>Biggest Blowout</td>
+              <td>Big Ben Banditos</td>
+              <td>+78.44</td>
+            </tr>
+            <tr>
+              <td>Closest Win</td>
+              <td>Waiver Warriors</td>
+              <td>0.12</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h2>Season Awards</h2>
+          <p>🏆 Champion: TBD</p>
+          <p>🔥 Highest Scorer: TBD</p>
+          <p>😭 Pain Award: TBD</p>
+          <p>⭐ Rookie of the Year: TBD</p>
+        </div>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
