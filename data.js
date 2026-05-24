@@ -8,6 +8,7 @@ const teams = [
 
     record: "4-10",
     titles: 0,
+
     pointsFor: 1375,
     pointsAgainst: 1544,
 
@@ -24,6 +25,7 @@ const teams = [
     },
 
     scoring: {
+
       avgPointsPerGame: 137.5,
 
       topScores: [
@@ -47,6 +49,7 @@ const teams = [
         year: 2025,
         points: 1375
       }
+
     },
 
     headToHead: [
@@ -56,6 +59,7 @@ const teams = [
     ],
 
     schedule: [
+
       {
         week: 1,
         opponent: "Jake the Snake",
@@ -69,7 +73,46 @@ const teams = [
         result: "W",
         score: "137.22 - 118.44"
       }
+
+    ],
+
+    players: [
+
+      {
+        name: "Josh Allen",
+        position: "QB",
+
+        careerPoints: 320.24,
+        gamesPlayed: 14,
+
+        topGames: [
+          { score: 42.32, year: 2025 },
+          { score: 39.81, year: 2025 }
+        ],
+
+        topSeasons: [
+          { points: 320.24, year: 2025 }
+        ]
+      },
+
+      {
+        name: "Christian McCaffrey",
+        position: "RB",
+
+        careerPoints: 295.41,
+        gamesPlayed: 12,
+
+        topGames: [
+          { score: 36.11, year: 2025 }
+        ],
+
+        topSeasons: [
+          { points: 295.41, year: 2025 }
+        ]
+      }
+
     ]
+
   },
 
   {
