@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing:border-box;
+    }
 
     :root {
       --black:#050505;
@@ -13,6 +16,7 @@
       --gold:#b38628;
       --light-gold:#e2c875;
       --green:#22c55e;
+      --red:#ef4444;
       --muted:#b8b0a0;
       --border:rgba(226,200,117,.25);
       --white:#f8f5ed;
@@ -22,13 +26,23 @@
       margin:0;
       font-family:Arial,sans-serif;
       color:var(--white);
+
       background:
-        radial-gradient(circle at top right, rgba(179,134,40,.18), transparent 30%),
-        radial-gradient(circle at top left, rgba(226,200,117,.10), transparent 35%),
+        radial-gradient(circle at top right,
+        rgba(179,134,40,.18),
+        transparent 30%),
+
+        radial-gradient(circle at top left,
+        rgba(226,200,117,.10),
+        transparent 35%),
+
         #050505;
     }
 
-    a { color:inherit; text-decoration:none; }
+    a {
+      color:inherit;
+      text-decoration:none;
+    }
 
     .app {
       display:grid;
@@ -73,10 +87,14 @@
       color:#ddd6c8;
     }
 
-    .nav a:hover { background:rgba(226,200,117,.12); }
+    .nav a:hover {
+      background:rgba(226,200,117,.12);
+    }
 
     .nav .active {
-      background:linear-gradient(135deg,#1a1a1a,var(--gold));
+      background:
+        linear-gradient(135deg,#1a1a1a,var(--gold));
+
       color:white;
       font-weight:bold;
       border:1px solid var(--border);
@@ -89,29 +107,48 @@
 
     .hero {
       background:
-        linear-gradient(135deg,rgba(20,20,20,.98),rgba(75,58,22,.94)),
-        radial-gradient(circle at top right,rgba(226,200,117,.18),transparent 35%);
+        linear-gradient(
+          135deg,
+          rgba(20,20,20,.98),
+          rgba(75,58,22,.94)
+        );
+
       border:1px solid var(--border);
       border-radius:28px;
+
       padding:30px;
+
       display:flex;
       align-items:center;
       gap:24px;
+
       margin-bottom:18px;
+
       position:relative;
       overflow:hidden;
     }
 
     .hero::after {
+
       content:"";
+
       position:absolute;
+
       right:45px;
       top:50%;
+
       transform:translateY(-50%);
+
       width:170px;
       height:170px;
-      background:var(--watermark) center/contain no-repeat;
+
+      background:
+        var(--watermark)
+        center/contain
+        no-repeat;
+
       opacity:.18;
+
       pointer-events:none;
     }
 
@@ -119,11 +156,16 @@
       width:130px;
       height:130px;
       object-fit:contain;
+
       z-index:1;
-      filter:drop-shadow(0 12px 24px rgba(0,0,0,.55));
+
+      filter:
+        drop-shadow(0 12px 24px rgba(0,0,0,.55));
     }
 
-    .hero-text { z-index:1; }
+    .hero-text {
+      z-index:1;
+    }
 
     .hero h1 {
       margin:0;
@@ -146,9 +188,13 @@
 
     .bubble {
       background:rgba(18,18,18,.96);
+
       border:1px solid var(--border);
+
       border-radius:18px;
+
       padding:16px;
+
       min-height:92px;
     }
 
@@ -174,62 +220,102 @@
 
     .card {
       background:rgba(18,18,18,.96);
+
       border:1px solid var(--border);
+
       border-radius:20px;
+
       padding:18px;
-      box-shadow:0 18px 40px rgba(0,0,0,.25);
+
+      box-shadow:
+        0 18px 40px rgba(0,0,0,.25);
     }
 
     .card h2 {
       margin:0 0 14px;
+
       color:var(--light-gold);
+
       font-size:20px;
+
       text-transform:uppercase;
-      letter-spacing:.02em;
     }
 
-    .score-grid {
+    .score-grid,
+    .player-grid {
+
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:14px;
     }
 
     .mini-block {
+
       background:#090909;
-      border:1px solid rgba(226,200,117,.16);
+
+      border:
+        1px solid rgba(226,200,117,.16);
+
       border-radius:14px;
+
       padding:12px;
     }
 
     .mini-title {
+
       color:var(--light-gold);
+
       font-size:12px;
+
       font-weight:bold;
+
       text-transform:uppercase;
+
       margin-bottom:10px;
     }
 
     .rank-line {
+
       display:grid;
-      grid-template-columns:28px 1fr 70px 70px;
+
+      grid-template-columns:
+        40px
+        1fr
+        90px
+        70px;
+
       gap:8px;
+
       margin:8px 0;
+
       font-size:14px;
+
       align-items:center;
     }
 
-    .good { color:var(--green); font-weight:bold; }
-    .bad { color:#ef4444; font-weight:bold; }
+    .good {
+      color:var(--green);
+      font-weight:bold;
+    }
+
+    .bad {
+      color:var(--red);
+      font-weight:bold;
+    }
 
     .award-row {
+
       display:flex;
+
       justify-content:space-between;
+
       align-items:center;
-      border-bottom:1px solid rgba(226,200,117,.13);
+
+      border-bottom:
+        1px solid rgba(226,200,117,.13);
+
       padding:12px 0;
     }
-
-    .award-row:last-child { border-bottom:none; }
 
     .award-label {
       color:#ddd6c8;
@@ -243,18 +329,30 @@
     }
 
     .h2h-grid {
+
       display:grid;
-      grid-template-columns:repeat(3,1fr);
+
+      grid-template-columns:
+        repeat(3,1fr);
+
       gap:10px;
     }
 
     .h2h-card {
+
       display:flex;
+
       align-items:center;
+
       gap:12px;
+
       background:#090909;
-      border:1px solid rgba(226,200,117,.16);
+
+      border:
+        1px solid rgba(226,200,117,.16);
+
       border-radius:14px;
+
       padding:12px;
     }
 
@@ -276,329 +374,335 @@
       margin-top:3px;
     }
 
-    .player-grid {
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
-    }
-
-    table {
-      width:100%;
-      border-collapse:collapse;
-    }
-
-    th,td {
-      padding:9px 7px;
-      border-bottom:1px solid rgba(226,200,117,.12);
-      text-align:left;
-      font-size:13px;
-    }
-
-    th {
-      color:var(--light-gold);
-      font-size:11px;
-      text-transform:uppercase;
-    }
-
-    .player-cell {
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .player-img {
-      width:34px;
-      height:34px;
-      border-radius:50%;
-      background:linear-gradient(135deg,#2b2b2b,#050505);
-      border:1px solid rgba(226,200,117,.28);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:var(--light-gold);
-      font-size:11px;
-      font-weight:900;
-      flex-shrink:0;
-    }
-
     .schedule-grid {
+
       display:grid;
+
       grid-template-columns:1fr 1fr;
+
       gap:14px;
+
       margin-top:14px;
     }
 
     .schedule-row {
+
       display:grid;
-      grid-template-columns:45px 1fr 70px 110px;
+
+      grid-template-columns:
+        45px
+        1fr
+        70px
+        110px;
+
       align-items:center;
+
       gap:10px;
+
       padding:10px 0;
-      border-bottom:1px solid rgba(226,200,117,.12);
+
+      border-bottom:
+        1px solid rgba(226,200,117,.12);
+
       font-size:14px;
     }
 
-    .schedule-row:last-child { border-bottom:none; }
-
     .glance-grid {
+
       display:grid;
-      grid-template-columns:repeat(4,1fr);
+
+      grid-template-columns:
+        repeat(4,1fr);
+
       gap:10px;
     }
 
     .glance-box {
+
       background:#090909;
-      border:1px solid rgba(226,200,117,.16);
+
+      border:
+        1px solid rgba(226,200,117,.16);
+
       border-radius:14px;
+
       padding:16px;
+
       text-align:center;
     }
 
     .glance-box h3 {
+
       margin:0;
+
       color:var(--muted);
+
       font-size:11px;
+
       text-transform:uppercase;
     }
 
     .glance-box p {
+
       margin:10px 0 0;
+
       font-size:27px;
+
       font-weight:900;
     }
 
     @media(max-width:1200px) {
-      .top-stats { grid-template-columns:repeat(3,1fr); }
-      .dashboard-grid,.schedule-grid { grid-template-columns:1fr; }
-      .player-grid { grid-template-columns:repeat(2,1fr); }
-      .h2h-grid { grid-template-columns:repeat(2,1fr); }
+
+      .top-stats {
+        grid-template-columns:repeat(3,1fr);
+      }
+
+      .dashboard-grid,
+      .schedule-grid {
+        grid-template-columns:1fr;
+      }
+
+      .h2h-grid {
+        grid-template-columns:repeat(2,1fr);
+      }
+
     }
 
     @media(max-width:800px) {
-      .app { grid-template-columns:1fr; }
+
+      .app {
+        grid-template-columns:1fr;
+      }
+
       .sidebar {
+
         position:relative;
+
         height:auto;
+
         border-right:none;
+
         border-bottom:1px solid var(--border);
       }
-      .nav {
-        display:grid;
-        grid-template-columns:repeat(2,1fr);
-        gap:8px;
+
+      .main {
+        padding:18px;
       }
-      .main { padding:18px; }
+
       .hero {
+
         flex-direction:column;
+
         text-align:center;
       }
-      .hero h1 { font-size:34px; }
-      .top-stats,.player-grid,.h2h-grid,.glance-grid { grid-template-columns:1fr; }
-      .rank-line { grid-template-columns:25px 1fr 58px 58px; font-size:12px; }
-      .schedule-row { grid-template-columns:35px 1fr 45px; }
-      .hide-mobile { display:none; }
+
+      .hero h1 {
+        font-size:34px;
+      }
+
+      .top-stats,
+      .h2h-grid,
+      .glance-grid,
+      .score-grid,
+      .player-grid {
+
+        grid-template-columns:1fr;
+      }
+
     }
+
   </style>
 </head>
 
 <body>
+
 <div class="app">
 
   <aside class="sidebar">
-    <img class="league-logo" src="assets/logos/dynasty-league-logo.png.png">
-    <div class="side-title">The Dynasty<br>League HQ</div>
-    <div class="subtitle">Est. 2025 · Dynasty. Records. Lore.</div>
+
+    <img
+      class="league-logo"
+      src="assets/logos/dynasty-league-logo.png.png"
+    >
+
+    <div class="side-title">
+      The Dynasty<br>League HQ
+    </div>
+
+    <div class="subtitle">
+      Est. 2025 · Dynasty. Records. Lore.
+    </div>
 
     <div class="nav">
       <a href="index.html">Dashboard</a>
       <a href="teams.html">Team Pages</a>
       <a class="active" id="active-team-link" href="#">Team Hub</a>
-      <a href="#">Standings</a>
-      <a href="#">Matchups</a>
-      <a href="#">Records</a>
-      <a href="#">Awards</a>
-      <a href="#">Draft History</a>
-      <a href="#">Trade History</a>
-      <a href="#">Media Hub</a>
-      <a href="#">Hall of Fame</a>
     </div>
+
   </aside>
 
   <main class="main">
 
-  <section class="hero">
-    <img class="hero-logo" id="team-logo">
+    <section class="hero">
 
-    <div class="hero-text">
-      <h1 id="team-name">Loading...</h1>
-      <p id="team-meta"></p>
-    </div>
-  </section>
+      <img class="hero-logo" id="team-logo">
 
-  <section class="top-stats">
+      <div class="hero-text">
+        <h1 id="team-name">Loading...</h1>
+        <p id="team-meta"></p>
+      </div>
 
-    <div class="bubble">
-      <h3>Record</h3>
-      <div class="value" id="record"></div>
-    </div>
+    </section>
 
-    <div class="bubble">
-      <h3>Win %</h3>
-      <div class="value" id="win-pct"></div>
-    </div>
+    <section class="top-stats">
 
-    <div class="bubble">
-      <h3>Championships</h3>
-      <div class="value" id="titles"></div>
-    </div>
+      <div class="bubble">
+        <h3>Record</h3>
+        <div class="value" id="record"></div>
+      </div>
 
-    <div class="bubble">
-      <h3>Points For</h3>
-      <div class="value" id="pf"></div>
-    </div>
+      <div class="bubble">
+        <h3>Win %</h3>
+        <div class="value" id="win-pct"></div>
+      </div>
 
-    <div class="bubble">
-      <h3>Playoff Record</h3>
-      <div class="value" id="playoff-record"></div>
-    </div>
+      <div class="bubble">
+        <h3>Championships</h3>
+        <div class="value" id="titles"></div>
+      </div>
 
-    <div class="bubble">
-      <h3>Playoff Apps</h3>
-      <div class="value" id="playoff-apps"></div>
-    </div>
+      <div class="bubble">
+        <h3>Points For</h3>
+        <div class="value" id="pf"></div>
+      </div>
 
-  </section>
+      <div class="bubble">
+        <h3>Playoff Record</h3>
+        <div class="value" id="playoff-record"></div>
+      </div>
 
-  <section class="dashboard-grid">
+      <div class="bubble">
+        <h3>Playoff Apps</h3>
+        <div class="value" id="playoff-apps"></div>
+      </div>
 
-    <div class="card">
+    </section>
 
-      <h2>Team Scoring Highlights</h2>
+    <section class="dashboard-grid">
 
-      <div class="score-grid">
+      <div class="card">
+
+        <h2>Team Scoring Highlights</h2>
+
+        <div class="score-grid">
+
+          <div class="mini-block">
+            <div class="mini-title">Top Team Scores</div>
+            <div id="top-scores"></div>
+          </div>
+
+          <div class="mini-block">
+            <div class="mini-title">Lowest Team Scores</div>
+            <div id="low-scores"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <h2>Awards Summary</h2>
+
+        <div id="awards-container"></div>
+
+      </div>
+
+    </section>
+
+    <section class="card">
+
+      <h2>Head to Head vs All Teams</h2>
+
+      <div class="h2h-grid" id="h2h-grid"></div>
+
+    </section>
+
+    <section class="card" style="margin-top:14px;">
+
+      <h2>Player Performance</h2>
+
+      <div class="player-grid">
 
         <div class="mini-block">
-          <div class="mini-title">Top Team Scores</div>
-          <div id="top-scores"></div>
+          <div class="mini-title">Top Player Games</div>
+          <div id="top-player-games"></div>
         </div>
 
         <div class="mini-block">
-          <div class="mini-title">Lowest Team Scores</div>
-          <div id="low-scores"></div>
+          <div class="mini-title">Top Player Seasons</div>
+          <div id="top-player-seasons"></div>
         </div>
 
         <div class="mini-block">
-          <div class="mini-title">Best Scoring Season</div>
-          <div class="big good" id="best-season"></div>
-          <div class="opp-name" id="best-season-year"></div>
+          <div class="mini-title">Most Games Played</div>
+          <div id="most-games-played"></div>
         </div>
 
         <div class="mini-block">
-          <div class="mini-title">Worst Scoring Season</div>
-          <div class="big bad" id="worst-season"></div>
-          <div class="opp-name" id="worst-season-year"></div>
-        </div>
-
-        <div class="mini-block" style="grid-column:1 / -1;">
-          <div class="mini-title">Average Points Per Game</div>
-          <div class="big" id="avg-ppg"></div>
+          <div class="mini-title">Career Points</div>
+          <div id="career-points"></div>
         </div>
 
       </div>
 
-    </div>
+    </section>
 
-    <div class="card">
+    <section class="schedule-grid">
 
-      <h2>Awards Summary</h2>
+      <div class="card">
 
-      <div id="awards-container"></div>
+        <h2>Season Schedule</h2>
 
-    </div>
+        <div id="schedule-container"></div>
 
-  </section>
-
-  <section class="card">
-
-    <h2>Head to Head vs All Teams</h2>
-
-    <div class="h2h-grid" id="h2h-grid"></div>
-
-  </section>
-
-  <section class="card" style="margin-top:14px;">
-
-    <h2>Player Performance</h2>
-
-    <div class="player-grid">
-
-      <div class="mini-block">
-        <div class="mini-title">Top Player Games</div>
-        <div id="top-player-games"></div>
       </div>
 
-      <div class="mini-block">
-        <div class="mini-title">Top Player Seasons</div>
-        <div id="top-player-seasons"></div>
-      </div>
+      <div class="card">
 
-      <div class="mini-block">
-        <div class="mini-title">Most Games Played</div>
-        <div id="most-games-played"></div>
-      </div>
+        <h2>Season at a Glance</h2>
 
-      <div class="mini-block">
-        <div class="mini-title">Career Points With Team</div>
-        <div id="career-points"></div>
-      </div>
+        <div class="glance-grid">
 
-    </div>
+          <div class="glance-box">
+            <h3>Avg PPG</h3>
+            <p id="glance-ppg"></p>
+          </div>
 
-  </section>
+          <div class="glance-box">
+            <h3>Total PF</h3>
+            <p id="glance-pf"></p>
+          </div>
 
-  <section class="schedule-grid">
+          <div class="glance-box">
+            <h3>Total PA</h3>
+            <p id="glance-pa"></p>
+          </div>
 
-    <div class="card">
+          <div class="glance-box">
+            <h3>Diff</h3>
+            <p id="glance-diff"></p>
+          </div>
 
-      <h2>Season Schedule</h2>
-
-      <div id="schedule-container"></div>
-
-    </div>
-
-    <div class="card">
-
-      <h2>Season at a Glance</h2>
-
-      <div class="glance-grid">
-
-        <div class="glance-box">
-          <h3>Avg PPG</h3>
-          <p id="glance-ppg"></p>
-        </div>
-
-        <div class="glance-box">
-          <h3>Total PF</h3>
-          <p id="glance-pf"></p>
-        </div>
-
-        <div class="glance-box">
-          <h3>Total PA</h3>
-          <p id="glance-pa"></p>
-        </div>
-
-        <div class="glance-box">
-          <h3>Diff</h3>
-          <p id="glance-diff"></p>
         </div>
 
       </div>
 
-    </div>
+    </section>
 
-  </section>
+  </main>
 
-</main>
+</div>
 
 <script src="./data.js"></script>
 
@@ -620,7 +724,6 @@ if (!team) {
 
 } else {
 
-  // RECORD / WIN %
   const wins =
     Number(team.record.split("-")[0]);
 
@@ -628,9 +731,7 @@ if (!team) {
     Number(team.record.split("-")[1]);
 
   const winPct =
-    wins + losses > 0
-      ? ((wins / (wins + losses)) * 100).toFixed(1) + "%"
-      : "—";
+    ((wins / (wins + losses)) * 100).toFixed(1) + "%";
 
   // HERO
   document.title =
@@ -654,7 +755,7 @@ if (!team) {
     team.name;
 
   document.getElementById("team-meta").textContent =
-    `Owner: ${team.owner} • Franchise hub, records, awards, player stats, and league history.`;
+    `Owner: ${team.owner} • Franchise history, awards, records, and player performance.`;
 
   // TOP STATS
   document.getElementById("record").textContent =
@@ -675,40 +776,9 @@ if (!team) {
   document.getElementById("playoff-apps").textContent =
     team.playoffAppearances || 0;
 
-  // SCORING
-  document.getElementById("best-season").textContent =
-    team.scoring?.bestSeason?.points || "—";
-
-  document.getElementById("best-season-year").textContent =
-    `${team.scoring?.bestSeason?.year || "—"} Season`;
-
-  document.getElementById("worst-season").textContent =
-    team.scoring?.worstSeason?.points || "—";
-
-  document.getElementById("worst-season-year").textContent =
-    `${team.scoring?.worstSeason?.year || "—"} Season`;
-
-  document.getElementById("avg-ppg").textContent =
-    team.scoring?.avgPointsPerGame || "—";
-
-  // GLANCE
-  document.getElementById("glance-ppg").textContent =
-    team.scoring?.avgPointsPerGame || "—";
-
-  document.getElementById("glance-pf").textContent =
-    team.pointsFor || "—";
-
-  document.getElementById("glance-pa").textContent =
-    team.pointsAgainst || "—";
-
-  document.getElementById("glance-diff").textContent =
-    (team.pointsFor - team.pointsAgainst).toFixed(0);
-
   // TOP SCORES
   const topScores =
     document.getElementById("top-scores");
-
-  topScores.innerHTML = "";
 
   team.scoring?.topScores?.forEach((game, index) => {
 
@@ -727,8 +797,6 @@ if (!team) {
   const lowScores =
     document.getElementById("low-scores");
 
-  lowScores.innerHTML = "";
-
   team.scoring?.lowScores?.forEach((game, index) => {
 
     lowScores.innerHTML += `
@@ -742,11 +810,29 @@ if (!team) {
 
   });
 
+  // AWARDS
+  const awardsContainer =
+    document.getElementById("awards-container");
+
+  Object.entries(team.awards || {}).forEach(([key,value]) => {
+
+    awardsContainer.innerHTML += `
+      <div class="award-row">
+
+        <div class="award-label">
+          ${key}
+        </div>
+
+        <strong>${value}</strong>
+
+      </div>
+    `;
+
+  });
+
   // HEAD TO HEAD
   const h2hGrid =
     document.getElementById("h2h-grid");
-
-  h2hGrid.innerHTML = "";
 
   teams
     .filter(t => t.id !== team.id)
@@ -766,6 +852,7 @@ if (!team) {
           >
 
           <div>
+
             <div class="opp-name">
               ${opponent.name}
             </div>
@@ -773,6 +860,7 @@ if (!team) {
             <div class="opp-record">
               ${matchup?.record || "0-0"}
             </div>
+
           </div>
 
         </div>
@@ -780,88 +868,74 @@ if (!team) {
 
     });
 
-  // AWARDS
-  const awardsContainer =
-    document.getElementById("awards-container");
+  // PLAYER DATA
+  const topGames =
+    document.getElementById("top-player-games");
 
-  const awards = [
-    {
-      label: "Most Valuable Player",
-      sub: "League MVP Awards",
-      value: team.awards?.mvp || 0
-    },
+  const topSeasons =
+    document.getElementById("top-player-seasons");
 
-    {
-      label: "Playoff MVP",
-      sub: "Postseason MVP Awards",
-      value: team.awards?.playoffMvp || 0
-    },
+  const gamesPlayed =
+    document.getElementById("most-games-played");
 
-    {
-      label: "Rookie of the Year",
-      sub: "ROY Awards",
-      value: team.awards?.rookieOfYear || 0
-    },
+  const careerPoints =
+    document.getElementById("career-points");
 
-    {
-      label: "Most Improved Player",
-      sub: "MIP Awards",
-      value: team.awards?.mostImproved || 0
-    },
+  team.players?.forEach(player => {
 
-    {
-      label: "First Team",
-      sub: "All-League First Team",
-      value: team.awards?.firstTeam || 0
-    },
+    player.topGames?.forEach(game => {
 
-    {
-      label: "Second Team",
-      sub: "All-League Second Team",
-      value: team.awards?.secondTeam || 0
-    }
-  ];
-
-  awardsContainer.innerHTML = "";
-
-  awards.forEach(award => {
-
-    awardsContainer.innerHTML += `
-      <div class="award-row">
-
-        <div>
-          <div class="award-label">
-            ${award.label}
-          </div>
-
-          <div class="award-sub">
-            ${award.sub}
-          </div>
+      topGames.innerHTML += `
+        <div class="rank-line">
+          <span>${player.position}</span>
+          <span>${player.name}</span>
+          <span class="good">${game.score}</span>
+          <span>${game.year}</span>
         </div>
+      `;
 
-        <strong>${award.value}</strong>
+    });
 
+    player.topSeasons?.forEach(season => {
+
+      topSeasons.innerHTML += `
+        <div class="rank-line">
+          <span>${player.position}</span>
+          <span>${player.name}</span>
+          <span class="good">${season.points}</span>
+          <span>${season.year}</span>
+        </div>
+      `;
+
+    });
+
+    gamesPlayed.innerHTML += `
+      <div class="rank-line">
+        <span>${player.position}</span>
+        <span>${player.name}</span>
+        <span>${player.gamesPlayed}</span>
+        <span>GP</span>
+      </div>
+    `;
+
+    careerPoints.innerHTML += `
+      <div class="rank-line">
+        <span>${player.position}</span>
+        <span>${player.name}</span>
+        <span class="good">${player.careerPoints}</span>
+        <span>PTS</span>
       </div>
     `;
 
   });
 
   // SCHEDULE
-  const scheduleContainer =
+  const schedule =
     document.getElementById("schedule-container");
-
-  scheduleContainer.innerHTML = `
-    <div class="schedule-row">
-      <strong>Wk</strong>
-      <strong>Opponent</strong>
-      <strong>Result</strong>
-      <strong class="hide-mobile">Score</strong>
-    </div>
-  `;
 
   team.schedule?.forEach(game => {
 
-    scheduleContainer.innerHTML += `
+    schedule.innerHTML += `
       <div class="schedule-row">
 
         <span>${game.week}</span>
@@ -876,14 +950,25 @@ if (!team) {
           ${game.result}
         </span>
 
-        <span class="hide-mobile">
-          ${game.score}
-        </span>
+        <span>${game.score}</span>
 
       </div>
     `;
 
   });
+
+  // GLANCE
+  document.getElementById("glance-ppg").textContent =
+    team.scoring?.avgPointsPerGame || "—";
+
+  document.getElementById("glance-pf").textContent =
+    team.pointsFor;
+
+  document.getElementById("glance-pa").textContent =
+    team.pointsAgainst;
+
+  document.getElementById("glance-diff").textContent =
+    team.pointsFor - team.pointsAgainst;
 
 }
 
