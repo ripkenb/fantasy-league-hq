@@ -320,18 +320,25 @@
       font-size:13px;
     }
 
-    .opp-record {
-      font-size:23px;
-      font-weight:900;
-      margin-top:3px;
-    }
+ .opp-record {
+  font-size:23px;
+  font-weight:900;
+  margin-top:3px;
+}
 
-    .schedule-grid {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-      margin-top:14px;
-    }
+.opp-logo {
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  flex-shrink:0;
+}
+
+.schedule-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:14px;
+}
 
     .schedule-row {
       display:grid;
@@ -649,16 +656,32 @@ document.getElementById("awards-container").innerHTML = awards[0].map((value, in
   </div>
 `).join("");
 
-  document.getElementById("h2h-grid").innerHTML = h2h
-  .filter(row => row[0] && row[2])
-  .map(row => `
-    <div class="h2h-card">
-      <div>
-        <div class="opp-name">${row[0]}</div>
-        <div class="opp-record">${row[2]}</div>
+document.getElementById("h2h-grid").innerHTML = h2h
+  .filter(row => row[0] && row[0] !== "Owner")
+  .map(row => {
+    const owner = row[0];
+    const record = row[3] || "—";
+
+    const opponentTeam = teams.find(t =>
+      t.owner?.toLowerCase() === owner.toLowerCase()
+    );
+
+    return `
+      <div class="h2h-card">
+
+        ${opponentTeam?.logo
+          ? `<img class="opp-logo" src="${opponentTeam.logo}">`
+          : ""
+        }
+
+        <div>
+          <div class="opp-name">${owner}</div>
+          <div class="opp-record">${record}</div>
+        </div>
+
       </div>
-    </div>
-  `).join("");
+    `;
+  }).join("");
 
   document.getElementById("top-player-games").innerHTML = topPlayerGames
     .filter(row => row.some(Boolean))
