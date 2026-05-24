@@ -3,267 +3,36 @@
 <head>
   <title>Team Pages | The Dynasty League HQ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    * { box-sizing: border-box; }
-
-    :root {
-      --black:#050505;
-      --gold:#b38628;
-      --light-gold:#e2c875;
-      --red:#c91f1f;
-      --white:#f8f5ed;
-      --muted:#b8b0a0;
-      --border:rgba(226,200,117,.25);
-    }
-
-    body {
-      margin:0;
-      background:
-        radial-gradient(circle at top right,rgba(201,31,31,.14),transparent 30%),
-        radial-gradient(circle at top left,rgba(179,134,40,.18),transparent 35%),
-        var(--black);
-      color:var(--white);
-      font-family:Arial,sans-serif;
-    }
-
-    a { color:inherit; text-decoration:none; }
-
-    .app {
-      display:grid;
-      grid-template-columns:260px 1fr;
-      min-height:100vh;
-    }
-
-    .sidebar {
-      background:rgba(10,10,10,.95);
-      padding:24px;
-      border-right:1px solid var(--border);
-    }
-
-    .league-logo {
-      width:95px;
-      height:95px;
-      object-fit:contain;
-      margin-bottom:14px;
-    }
-
-    .logo {
-      font-size:24px;
-      font-weight:900;
-      line-height:1.05;
-      margin-bottom:6px;
-    }
-
-    .subtitle {
-      color:var(--muted);
-      font-size:13px;
-      margin-bottom:28px;
-    }
-
-    .nav a, .nav div {
-      display:block;
-      padding:12px 14px;
-      border-radius:14px;
-      color:#ddd6c8;
-      margin-bottom:8px;
-    }
-
-    .nav .active {
-      background:linear-gradient(135deg,var(--red),var(--gold));
-      color:white;
-      font-weight:bold;
-    }
-
-    .nav a:hover, .nav div:hover {
-      background:rgba(226,200,117,.12);
-    }
-
-    .main { padding:28px; }
-
-    .topbar {
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
-      gap:20px;
-      flex-wrap:wrap;
-      margin-bottom:24px;
-    }
-
-    h1 {
-      font-size:44px;
-      margin:0 0 6px;
-    }
-
-    .lead {
-      margin:0;
-      color:var(--muted);
-    }
-
-    .pill {
-      background:rgba(179,134,40,.18);
-      border:1px solid var(--border);
-      color:var(--light-gold);
-      padding:9px 13px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:bold;
-    }
-
-    .teams-grid {
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:18px;
-    }
-
-    .team-card {
-      background:rgba(21,21,21,.94);
-      border:1px solid var(--border);
-      border-radius:26px;
-      padding:22px;
-      min-height:285px;
-      box-shadow:0 18px 40px rgba(0,0,0,.28);
-      transition:.2s ease;
-      display:block;
-    }
-
-    .team-card:hover {
-      transform:translateY(-4px);
-      border-color:var(--light-gold);
-    }
-
-    .team-logo {
-      width:110px;
-      height:110px;
-      object-fit:contain;
-      margin-bottom:14px;
-      filter:drop-shadow(0 10px 22px rgba(0,0,0,.5));
-    }
-
-    .team-name {
-      font-size:25px;
-      font-weight:900;
-      margin-bottom:6px;
-    }
-
-    .owner {
-      color:var(--muted);
-      margin-bottom:18px;
-    }
-
-    .stats {
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-    }
-
-    .stat {
-      background:#090909;
-      border:1px solid rgba(226,200,117,.18);
-      border-radius:14px;
-      padding:10px;
-      text-align:center;
-    }
-
-    .stat h3 {
-      margin:0;
-      font-size:10px;
-      color:var(--light-gold);
-      text-transform:uppercase;
-      letter-spacing:.06em;
-    }
-
-    .stat p {
-      margin:7px 0 0;
-      font-size:20px;
-      font-weight:900;
-    }
-
-    @media(max-width:1100px) {
-      .app { grid-template-columns:1fr; }
-      .sidebar { border-right:none; border-bottom:1px solid var(--border); }
-      .nav { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
-      .teams-grid { grid-template-columns:repeat(2,1fr); }
-    }
-
-    @media(max-width:700px) {
-      .main,.sidebar { padding:18px; }
-      h1 { font-size:32px; }
-      .teams-grid { grid-template-columns:1fr; }
-      .nav { grid-template-columns:repeat(2,1fr); }
-    }
-  </style>
 </head>
 
-<body>
-  <div class="app">
-    <aside class="sidebar">
-      <img class="league-logo" src="assets/logos/dynasty-league-logo.png.png">
-      <div class="logo">The Dynasty<br>League HQ</div>
-      <div class="subtitle">Est. 2025 · Dynasty. Records. Lore.</div>
+<body style="background:#050505; color:white; font-family:Arial; padding:30px;">
 
-      <div class="nav">
-        <a href="index.html">Dashboard</a>
-        <div>League Records</div>
-        <div>Season Awards</div>
-        <div class="active">Team Pages</div>
-        <div>Draft History</div>
-        <div>Trade History</div>
-        <div>Standings</div>
-        <div>Matchups</div>
-        <div>League Feed</div>
-        <div>Media Hub</div>
-        <div>Hall of Fame</div>
-      </div>
-    </aside>
+  <h1>Franchise Pages</h1>
+  <p>Click a team to open its franchise dashboard.</p>
 
-    <main class="main">
-      <div class="topbar">
-        <div>
-          <h1>Franchise Pages</h1>
-          <p class="lead">Click a team to open its franchise page.</p>
-        </div>
-        <div class="pill" id="team-count">0 Franchises Loaded</div>
-      </div>
+  <div id="teams-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px;"></div>
 
-      <section class="teams-grid" id="teams-grid"></section>
-    </main>
-  </div>
+  <p><a href="index.html" style="color:#e2c875;">Back to Dashboard</a></p>
 
   <script src="data.js"></script>
 
   <script>
     const grid = document.getElementById("teams-grid");
-    document.getElementById("team-count").textContent = teams.length + " Franchises Loaded";
 
     teams.forEach(team => {
-      const page = `team.html?id=${team.id}`;
-
       grid.innerHTML += `
-        <a class="team-card" href="${page}">
-          <img class="team-logo" src="${team.logo}">
-          <div class="team-name">${team.name}</div>
-          <div class="owner">Owner: ${team.owner}</div>
-
-          <div class="stats">
-            <div class="stat">
-              <h3>Record</h3>
-              <p>${team.record}</p>
-            </div>
-
-            <div class="stat">
-              <h3>Titles</h3>
-              <p>${team.titles}</p>
-            </div>
-
-            <div class="stat">
-              <h3>PF</h3>
-              <p>${team.pointsFor}</p>
-            </div>
+        <a href="team.html?id=${team.id}" style="text-decoration:none; color:white;">
+          <div style="background:#151515; border:1px solid rgba(226,200,117,.25); border-radius:22px; padding:20px;">
+            <img src="${team.logo}" style="width:100px; height:100px; object-fit:contain;">
+            <h2>${team.name}</h2>
+            <p style="color:#b8b0a0;">Owner: ${team.owner}</p>
+            <p>Record: ${team.record}</p>
+            <p>PF: ${team.pointsFor}</p>
           </div>
         </a>
       `;
     });
   </script>
+
 </body>
 </html>
