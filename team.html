@@ -708,14 +708,11 @@
 
 <script>
 
-const params =
-  new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search);
 
-const teamId =
-  params.get("id");
+const teamId = params.get("id");
 
-const team =
-  teams.find(t => t.id === teamId);
+const team = teams.find(t => t.id === teamId);
 
 if (!team) {
 
@@ -724,6 +721,7 @@ if (!team) {
 
 } else {
 
+  // RECORDS
   const wins =
     Number(team.record.split("-")[0]);
 
@@ -741,12 +739,6 @@ if (!team) {
     "--watermark",
     `url("${team.logo}")`
   );
-
-  document.getElementById("active-team-link").textContent =
-    team.name;
-
-  document.getElementById("active-team-link").href =
-    `team.html?id=${team.id}`;
 
   document.getElementById("team-logo").src =
     team.logo;
@@ -780,15 +772,26 @@ if (!team) {
   const topScores =
     document.getElementById("top-scores");
 
+  topScores.innerHTML = "";
+
   team.scoring?.topScores?.forEach((game, index) => {
 
     topScores.innerHTML += `
+      <div class="rank-line">
+        <span>${index + 1}</span>
+        <span class="good">${game.score}</span>
+        <span>Week ${game.week}</span>
+        <span>${game.year}</span>
+      </div>
+    `;
 
   });
 
   // LOW SCORES
   const lowScores =
     document.getElementById("low-scores");
+
+  lowScores.innerHTML = "";
 
   team.scoring?.lowScores?.forEach((game, index) => {
 
@@ -807,17 +810,14 @@ if (!team) {
   const awardsContainer =
     document.getElementById("awards-container");
 
+  awardsContainer.innerHTML = "";
+
   Object.entries(team.awards || {}).forEach(([key,value]) => {
 
     awardsContainer.innerHTML += `
       <div class="award-row">
-
-        <div class="award-label">
-          ${key}
-        </div>
-
+        <div class="award-label">${key}</div>
         <strong>${value}</strong>
-
       </div>
     `;
 
@@ -826,6 +826,8 @@ if (!team) {
   // HEAD TO HEAD
   const h2hGrid =
     document.getElementById("h2h-grid");
+
+  h2hGrid.innerHTML = "";
 
   teams
     .filter(t => t.id !== team.id)
@@ -861,7 +863,7 @@ if (!team) {
 
     });
 
-// PLAYER DATA
+  // PLAYER DATA
   const topGames =
     document.getElementById("top-player-games");
 
@@ -906,9 +908,7 @@ if (!team) {
 
             <div>
 
-              <div style="
-                font-weight:bold;
-              ">
+              <div style="font-weight:bold;">
                 ${player.name}
               </div>
 
@@ -968,9 +968,13 @@ if (!team) {
       </div>
     `;
 
+  });
+
   // SCHEDULE
   const schedule =
     document.getElementById("schedule-container");
+
+  schedule.innerHTML = "";
 
   team.schedule?.forEach(game => {
 
