@@ -861,7 +861,7 @@ if (!team) {
 
     });
 
-  // PLAYER DATA
+// PLAYER DATA
   const topGames =
     document.getElementById("top-player-games");
 
@@ -874,67 +874,65 @@ if (!team) {
   const careerPoints =
     document.getElementById("career-points");
 
+  topGames.innerHTML = "";
+  topSeasons.innerHTML = "";
+  gamesPlayed.innerHTML = "";
+  careerPoints.innerHTML = "";
+
   team.players?.forEach(player => {
 
     player.topGames?.forEach(game => {
 
       topGames.innerHTML += `
 
-  <div class="rank-line">
-
-    <div style="
-      display:flex;
-      align-items:center;
-      gap:8px;
-    ">
-
-      <img
-        src="${player.image}"
-        style="
-          width:34px;
-          height:34px;
-          border-radius:50%;
-          object-fit:cover;
-          border:1px solid rgba(226,200,117,.25);
-        "
-      >
-
-      <div>
-
-        <div style="
-          font-weight:bold;
-        ">
-          ${player.name}
-        </div>
-
-        <div style="
-          color:#b8b0a0;
-          font-size:11px;
-        ">
-          ${player.position} • ${player.nflTeam}
-        </div>
-
-      </div>
-
-    </div>
-
-    <span class="good">
-      ${game.score}
-    </span>
-
-    <span>
-      ${game.year}
-    </span>
-
-  </div>
-
-`;
         <div class="rank-line">
-          <span>${player.position}</span>
-          <span>${player.name}</span>
-          <span class="good">${game.score}</span>
-          <span>${game.year}</span>
+
+          <div style="
+            display:flex;
+            align-items:center;
+            gap:8px;
+          ">
+
+            <img
+              src="${player.image}"
+              style="
+                width:34px;
+                height:34px;
+                border-radius:50%;
+                object-fit:cover;
+                border:1px solid rgba(226,200,117,.25);
+              "
+            >
+
+            <div>
+
+              <div style="
+                font-weight:bold;
+              ">
+                ${player.name}
+              </div>
+
+              <div style="
+                color:#b8b0a0;
+                font-size:11px;
+              ">
+                ${player.position} • ${player.nflTeam}
+              </div>
+
+            </div>
+
+          </div>
+
+          <span class="good">
+            ${game.score}
+          </span>
+
+          <span>
+            ${game.year}
+          </span>
+
         </div>
+
       `;
 
     });
@@ -969,8 +967,6 @@ if (!team) {
         <span>PTS</span>
       </div>
     `;
-
-  });
 
   // SCHEDULE
   const schedule =
