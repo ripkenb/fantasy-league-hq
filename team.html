@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Team Page</title>
+</head>
+<body style="background:#050505; color:white; font-family:Arial; padding:40px;">
+
+  <h1 id="team-name">Loading...</h1>
+  <img id="team-logo" style="width:150px;">
+  <p id="team-owner"></p>
+  <p id="team-record"></p>
+
+  <p><a href="teams.html" style="color:#e2c875;">Back to Teams</a></p>
+
+  <script src="data.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const teamId = params.get("id");
+
+    const team = teams.find(t => t.id === teamId);
+
+    if (team) {
+      document.getElementById("team-name").textContent = team.name;
+      document.getElementById("team-logo").src = team.logo;
+      document.getElementById("team-owner").textContent = "Owner: " + team.owner;
+      document.getElementById("team-record").textContent = "Record: " + team.record;
+    } else {
+      document.getElementById("team-name").textContent = "Team Not Found";
+    }
+  </script>
+
+</body>
+</html>
