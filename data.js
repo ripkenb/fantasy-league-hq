@@ -1,13 +1,46 @@
 const teams = [
-  {
-    id: "angry-apples",
-    name: "Angry Apples",
-    owner: "Ripken",
-    logo: "assets/logos/angry-apples.png.png",
-    record: "4-10",
-    titles: 0,
-    pointsFor: 1375
+{
+  id: "angry-apples",
+  name: "Angry Apples",
+  owner: "Ripken",
+  logo: "assets/logos/angry-apples.png.png",
+  record: "4-10",
+  titles: 0,
+  pointsFor: 1375,
+
+  playoffRecord: "0-0",
+  playoffAppearances: 0,
+  awards: {
+    mvp: 0,
+    playoffMvp: 0,
+    rookieOfYear: 0,
+    mostImproved: 0,
+    firstTeam: 0,
+    secondTeam: 1
   },
+
+  scoring: {
+    avgPointsPerGame: 137.5,
+    topScores: [
+      { rank: 1, score: 184.72, week: 5, year: 2025 },
+      { rank: 2, score: 177.83, week: 9, year: 2025 },
+      { rank: 3, score: 172.41, week: 12, year: 2025 }
+    ],
+    lowScores: [
+      { rank: 1, score: 60.84, week: 2, year: 2025 },
+      { rank: 2, score: 69.14, week: 7, year: 2025 },
+      { rank: 3, score: 76.58, week: 10, year: 2025 }
+    ],
+    bestSeason: { year: 2025, points: 1375 },
+    worstSeason: { year: 2025, points: 1375 }
+  },
+
+  headToHead: [
+    { opponentId: "jake-the-snake", record: "2-3" },
+    { opponentId: "big-ben-banditos", record: "1-4" },
+    { opponentId: "lake-cle-elum", record: "3-2" }
+  ]
+},
 
   {
     id: "jake-the-snake",
