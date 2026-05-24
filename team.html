@@ -877,222 +877,144 @@ if (!team) {
 
     });
 
-  // PLAYER DATA
-  const topGames =
-    document.getElementById("top-player-games");
+// PLAYER DATA
+const topGames =
+  document.getElementById("top-player-games");
 
-  const topSeasons =
-    document.getElementById("top-player-seasons");
+const topSeasons =
+  document.getElementById("top-player-seasons");
 
-  const gamesPlayed =
-    document.getElementById("most-games-played");
+const gamesPlayed =
+  document.getElementById("most-games-played");
 
-  const careerPoints =
-    document.getElementById("career-points");
+const careerPoints =
+  document.getElementById("career-points");
 
-  topGames.innerHTML = "";
-  topSeasons.innerHTML = "";
-  gamesPlayed.innerHTML = "";
-  careerPoints.innerHTML = "";
+topGames.innerHTML = "";
+topSeasons.innerHTML = "";
+gamesPlayed.innerHTML = "";
+careerPoints.innerHTML = "";
 
-  team.players?.forEach(player => {
+const allTopGames = [];
+const allTopSeasons = [];
 
-    player.topGames?.forEach(game => {
+team.players?.forEach(player => {
 
-      topGames.innerHTML += `
-
-        <div class="rank-line">
-
-          <div style="
-            display:flex;
-            align-items:center;
-            gap:8px;
-          ">
-
-            <img
-  class="player-headshot"
-  src="${player.image}"
-              style="
-                width:34px;
-                height:34px;
-                border-radius:50%;
-                object-fit:cover;
-                border:1px solid rgba(226,200,117,.25);
-              "
-            >
-
-            <div>
-
-              <div style="font-weight:bold;">
-                ${player.name}
-              </div>
-
-              <div style="
-                color:#b8b0a0;
-                font-size:11px;
-              ">
-                ${player.position} • ${player.nflTeam}
-              </div>
-
-            </div>
-
-          </div>
-
-          <span class="good">
-            ${game.score}
-          </span>
-
-          <span>
-            ${game.year}
-          </span>
-
-        </div>
-
-      `;
-
+  player.topGames?.forEach(game => {
+    allTopGames.push({
+      player,
+      score: game.score,
+      year: game.year
     });
+  });
 
-    player.topSeasons?.forEach(season => {
+  player.topSeasons?.forEach(season => {
+    allTopSeasons.push({
+      player,
+      points: season.points,
+      year: season.year
+    });
+  });
 
-     topSeasons.innerHTML += `
+});
 
-  <div class="rank-line">
+allTopGames
+  .sort((a, b) => b.score - a.score)
+  .forEach(item => {
 
-    <div style="
-      display:flex;
-      align-items:center;
-      gap:10px;
-    ">
+    topGames.innerHTML += `
+      <div class="rank-line">
 
-      <img
-        class="player-headshot"
-        src="${player.image}"
-      >
-
-      <div>
-
-        <div style="
-          font-weight:bold;
-        ">
-          ${player.name}
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img class="player-headshot" src="${item.player.image}">
+          <div>
+            <div style="font-weight:bold;">${item.player.name}</div>
+            <div style="color:#b8b0a0; font-size:11px;">
+              ${item.player.position} • ${item.player.nflTeam}
+            </div>
+          </div>
         </div>
 
-        <div style="
-          color:#b8b0a0;
-          font-size:11px;
-        ">
-          ${player.position} • ${player.nflTeam}
-        </div>
+        <span>${item.score}</span>
+        <span>${item.year}</span>
 
       </div>
+    `;
 
-    </div>
+  });
 
-    <span class="good">
-      ${season.points}
-    </span>
+allTopSeasons
+  .sort((a, b) => b.points - a.points)
+  .forEach(item => {
 
-    <span>
-      ${season.year}
-    </span>
+    topSeasons.innerHTML += `
+      <div class="rank-line">
 
-  </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img class="player-headshot" src="${item.player.image}">
+          <div>
+            <div style="font-weight:bold;">${item.player.name}</div>
+            <div style="color:#b8b0a0; font-size:11px;">
+              ${item.player.position} • ${item.player.nflTeam}
+            </div>
+          </div>
+        </div>
 
-`;
+        <span>${item.points}</span>
+        <span>${item.year}</span>
 
-    });
+      </div>
+    `;
+
+  });
+
+[...(team.players || [])]
+  .sort((a, b) => b.gamesPlayed - a.gamesPlayed)
+  .forEach(player => {
 
     gamesPlayed.innerHTML += `
+      <div class="rank-line">
 
-  <div class="rank-line">
-
-    <div style="
-      display:flex;
-      align-items:center;
-      gap:10px;
-    ">
-
-      <img
-        class="player-headshot"
-        src="${player.image}"
-      >
-
-      <div>
-
-        <div style="
-          font-weight:bold;
-        ">
-          ${player.name}
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img class="player-headshot" src="${player.image}">
+          <div>
+            <div style="font-weight:bold;">${player.name}</div>
+            <div style="color:#b8b0a0; font-size:11px;">
+              ${player.position} • ${player.nflTeam}
+            </div>
+          </div>
         </div>
 
-        <div style="
-          color:#b8b0a0;
-          font-size:11px;
-        ">
-          ${player.position} • ${player.nflTeam}
-        </div>
+        <span>${player.gamesPlayed}</span>
+        <span>GP</span>
 
       </div>
+    `;
 
-    </div>
+  });
 
-    <span>
-      ${player.gamesPlayed}
-    </span>
+[...(team.players || [])]
+  .sort((a, b) => b.careerPoints - a.careerPoints)
+  .forEach(player => {
 
-    <span>
-      GP
-    </span>
+    careerPoints.innerHTML += `
+      <div class="rank-line">
 
-  </div>
-
-`;
-
-careerPoints.innerHTML += `
-
-  <div class="rank-line">
-
-    <div style="
-      display:flex;
-      align-items:center;
-      gap:10px;
-    ">
-
-      <img
-        class="player-headshot"
-        src="${player.image}"
-      >
-
-      <div>
-
-        <div style="
-          font-weight:bold;
-        ">
-          ${player.name}
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img class="player-headshot" src="${player.image}">
+          <div>
+            <div style="font-weight:bold;">${player.name}</div>
+            <div style="color:#b8b0a0; font-size:11px;">
+              ${player.position} • ${player.nflTeam}
+            </div>
+          </div>
         </div>
 
-        <div style="
-          color:#b8b0a0;
-          font-size:11px;
-        ">
-          ${player.position} • ${player.nflTeam}
-        </div>
+        <span>${player.careerPoints}</span>
+        <span>PTS</span>
 
       </div>
-
-    </div>
-
-    <span class="good">
-      ${player.careerPoints}
-    </span>
-
-    <span>
-      PTS
-    </span>
-
-  </div>
-
-`;
+    `;
 
   });
 
