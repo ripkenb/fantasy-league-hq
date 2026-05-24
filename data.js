@@ -1,15 +1,16 @@
 const teams = [
   {
+    id: "angry-apples",
     name: "Angry Apples",
     owner: "Ripken",
     logo: "assets/logos/angry-apples.png.png",
     record: "4-10",
     titles: 0,
-    pointsFor: 1375,
-    page: "angry-apples.html"
+    pointsFor: 1375
   },
 
   {
+    id: "jake-the-snake",
     name: "Jake the Snake",
     owner: "Jake",
     logo: "assets/logos/jake-the-snake.png.png",
@@ -19,6 +20,7 @@ const teams = [
   },
 
   {
+    id: "big-ben-banditos",
     name: "Big Ben Banditos",
     owner: "Ben",
     logo: "assets/logos/big-ben-banditos.png.png",
@@ -28,6 +30,7 @@ const teams = [
   },
 
   {
+    id: "bryley-the-builder",
     name: "Bryley the Builder",
     owner: "Bryley",
     logo: "assets/logos/bryley-the-builder.png.png",
@@ -37,6 +40,7 @@ const teams = [
   },
 
   {
+    id: "boarder-patrollers",
     name: "The Boarder Patrollers",
     owner: "Curtis",
     logo: "assets/logos/boarder-patrollers.png.png",
@@ -46,6 +50,7 @@ const teams = [
   },
 
   {
+    id: "bradshaw-bunch",
     name: "Bradshaw Bunch",
     owner: "Jeff",
     logo: "assets/logos/bradshaw-bunch.png.png",
@@ -55,6 +60,7 @@ const teams = [
   },
 
   {
+    id: "mclovin",
     name: "McLovin",
     owner: "Rawlings",
     logo: "assets/logos/mclovin.png.png",
@@ -64,6 +70,7 @@ const teams = [
   },
 
   {
+    id: "lake-cle-elum",
     name: "Lake Cle Elum",
     owner: "Ritch",
     logo: "assets/logos/lake-cle-elum.png.png",
@@ -73,6 +80,7 @@ const teams = [
   },
 
   {
+    id: "purple-reign",
     name: "Purple Reign",
     owner: "Willie",
     logo: "assets/logos/purple-reign.png.png",
@@ -82,6 +90,7 @@ const teams = [
   },
 
   {
+    id: "cats-pajamas",
     name: "The Cat's Pajamas",
     owner: "Reese",
     logo: "assets/logos/the-cat's-pajamas.png",
