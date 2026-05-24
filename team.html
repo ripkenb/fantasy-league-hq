@@ -609,6 +609,141 @@
       });
   }
 </script>
+<script src="data.js"></script>
 
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const teamId = params.get("id");
+  const team = teams.find(t => t.id === teamId);
+
+  if (!team) {
+    document.getElementById("team-name").textContent = "Team Not Found";
+  } else {
+
+    // BASIC INFO
+    const wins = Number(team.record.split("-")[0]);
+    const losses = Number(team.record.split("-")[1]);
+
+    const winPct =
+      wins + losses > 0
+        ? ((wins / (wins + losses)) * 100).toFixed(1) + "%"
+        : "—";
+
+    // PAGE / HERO
+    document.title = team.name + " | Dynasty League HQ";
+
+    document.documentElement.style.setProperty(
+      "--watermark",
+      `url("${team.logo}")`
+    );
+
+    document.getElementById("active-team-link").textContent =
+      team.name;
+
+    document.getElementById("active-team-link").href =
+      `team.html?id=${team.id}`;
+
+    document.getElementById("team-logo").src =
+      team.logo;
+
+    document.getElementById("team-name").textContent =
+      team.name;
+
+    document.getElementById("team-meta").textContent =
+      `Owner: ${team.owner} • Franchise hub, records, player history, schedule, awards, and scoring profile.`;
+
+    // TOP STATS
+    document.getElementById("record").textContent =
+      team.record;
+
+    document.getElementById("win-pct").textContent =
+      winPct;
+
+    document.getElementById("titles").textContent =
+      team.titles;
+
+    document.getElementById("pf").textContent =
+      team.pointsFor;
+
+    // SCORING
+    document.getElementById("best-season").textContent =
+      team.scoring.bestSeason.points;
+
+    document.getElementById("worst-season").textContent =
+      team.scoring.worstSeason.points;
+
+    document.getElementById("avg-ppg").textContent =
+      team.scoring.avgPointsPerGame;
+
+    document.getElementById("glance-ppg").textContent =
+      team.scoring.avgPointsPerGame;
+
+    document.getElementById("glance-pf").textContent =
+      team.pointsFor;
+
+    // PLAYOFFS
+    const playoffRecordElement =
+      document.querySelectorAll(".bubble .value")[4];
+
+    playoffRecordElement.textContent =
+      team.playoffRecord;
+
+    const playoffAppsElement =
+      document.querySelectorAll(".bubble .value")[5];
+
+    playoffAppsElement.textContent =
+      team.playoffAppearances;
+
+    // HEAD TO HEAD
+    const h2hGrid = document.getElementById("h2h-grid");
+
+    h2hGrid.innerHTML = "";
+
+    teams
+      .filter(t => t.id !== team.id)
+      .forEach(opponent => {
+
+        const matchup =
+          team.headToHead?.find(
+            h => h.opponentId === opponent.id
+          );
+
+        const record =
+          matchup?.record || "0-0";
+
+        h2hGrid.innerHTML += `
+          <div class="h2h-card">
+            <img class="opp-logo" src="${opponent.logo}">
+            <div>
+              <div class="opp-name">${opponent.name}</div>
+              <div class="opp-record">${record}</div>
+            </div>
+          </div>
+        `;
+      });
+
+    // AWARDS
+    const awardValues =
+      document.querySelectorAll(".award-row strong");
+
+    awardValues[0].textContent =
+      team.awards.mvp;
+
+    awardValues[1].textContent =
+      team.awards.playoffMvp;
+
+    awardValues[2].textContent =
+      team.awards.rookieOfYear;
+
+    awardValues[3].textContent =
+      team.awards.mostImproved;
+
+    awardValues[4].textContent =
+      team.awards.firstTeam;
+
+    awardValues[5].textContent =
+      team.awards.secondTeam;
+  }
+</script>
 </body>
 </html>
