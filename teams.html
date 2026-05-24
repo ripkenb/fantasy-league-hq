@@ -237,7 +237,7 @@
     document.getElementById("team-count").textContent = teams.length + " Franchises Loaded";
 
     teams.forEach(team => {
-      const page = team.page || "#";
+      const page = `team.html?id=${team.id}`;
 
       grid.innerHTML += `
         <a class="team-card" href="${page}">
