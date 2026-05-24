@@ -275,6 +275,7 @@
     }
 
     .rank-line {
+    
   display:grid;
   grid-template-columns: 1fr 80px 60px;
   gap:12px;
@@ -282,7 +283,13 @@
   margin:12px 0;
   font-size:14px;
 }
-
+ .player-headshot {
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid rgba(226,200,117,.35);
+}
       display:grid;
 
       grid-template-columns:
@@ -903,7 +910,8 @@ if (!team) {
           ">
 
             <img
-              src="${player.image}"
+  class="player-headshot"
+  src="${player.image}"
               style="
                 width:34px;
                 height:34px;
