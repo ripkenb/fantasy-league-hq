@@ -1,33 +1,614 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Team Page</title>
-</head>
-<body style="background:#050505; color:white; font-family:Arial; padding:40px;">
+  <title>Franchise Hub | Dynasty League HQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <h1 id="team-name">Loading...</h1>
-  <img id="team-logo" style="width:150px;">
-  <p id="team-owner"></p>
-  <p id="team-record"></p>
+  <style>
+    * { box-sizing: border-box; }
 
-  <p><a href="teams.html" style="color:#e2c875;">Back to Teams</a></p>
-
-  <script src="data.js"></script>
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const teamId = params.get("id");
-
-    const team = teams.find(t => t.id === teamId);
-
-    if (team) {
-      document.getElementById("team-name").textContent = team.name;
-      document.getElementById("team-logo").src = team.logo;
-      document.getElementById("team-owner").textContent = "Owner: " + team.owner;
-      document.getElementById("team-record").textContent = "Record: " + team.record;
-    } else {
-      document.getElementById("team-name").textContent = "Team Not Found";
+    :root {
+      --black:#050505;
+      --panel:#121212;
+      --gold:#b38628;
+      --light-gold:#e2c875;
+      --green:#22c55e;
+      --muted:#b8b0a0;
+      --border:rgba(226,200,117,.25);
+      --white:#f8f5ed;
     }
-  </script>
+
+    body {
+      margin:0;
+      font-family:Arial,sans-serif;
+      color:var(--white);
+      background:
+        radial-gradient(circle at top right, rgba(179,134,40,.18), transparent 30%),
+        radial-gradient(circle at top left, rgba(226,200,117,.10), transparent 35%),
+        #050505;
+    }
+
+    a { color:inherit; text-decoration:none; }
+
+    .app {
+      display:grid;
+      grid-template-columns:260px 1fr;
+      min-height:100vh;
+    }
+
+    .sidebar {
+      background:#090909;
+      border-right:1px solid var(--border);
+      padding:24px;
+      position:sticky;
+      top:0;
+      height:100vh;
+    }
+
+    .league-logo {
+      width:92px;
+      height:92px;
+      object-fit:contain;
+      margin-bottom:14px;
+    }
+
+    .side-title {
+      font-size:24px;
+      line-height:1.05;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .subtitle {
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:26px;
+    }
+
+    .nav a {
+      display:block;
+      padding:12px 14px;
+      border-radius:14px;
+      margin-bottom:8px;
+      color:#ddd6c8;
+    }
+
+    .nav a:hover { background:rgba(226,200,117,.12); }
+
+    .nav .active {
+      background:linear-gradient(135deg,#1a1a1a,var(--gold));
+      color:white;
+      font-weight:bold;
+      border:1px solid var(--border);
+    }
+
+    .main {
+      padding:26px;
+      max-width:1650px;
+    }
+
+    .hero {
+      background:
+        linear-gradient(135deg,rgba(20,20,20,.98),rgba(75,58,22,.94)),
+        radial-gradient(circle at top right,rgba(226,200,117,.18),transparent 35%);
+      border:1px solid var(--border);
+      border-radius:28px;
+      padding:30px;
+      display:flex;
+      align-items:center;
+      gap:24px;
+      margin-bottom:18px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero::after {
+      content:"";
+      position:absolute;
+      right:45px;
+      top:50%;
+      transform:translateY(-50%);
+      width:170px;
+      height:170px;
+      background:var(--watermark) center/contain no-repeat;
+      opacity:.18;
+      pointer-events:none;
+    }
+
+    .hero-logo {
+      width:130px;
+      height:130px;
+      object-fit:contain;
+      z-index:1;
+      filter:drop-shadow(0 12px 24px rgba(0,0,0,.55));
+    }
+
+    .hero-text { z-index:1; }
+
+    .hero h1 {
+      margin:0;
+      font-size:48px;
+      line-height:1;
+    }
+
+    .hero p {
+      margin:10px 0 0;
+      color:#fff4d6;
+      font-size:17px;
+    }
+
+    .top-stats {
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      gap:12px;
+      margin-bottom:16px;
+    }
+
+    .bubble {
+      background:rgba(18,18,18,.96);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:16px;
+      min-height:92px;
+    }
+
+    .bubble h3 {
+      margin:0;
+      color:var(--light-gold);
+      font-size:12px;
+      text-transform:uppercase;
+    }
+
+    .bubble .value {
+      font-size:28px;
+      font-weight:900;
+      margin-top:10px;
+    }
+
+    .dashboard-grid {
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:14px;
+      margin-bottom:14px;
+    }
+
+    .card {
+      background:rgba(18,18,18,.96);
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 18px 40px rgba(0,0,0,.25);
+    }
+
+    .card h2 {
+      margin:0 0 14px;
+      color:var(--light-gold);
+      font-size:20px;
+      text-transform:uppercase;
+      letter-spacing:.02em;
+    }
+
+    .score-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .mini-block {
+      background:#090909;
+      border:1px solid rgba(226,200,117,.16);
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .mini-title {
+      color:var(--light-gold);
+      font-size:12px;
+      font-weight:bold;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+    .rank-line {
+      display:grid;
+      grid-template-columns:28px 1fr 70px 70px;
+      gap:8px;
+      margin:8px 0;
+      font-size:14px;
+      align-items:center;
+    }
+
+    .good { color:var(--green); font-weight:bold; }
+    .bad { color:#ef4444; font-weight:bold; }
+
+    .award-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:1px solid rgba(226,200,117,.13);
+      padding:12px 0;
+    }
+
+    .award-row:last-child { border-bottom:none; }
+
+    .award-label {
+      color:#ddd6c8;
+      font-weight:700;
+    }
+
+    .award-sub {
+      color:var(--muted);
+      font-size:12px;
+      margin-top:3px;
+    }
+
+    .h2h-grid {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+    }
+
+    .h2h-card {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      background:#090909;
+      border:1px solid rgba(226,200,117,.16);
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .opp-logo {
+      width:48px;
+      height:48px;
+      object-fit:contain;
+      flex-shrink:0;
+    }
+
+    .opp-name {
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .opp-record {
+      font-size:23px;
+      font-weight:900;
+      margin-top:3px;
+    }
+
+    .player-grid {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    th,td {
+      padding:9px 7px;
+      border-bottom:1px solid rgba(226,200,117,.12);
+      text-align:left;
+      font-size:13px;
+    }
+
+    th {
+      color:var(--light-gold);
+      font-size:11px;
+      text-transform:uppercase;
+    }
+
+    .player-cell {
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .player-img {
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#2b2b2b,#050505);
+      border:1px solid rgba(226,200,117,.28);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--light-gold);
+      font-size:11px;
+      font-weight:900;
+      flex-shrink:0;
+    }
+
+    .schedule-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      margin-top:14px;
+    }
+
+    .schedule-row {
+      display:grid;
+      grid-template-columns:45px 1fr 70px 110px;
+      align-items:center;
+      gap:10px;
+      padding:10px 0;
+      border-bottom:1px solid rgba(226,200,117,.12);
+      font-size:14px;
+    }
+
+    .schedule-row:last-child { border-bottom:none; }
+
+    .glance-grid {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+    }
+
+    .glance-box {
+      background:#090909;
+      border:1px solid rgba(226,200,117,.16);
+      border-radius:14px;
+      padding:16px;
+      text-align:center;
+    }
+
+    .glance-box h3 {
+      margin:0;
+      color:var(--muted);
+      font-size:11px;
+      text-transform:uppercase;
+    }
+
+    .glance-box p {
+      margin:10px 0 0;
+      font-size:27px;
+      font-weight:900;
+    }
+
+    @media(max-width:1200px) {
+      .top-stats { grid-template-columns:repeat(3,1fr); }
+      .dashboard-grid,.schedule-grid { grid-template-columns:1fr; }
+      .player-grid { grid-template-columns:repeat(2,1fr); }
+      .h2h-grid { grid-template-columns:repeat(2,1fr); }
+    }
+
+    @media(max-width:800px) {
+      .app { grid-template-columns:1fr; }
+      .sidebar {
+        position:relative;
+        height:auto;
+        border-right:none;
+        border-bottom:1px solid var(--border);
+      }
+      .nav {
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:8px;
+      }
+      .main { padding:18px; }
+      .hero {
+        flex-direction:column;
+        text-align:center;
+      }
+      .hero h1 { font-size:34px; }
+      .top-stats,.player-grid,.h2h-grid,.glance-grid { grid-template-columns:1fr; }
+      .rank-line { grid-template-columns:25px 1fr 58px 58px; font-size:12px; }
+      .schedule-row { grid-template-columns:35px 1fr 45px; }
+      .hide-mobile { display:none; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <img class="league-logo" src="assets/logos/dynasty-league-logo.png.png">
+    <div class="side-title">The Dynasty<br>League HQ</div>
+    <div class="subtitle">Est. 2025 · Dynasty. Records. Lore.</div>
+
+    <div class="nav">
+      <a href="index.html">Dashboard</a>
+      <a href="teams.html">Team Pages</a>
+      <a class="active" id="active-team-link" href="#">Team Hub</a>
+      <a href="#">Standings</a>
+      <a href="#">Matchups</a>
+      <a href="#">Records</a>
+      <a href="#">Awards</a>
+      <a href="#">Draft History</a>
+      <a href="#">Trade History</a>
+      <a href="#">Media Hub</a>
+      <a href="#">Hall of Fame</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section class="hero" id="hero">
+      <img class="hero-logo" id="team-logo">
+      <div class="hero-text">
+        <h1 id="team-name">Loading...</h1>
+        <p id="team-meta"></p>
+      </div>
+    </section>
+
+    <section class="top-stats">
+      <div class="bubble"><h3>Record</h3><div class="value" id="record"></div></div>
+      <div class="bubble"><h3>Win %</h3><div class="value" id="win-pct">—</div></div>
+      <div class="bubble"><h3>Championships</h3><div class="value" id="titles"></div></div>
+      <div class="bubble"><h3>PF</h3><div class="value" id="pf"></div></div>
+      <div class="bubble"><h3>Playoff Record</h3><div class="value">0-0</div></div>
+      <div class="bubble"><h3>Playoff Apps</h3><div class="value">0</div></div>
+    </section>
+
+    <section class="dashboard-grid">
+      <div class="card">
+        <h2>Team Scoring Highlights</h2>
+        <div class="score-grid">
+          <div class="mini-block">
+            <div class="mini-title">Top 3 Team Scores</div>
+            <div class="rank-line"><span>1</span><span class="good">184.72</span><span>Week 5</span><span>2025</span></div>
+            <div class="rank-line"><span>2</span><span class="good">177.83</span><span>Week 9</span><span>2025</span></div>
+            <div class="rank-line"><span>3</span><span class="good">172.41</span><span>Week 12</span><span>2025</span></div>
+          </div>
+
+          <div class="mini-block">
+            <div class="mini-title">Low 3 Team Scores</div>
+            <div class="rank-line"><span>1</span><span class="bad">60.84</span><span>Week 2</span><span>2025</span></div>
+            <div class="rank-line"><span>2</span><span class="bad">69.14</span><span>Week 7</span><span>2025</span></div>
+            <div class="rank-line"><span>3</span><span class="bad">76.58</span><span>Week 10</span><span>2025</span></div>
+          </div>
+
+          <div class="mini-block">
+            <div class="mini-title">Best Scoring Season</div>
+            <div class="big good" id="best-season"></div>
+            <div class="opp-name">2025 Season</div>
+          </div>
+
+          <div class="mini-block">
+            <div class="mini-title">Worst Scoring Season</div>
+            <div class="big bad" id="worst-season"></div>
+            <div class="opp-name">2025 Season</div>
+          </div>
+
+          <div class="mini-block" style="grid-column:1 / -1;">
+            <div class="mini-title">Avg Points Per Game</div>
+            <div class="big" id="avg-ppg"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Awards Summary</h2>
+        <div class="award-row"><div><div class="award-label">Most Valuable Player</div><div class="award-sub">League MVP Awards</div></div><strong>0</strong></div>
+        <div class="award-row"><div><div class="award-label">Playoff MVP</div><div class="award-sub">Postseason MVP Awards</div></div><strong>0</strong></div>
+        <div class="award-row"><div><div class="award-label">Rookie of the Year</div><div class="award-sub">ROY Awards</div></div><strong>0</strong></div>
+        <div class="award-row"><div><div class="award-label">Most Improved Player</div><div class="award-sub">MIP Awards</div></div><strong>0</strong></div>
+        <div class="award-row"><div><div class="award-label">First Team</div><div class="award-sub">All-League First Team</div></div><strong>0</strong></div>
+        <div class="award-row"><div><div class="award-label">Second Team</div><div class="award-sub">All-League Second Team</div></div><strong>1</strong></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Head to Head vs All Teams</h2>
+      <div class="h2h-grid" id="h2h-grid"></div>
+    </section>
+
+    <section class="card" style="margin-top:14px;">
+      <h2>Player Performance</h2>
+      <div class="player-grid">
+        <div class="mini-block">
+          <div class="mini-title">Top 10 Games</div>
+          <table>
+            <tr><th>Player</th><th>Score</th><th>Year</th></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JA</div>Josh Allen</div></td><td>42.32</td><td>2025</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JH</div>Jalen Hurts</div></td><td>39.81</td><td>2025</td></tr>
+          </table>
+        </div>
+
+        <div class="mini-block">
+          <div class="mini-title">Top 10 Seasons</div>
+          <table>
+            <tr><th>Player</th><th>Points</th><th>Year</th></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JA</div>Josh Allen</div></td><td>320.24</td><td>2025</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">CM</div>Christian McCaffrey</div></td><td>295.41</td><td>2025</td></tr>
+          </table>
+        </div>
+
+        <div class="mini-block">
+          <div class="mini-title">Most Games Played</div>
+          <table>
+            <tr><th>Player</th><th>Games</th><th>Seasons</th></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JA</div>Josh Allen</div></td><td>14</td><td>2025</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">SD</div>Stefon Diggs</div></td><td>12</td><td>2025</td></tr>
+          </table>
+        </div>
+
+        <div class="mini-block">
+          <div class="mini-title">Career Points With Team</div>
+          <table>
+            <tr><th>Player</th><th>Points</th></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JA</div>Josh Allen</div></td><td>320.24</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">CM</div>Christian McCaffrey</div></td><td>295.41</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="schedule-grid">
+      <div class="card">
+        <h2>2025 Season Schedule</h2>
+        <div class="schedule-row"><strong>Wk</strong><strong>Opponent</strong><strong>Result</strong><strong class="hide-mobile">Score</strong></div>
+        <div class="schedule-row"><span>1</span><span>Jake the Snake</span><span class="bad">L</span><span class="hide-mobile">102.14 - 128.66</span></div>
+        <div class="schedule-row"><span>2</span><span>Lake Cle Elum</span><span class="good">W</span><span class="hide-mobile">137.22 - 118.44</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Season at a Glance</h2>
+        <div class="glance-grid">
+          <div class="glance-box"><h3>Avg PPG</h3><p id="glance-ppg"></p></div>
+          <div class="glance-box"><h3>Total PF</h3><p id="glance-pf"></p></div>
+          <div class="glance-box"><h3>Total PA</h3><p>—</p></div>
+          <div class="glance-box"><h3>Diff</h3><p>—</p></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const teamId = params.get("id");
+  const team = teams.find(t => t.id === teamId);
+
+  if (!team) {
+    document.getElementById("team-name").textContent = "Team Not Found";
+  } else {
+    const wins = Number(team.record.split("-")[0]);
+    const losses = Number(team.record.split("-")[1]);
+    const winPct = wins + losses > 0 ? ((wins / (wins + losses)) * 100).toFixed(1) + "%" : "—";
+    const avgPpg = wins + losses > 0 ? (team.pointsFor / (wins + losses)).toFixed(1) : "—";
+
+    document.title = team.name + " | Dynasty League HQ";
+    document.documentElement.style.setProperty("--watermark", `url("${team.logo}")`);
+
+    document.getElementById("active-team-link").textContent = team.name;
+    document.getElementById("active-team-link").href = `team.html?id=${team.id}`;
+    document.getElementById("team-logo").src = team.logo;
+    document.getElementById("team-name").textContent = team.name;
+    document.getElementById("team-meta").textContent = `Owner: ${team.owner} • Franchise hub, records, player history, schedule, awards, and scoring profile.`;
+
+    document.getElementById("record").textContent = team.record;
+    document.getElementById("win-pct").textContent = winPct;
+    document.getElementById("titles").textContent = team.titles;
+    document.getElementById("pf").textContent = team.pointsFor;
+    document.getElementById("best-season").textContent = team.pointsFor;
+    document.getElementById("worst-season").textContent = team.pointsFor;
+    document.getElementById("avg-ppg").textContent = avgPpg;
+    document.getElementById("glance-ppg").textContent = avgPpg;
+    document.getElementById("glance-pf").textContent = team.pointsFor;
+
+    const h2hGrid = document.getElementById("h2h-grid");
+    teams
+      .filter(t => t.id !== team.id)
+      .forEach(opponent => {
+        h2hGrid.innerHTML += `
+          <div class="h2h-card">
+            <img class="opp-logo" src="${opponent.logo}">
+            <div>
+              <div class="opp-name">${opponent.name}</div>
+              <div class="opp-record">0-0</div>
+            </div>
+          </div>
+        `;
+      });
+  }
+</script>
 
 </body>
 </html>
