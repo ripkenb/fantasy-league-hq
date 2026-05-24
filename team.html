@@ -205,7 +205,57 @@
       text-transform:uppercase;
       margin-bottom:10px;
     }
+.score-row {
+  display:grid;
+  grid-template-columns:42px 1fr 70px;
+  align-items:center;
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid rgba(226,200,117,.12);
+}
 
+.score-row:last-child {
+  border-bottom:none;
+}
+
+.rank-badge {
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:rgba(34,197,94,.22);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+}
+
+.bad-badge {
+  background:rgba(239,68,68,.24);
+}
+
+.score-value {
+  font-size:22px;
+  font-weight:900;
+}
+
+.score-year {
+  text-align:right;
+  font-weight:bold;
+}
+
+.award-name {
+  color:#ddd6c8;
+  font-weight:700;
+}
+
+.award-value {
+  min-width:42px;
+  text-align:center;
+  border:1px solid rgba(226,200,117,.35);
+  border-radius:10px;
+  padding:6px 10px;
+  font-weight:900;
+}
     .rank-line {
       display:grid;
       grid-template-columns:1fr 85px 65px;
@@ -567,30 +617,37 @@ async function loadTeamPage() {
   document.getElementById("playoff-win-pct").textContent = playoffWinPct.flat().filter(Boolean).pop() || "—";
   document.getElementById("playoff-apps").textContent = playoffApps.flat().filter(Boolean).pop() || "—";
 
-  document.getElementById("top-scores").innerHTML = topScores.map(row => `
-    <div class="simple-rank-line">
-      <span>${row[0]}</span>
-      <span class="good">${row[1]}</span>
-      <span>Year</span>
-      <span>${row[2]}</span>
-    </div>
-  `).join("");
+document.getElementById("top-scores").innerHTML = topScores.map(row => `
+  <div class="score-row">
+    <div class="rank-badge">${row[0]}</div>
+    <div class="score-value good">${row[1]}</div>
+    <div class="score-year">${row[2]}</div>
+  </div>
+`).join("");
 
-  document.getElementById("low-scores").innerHTML = lowScores.map(row => `
-    <div class="simple-rank-line">
-      <span>${row[0]}</span>
-      <span class="bad">${row[1]}</span>
-      <span>Year</span>
-      <span>${row[2]}</span>
-    </div>
-  `).join("");
+document.getElementById("low-scores").innerHTML = lowScores.map(row => `
+  <div class="score-row">
+    <div class="rank-badge bad-badge">${row[0]}</div>
+    <div class="score-value bad">${row[1]}</div>
+    <div class="score-year">${row[2]}</div>
+  </div>
+`).join("");
 
-  document.getElementById("awards-container").innerHTML = awards[0].map((value, index) => `
-    <div class="award-row">
-      <div class="award-label">Award ${index + 1}</div>
-      <strong>${value || 0}</strong>
-    </div>
-  `).join("");
+ const awardLabels = [
+  "MVP",
+  "Playoff-MVP",
+  "Rookie of the Year",
+  "Most Improved Player",
+  "1st Team",
+  "2nd Team"
+];
+
+document.getElementById("awards-container").innerHTML = awards[0].map((value, index) => `
+  <div class="award-row">
+    <div class="award-name">${awardLabels[index]}</div>
+    <div class="award-value">${value || 0}</div>
+  </div>
+`).join("");
 
   document.getElementById("h2h-grid").innerHTML = h2h
     .filter(row => row.some(Boolean))
