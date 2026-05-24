@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Angry Apples | Franchise Hub</title>
+  <title>Angry Apples | Dynasty League HQ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -9,23 +9,28 @@
 
     :root {
       --black:#050505;
-      --card:#151515;
+      --panel:#121212;
+      --panel2:#0b0b0b;
       --gold:#b38628;
-      --light:#e2c875;
+      --light-gold:#e2c875;
       --red:#c91f1f;
+      --green:#22c55e;
       --muted:#b8b0a0;
-      --border:rgba(255,255,255,.08);
+      --border:rgba(226,200,117,.25);
+      --white:#f8f5ed;
     }
 
     body {
       margin:0;
       font-family:Arial,sans-serif;
-      color:white;
+      color:var(--white);
       background:
-        radial-gradient(circle at top right, rgba(201,31,31,.18), transparent 30%),
-        radial-gradient(circle at top left, rgba(179,134,40,.15), transparent 35%),
+        radial-gradient(circle at top right, rgba(201,31,31,.22), transparent 28%),
+        radial-gradient(circle at top left, rgba(179,134,40,.16), transparent 34%),
         #050505;
     }
+
+    a { color:inherit; text-decoration:none; }
 
     .app {
       display:grid;
@@ -34,228 +39,583 @@
     }
 
     .sidebar {
-      background:#0a0a0a;
-      padding:24px;
+      background:#090909;
       border-right:1px solid var(--border);
+      padding:24px;
+      position:sticky;
+      top:0;
+      height:100vh;
     }
 
     .league-logo {
-      width:90px;
+      width:92px;
+      height:92px;
+      object-fit:contain;
       margin-bottom:14px;
+    }
+
+    .side-title {
+      font-size:24px;
+      line-height:1.05;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .subtitle {
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:26px;
     }
 
     .nav a {
       display:block;
-      padding:12px;
-      color:#ddd;
-      border-radius:12px;
+      padding:12px 14px;
+      border-radius:14px;
       margin-bottom:8px;
-      text-decoration:none;
+      color:#ddd6c8;
     }
 
-    .nav a:hover { background:rgba(255,255,255,.06); }
+    .nav a:hover { background:rgba(226,200,117,.12); }
 
-    .active {
+    .nav .active {
       background:linear-gradient(135deg,var(--red),var(--gold));
+      color:white;
       font-weight:bold;
     }
 
-    .main { padding:28px; }
+    .main {
+      padding:26px;
+      max-width:1650px;
+    }
 
-    /* HEADER */
-    .header {
+    .hero {
+      background:
+        linear-gradient(135deg,rgba(201,31,31,.95),rgba(179,134,40,.88));
+      border:1px solid var(--border);
+      border-radius:28px;
+      padding:30px;
       display:flex;
-      gap:20px;
       align-items:center;
-      background:linear-gradient(135deg,var(--red),var(--gold));
-      padding:28px;
-      border-radius:24px;
-      margin-bottom:20px;
+      gap:24px;
+      margin-bottom:18px;
+      position:relative;
+      overflow:hidden;
     }
 
-    .header img {
-      width:120px;
-      height:120px;
+    .hero::after {
+      content:"";
+      position:absolute;
+      right:30px;
+      top:15px;
+      width:220px;
+      height:220px;
+      background:url("assets/logos/angry-apples.png.png") center/contain no-repeat;
+      opacity:.16;
+      filter:grayscale(10%);
+    }
+
+    .hero-logo {
+      width:130px;
+      height:130px;
       object-fit:contain;
+      z-index:1;
     }
 
-    .header h1 {
+    .hero-text {
+      z-index:1;
+    }
+
+    .hero h1 {
       margin:0;
-      font-size:42px;
+      font-size:48px;
+      line-height:1;
     }
 
-    .header p {
-      margin:6px 0 0;
+    .hero p {
+      margin:10px 0 0;
       color:#fff4d6;
+      font-size:17px;
     }
 
-    /* GRID */
-    .grid {
+    .top-stats {
       display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:16px;
-      margin-bottom:20px;
+      grid-template-columns:repeat(6,1fr);
+      gap:12px;
+      margin-bottom:16px;
     }
 
-    .card {
-      background:#121212;
+    .bubble {
+      background:rgba(18,18,18,.96);
       border:1px solid var(--border);
       border-radius:18px;
       padding:16px;
+      min-height:92px;
     }
 
-    .card h3 {
+    .bubble h3 {
       margin:0;
-      color:var(--light);
+      color:var(--light-gold);
       font-size:12px;
       text-transform:uppercase;
     }
 
-    .big {
+    .bubble .value {
       font-size:28px;
       font-weight:900;
       margin-top:10px;
     }
 
-    /* TABLES */
+    .dashboard-grid {
+      display:grid;
+      grid-template-columns:1.1fr .8fr .8fr;
+      gap:14px;
+      margin-bottom:14px;
+    }
+
+    .wide-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      margin-bottom:14px;
+    }
+
+    .card {
+      background:rgba(18,18,18,.96);
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 18px 40px rgba(0,0,0,.25);
+    }
+
+    .card h2 {
+      margin:0 0 14px;
+      color:var(--light-gold);
+      font-size:20px;
+      text-transform:uppercase;
+      letter-spacing:.02em;
+    }
+
+    .score-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .mini-block {
+      background:#090909;
+      border:1px solid rgba(226,200,117,.16);
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .mini-title {
+      color:var(--light-gold);
+      font-size:12px;
+      font-weight:bold;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+    .rank-line {
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      margin:7px 0;
+      font-size:14px;
+    }
+
+    .good { color:var(--green); font-weight:bold; }
+    .bad { color:#ef4444; font-weight:bold; }
+
+    .big-center {
+      text-align:center;
+      padding:22px;
+    }
+
+    .big-center .ring {
+      font-size:64px;
+      margin-bottom:10px;
+    }
+
+    .big-center .number {
+      font-size:44px;
+      font-weight:900;
+      color:var(--light-gold);
+    }
+
+    .award-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:1px solid rgba(226,200,117,.13);
+      padding:11px 0;
+    }
+
+    .award-row:last-child { border-bottom:none; }
+
+    .h2h-grid {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+    }
+
+    .h2h-card {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      background:#090909;
+      border:1px solid rgba(226,200,117,.16);
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .opp-logo {
+      width:48px;
+      height:48px;
+      object-fit:contain;
+      flex-shrink:0;
+    }
+
+    .opp-name {
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .opp-record {
+      font-size:23px;
+      font-weight:900;
+      margin-top:3px;
+    }
+
+    .player-grid {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
     table {
       width:100%;
       border-collapse:collapse;
     }
 
-    th, td {
-      padding:10px;
-      border-bottom:1px solid rgba(255,255,255,.08);
+    th,td {
+      padding:9px 7px;
+      border-bottom:1px solid rgba(226,200,117,.12);
       text-align:left;
-      font-size:14px;
+      font-size:13px;
     }
 
     th {
-      color:var(--light);
+      color:var(--light-gold);
       font-size:11px;
       text-transform:uppercase;
     }
 
-    /* SECTION */
-    .section {
-      margin-top:20px;
+    .player-cell {
+      display:flex;
+      align-items:center;
+      gap:8px;
     }
 
-    .section h2 {
-      margin-bottom:10px;
+    .player-img {
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#2b2b2b,#050505);
+      border:1px solid rgba(226,200,117,.28);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--light-gold);
+      font-size:11px;
+      font-weight:900;
+      flex-shrink:0;
     }
 
-    @media(max-width:1000px){
-      .app{grid-template-columns:1fr}
-      .grid{grid-template-columns:1fr}
-      .header{flex-direction:column; text-align:center}
+    .schedule-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .schedule-row {
+      display:grid;
+      grid-template-columns:45px 1fr 70px 110px;
+      align-items:center;
+      gap:10px;
+      padding:10px 0;
+      border-bottom:1px solid rgba(226,200,117,.12);
+      font-size:14px;
+    }
+
+    .schedule-row:last-child { border-bottom:none; }
+
+    .schedule-team {
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .small-logo {
+      width:30px;
+      height:30px;
+      object-fit:contain;
+    }
+
+    .glance-grid {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+    }
+
+    .glance-box {
+      background:#090909;
+      border:1px solid rgba(226,200,117,.16);
+      border-radius:14px;
+      padding:16px;
+      text-align:center;
+    }
+
+    .glance-box h3 {
+      margin:0;
+      color:var(--muted);
+      font-size:11px;
+      text-transform:uppercase;
+    }
+
+    .glance-box p {
+      margin:10px 0 0;
+      font-size:27px;
+      font-weight:900;
+    }
+
+    @media(max-width:1200px) {
+      .top-stats { grid-template-columns:repeat(3,1fr); }
+      .dashboard-grid,.wide-grid,.schedule-grid { grid-template-columns:1fr; }
+      .player-grid { grid-template-columns:repeat(2,1fr); }
+      .h2h-grid { grid-template-columns:repeat(2,1fr); }
+    }
+
+    @media(max-width:800px) {
+      .app { grid-template-columns:1fr; }
+      .sidebar {
+        position:relative;
+        height:auto;
+        border-right:none;
+        border-bottom:1px solid var(--border);
+      }
+      .nav {
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:8px;
+      }
+      .main { padding:18px; }
+      .hero {
+        flex-direction:column;
+        text-align:center;
+      }
+      .hero h1 { font-size:34px; }
+      .top-stats,.player-grid,.h2h-grid,.glance-grid { grid-template-columns:1fr; }
+      .schedule-row { grid-template-columns:35px 1fr 45px; }
+      .hide-mobile { display:none; }
     }
   </style>
 </head>
 
 <body>
-
 <div class="app">
 
   <aside class="sidebar">
     <img class="league-logo" src="assets/logos/dynasty-league-logo.png.png">
+    <div class="side-title">The Dynasty<br>League HQ</div>
+    <div class="subtitle">Est. 2025 · Dynasty. Records. Lore.</div>
 
     <div class="nav">
       <a href="index.html">Dashboard</a>
-      <a href="teams.html">Teams</a>
-      <a class="active" href="#">Angry Apples</a>
+      <a href="teams.html">Team Pages</a>
+      <a class="active" href="angry-apples.html">Angry Apples</a>
+      <a href="#">Standings</a>
+      <a href="#">Matchups</a>
+      <a href="#">Records</a>
+      <a href="#">Awards</a>
+      <a href="#">Draft History</a>
+      <a href="#">Trade History</a>
+      <a href="#">Media Hub</a>
+      <a href="#">Hall of Fame</a>
     </div>
   </aside>
 
   <main class="main">
 
-    <!-- HEADER -->
-    <div class="header">
-      <img src="assets/logos/angry-apples.png.png">
-      <div>
+    <section class="hero">
+      <img class="hero-logo" src="assets/logos/angry-apples.png.png">
+      <div class="hero-text">
         <h1>Angry Apples</h1>
-        <p>Owner: Ripken • Est. 2025</p>
+        <p>Owner: Ripken • Est. 2025 • Franchise hub, records, player history, schedule, awards, and scoring profile.</p>
       </div>
-    </div>
+    </section>
 
-    <!-- TOP STATS -->
-    <div class="grid">
-      <div class="card"><h3>Record</h3><div class="big">4-10</div></div>
-      <div class="card"><h3>Win %</h3><div class="big">28.5%</div></div>
-      <div class="card"><h3>Championships</h3><div class="big">0</div></div>
-      <div class="card"><h3>PF</h3><div class="big">1375</div></div>
-      <div class="card"><h3>Playoff Record</h3><div class="big">0-0</div></div>
-      <div class="card"><h3>Playoff Apps</h3><div class="big">0</div></div>
-    </div>
+    <section class="top-stats">
+      <div class="bubble"><h3>Record</h3><div class="value">4-10</div></div>
+      <div class="bubble"><h3>Win %</h3><div class="value">28.5%</div></div>
+      <div class="bubble"><h3>Championships</h3><div class="value">0</div></div>
+      <div class="bubble"><h3>PF</h3><div class="value">1375</div></div>
+      <div class="bubble"><h3>Playoff Record</h3><div class="value">0-0</div></div>
+      <div class="bubble"><h3>Playoff Apps</h3><div class="value">0</div></div>
+    </section>
 
-    <!-- TEAM SCORING -->
-    <div class="section">
-      <h2>Team Scoring</h2>
+    <section class="dashboard-grid">
 
-      <table>
-        <tr><th>Category</th><th>Value</th></tr>
-        <tr><td>Avg Points/Game</td><td>137.5</td></tr>
-        <tr><td>Best Season</td><td>1375 (2025)</td></tr>
-        <tr><td>Worst Season</td><td>1375 (2025)</td></tr>
-      </table>
-    </div>
+      <div class="card">
+        <h2>Team Scoring Highlights</h2>
+        <div class="score-grid">
+          <div class="mini-block">
+            <div class="mini-title">Top 3 Scores</div>
+            <div class="rank-line"><span>1</span><span class="good">184.72</span><span>Wk 5</span></div>
+            <div class="rank-line"><span>2</span><span class="good">177.83</span><span>Wk 9</span></div>
+            <div class="rank-line"><span>3</span><span class="good">172.41</span><span>Wk 12</span></div>
+          </div>
 
-    <!-- HEAD TO HEAD -->
-    <div class="section">
-      <h2>Head to Head</h2>
+          <div class="mini-block">
+            <div class="mini-title">Low 3 Scores</div>
+            <div class="rank-line"><span>1</span><span class="bad">60.84</span><span>Wk 2</span></div>
+            <div class="rank-line"><span>2</span><span class="bad">69.14</span><span>Wk 7</span></div>
+            <div class="rank-line"><span>3</span><span class="bad">76.58</span><span>Wk 10</span></div>
+          </div>
 
-      <table>
-        <tr><th>Opponent</th><th>Record</th></tr>
-        <tr><td>Jake the Snake</td><td>2-3</td></tr>
-        <tr><td>Big Ben Banditos</td><td>1-4</td></tr>
-        <tr><td>Lake Cle Elum</td><td>3-2</td></tr>
-      </table>
-    </div>
+          <div class="mini-block">
+            <div class="mini-title">Best Scoring Season</div>
+            <div class="big good">1375</div>
+            <div class="opp-name">2025</div>
+          </div>
 
-    <!-- PLAYER DATA -->
-    <div class="section">
+          <div class="mini-block">
+            <div class="mini-title">Worst Scoring Season</div>
+            <div class="big bad">1375</div>
+            <div class="opp-name">2025</div>
+          </div>
+
+          <div class="mini-block" style="grid-column:1 / -1;">
+            <div class="mini-title">Avg Points Per Game</div>
+            <div class="big">137.5</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card big-center">
+        <h2>Ring of Honor</h2>
+        <div class="ring">🏆</div>
+        <div class="number">0</div>
+        <div class="opp-name">Championships</div>
+      </div>
+
+      <div class="card">
+        <h2>Awards Summary</h2>
+        <div class="award-row"><span>🏆 MVP</span><strong>0</strong></div>
+        <div class="award-row"><span>⭐ P-MVP</span><strong>0</strong></div>
+        <div class="award-row"><span>🥇 ROY</span><strong>0</strong></div>
+        <div class="award-row"><span>🔥 MIP</span><strong>0</strong></div>
+        <div class="award-row"><span>🍎 1st Team</span><strong>0</strong></div>
+        <div class="award-row"><span>🍏 2nd Team</span><strong>1</strong></div>
+      </div>
+
+    </section>
+
+    <section class="card">
+      <h2>Head to Head vs All Teams</h2>
+      <div class="h2h-grid">
+        <div class="h2h-card"><img class="opp-logo" src="assets/logos/jake-the-snake.png.png"><div><div class="opp-name">Jake the Snake</div><div class="opp-record good">2-3</div></div></div>
+        <div class="h2h-card"><img class="opp-logo" src="assets/logos/bryley-the-builder.png.png"><div><div class="opp-name">Bryley the Builder</div><div class="opp-record">2-2</div></div></div>
+        <div class="h2h-card"><img class="opp-logo" src="assets/logos/boarder-patrollers.png.png"><div><div class="opp-name">The Boarder Patrollers</div><div class="opp-record bad">0-2</div></div></div>
+        <div class="h2h-card"><img class="opp-logo" src="assets/logos/big-ben-banditos.png.png"><div><div class="opp-name">Big Ben Banditos</div><div class="opp-record">1-4</div></div></div>
+        <div class="h2h-card"><img class="opp-logo" src="assets/logos/mclovin.png.png"><div><div class="opp-name">McLovin</div><div class="opp-record bad">0-4</div></div></div>
+        <div class="h2h-card"><img class="opp-logo" src="assets/logos/the-cat's-pajamas.png"><div><div class="opp-name">The Cat's Pajamas</div><div class="opp-record bad">0-1</div></div></div>
+        <div class="h2h-card"><img class="opp-logo" src="assets/logos/lake-cle-elum.png.png"><div><div class="opp-name">Lake Cle Elum</div><div class="opp-record good">3-2</div></div></div>
+        <div class="h2h-card"><img class="opp-logo" src="assets/logos/bradshaw-bunch.png.png"><div><div class="opp-name">Bradshaw Bunch</div><div class="opp-record bad">1-3</div></div></div>
+        <div class="h2h-card"><img class="opp-logo" src="assets/logos/purple-reign.png.png"><div><div class="opp-name">Purple Reign</div><div class="opp-record">1-0</div></div></div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:14px;">
       <h2>Player Performance</h2>
 
-      <table>
-        <tr><th>Top Games</th><th>Score</th><th>Year</th></tr>
-        <tr><td>Josh Allen</td><td>42.3</td><td>2025</td></tr>
-        <tr><td>Jalen Hurts</td><td>39.8</td><td>2025</td></tr>
-      </table>
+      <div class="player-grid">
 
-      <br>
+        <div class="mini-block">
+          <div class="mini-title">Top 10 Games</div>
+          <table>
+            <tr><th>Player</th><th>Score</th><th>Year</th></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JA</div>Josh Allen</div></td><td>42.32</td><td>2025</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JH</div>Jalen Hurts</div></td><td>39.81</td><td>2025</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">PM</div>Patrick Mahomes</div></td><td>38.64</td><td>2025</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JJ</div>Justin Jefferson</div></td><td>32.10</td><td>2025</td></tr>
+          </table>
+        </div>
 
-      <table>
-        <tr><th>Top Seasons</th><th>Points</th><th>Year</th></tr>
-        <tr><td>Josh Allen</td><td>320</td><td>2025</td></tr>
-        <tr><td>CMC</td><td>295</td><td>2025</td></tr>
-      </table>
+        <div class="mini-block">
+          <div class="mini-title">Top 10 Seasons</div>
+          <table>
+            <tr><th>Player</th><th>Points</th><th>Year</th></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JA</div>Josh Allen</div></td><td>320.24</td><td>2025</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">CM</div>Christian McCaffrey</div></td><td>295.41</td><td>2025</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JH</div>Jalen Hurts</div></td><td>288.77</td><td>2025</td></tr>
+          </table>
+        </div>
 
-      <br>
+        <div class="mini-block">
+          <div class="mini-title">Most Games Played</div>
+          <table>
+            <tr><th>Player</th><th>Games</th><th>Seasons</th></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JA</div>Josh Allen</div></td><td>14</td><td>2025</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">SD</div>Stefon Diggs</div></td><td>12</td><td>2025</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">TK</div>Travis Kelce</div></td><td>12</td><td>2025</td></tr>
+          </table>
+        </div>
 
-      <table>
-        <tr><th>Most Games Played</th><th>Games</th></tr>
-        <tr><td>Josh Allen</td><td>14</td></tr>
-        <tr><td>Stefon Diggs</td><td>12</td></tr>
-      </table>
-    </div>
+        <div class="mini-block">
+          <div class="mini-title">Career Points With Team</div>
+          <table>
+            <tr><th>Player</th><th>Points</th></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JA</div>Josh Allen</div></td><td>320.24</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">CM</div>Christian McCaffrey</div></td><td>295.41</td></tr>
+            <tr><td><div class="player-cell"><div class="player-img">JH</div>Jalen Hurts</div></td><td>288.77</td></tr>
+          </table>
+        </div>
 
-    <!-- AWARDS -->
-    <div class="section">
-      <h2>Awards</h2>
+      </div>
+    </section>
 
-      <table>
-        <tr><th>Type</th><th>Count</th></tr>
-        <tr><td>MVP</td><td>0</td></tr>
-        <tr><td>ROY</td><td>0</td></tr>
-        <tr><td>MIP</td><td>0</td></tr>
-        <tr><td>1st Team</td><td>0</td></tr>
-        <tr><td>2nd Team</td><td>1</td></tr>
-      </table>
-    </div>
+    <section class="schedule-grid" style="margin-top:14px;">
+
+      <div class="card">
+        <h2>2025 Season Schedule</h2>
+        <div class="schedule-row"><strong>Wk</strong><strong>Opponent</strong><strong>Result</strong><strong class="hide-mobile">Score</strong></div>
+        <div class="schedule-row"><span>1</span><div class="schedule-team"><img class="small-logo" src="assets/logos/jake-the-snake.png.png">Jake the Snake</div><span class="bad">L</span><span class="hide-mobile">102.14 - 128.66</span></div>
+        <div class="schedule-row"><span>2</span><div class="schedule-team"><img class="small-logo" src="assets/logos/lake-cle-elum.png.png">Lake Cle Elum</div><span class="good">W</span><span class="hide-mobile">137.22 - 118.44</span></div>
+        <div class="schedule-row"><span>3</span><div class="schedule-team"><img class="small-logo" src="assets/logos/big-ben-banditos.png.png">Big Ben Banditos</div><span class="bad">L</span><span class="hide-mobile">96.10 - 142.33</span></div>
+        <div class="schedule-row"><span>4</span><div class="schedule-team"><img class="small-logo" src="assets/logos/bryley-the-builder.png.png">Bryley the Builder</div><span class="bad">L</span><span class="hide-mobile">110.21 - 138.77</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Season at a Glance</h2>
+        <div class="glance-grid">
+          <div class="glance-box"><h3>Avg PPG</h3><p>137.5</p></div>
+          <div class="glance-box"><h3>Total PF</h3><p>1375</p></div>
+          <div class="glance-box"><h3>Total PA</h3><p>1528</p></div>
+          <div class="glance-box"><h3>Diff</h3><p class="bad">-153</p></div>
+        </div>
+
+        <div class="glance-grid" style="margin-top:12px;">
+          <div class="glance-box"><h3>Current Streak</h3><p class="bad">L2</p></div>
+          <div class="glance-box"><h3>Long Win Streak</h3><p class="good">2</p></div>
+          <div class="glance-box"><h3>Long Loss Streak</h3><p class="bad">5</p></div>
+          <div class="glance-box"><h3>Playoffs</h3><p>0</p></div>
+        </div>
+      </div>
+
+    </section>
 
   </main>
-
 </div>
-
 </body>
 </html>
