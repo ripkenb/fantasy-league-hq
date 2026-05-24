@@ -650,15 +650,15 @@ document.getElementById("awards-container").innerHTML = awards[0].map((value, in
 `).join("");
 
   document.getElementById("h2h-grid").innerHTML = h2h
-    .filter(row => row.some(Boolean))
-    .map(row => `
-      <div class="h2h-card">
-        <div>
-          <div class="opp-name">${row[0] || "Opponent"}</div>
-          <div class="opp-record">${row[1] || "—"}</div>
-        </div>
+  .filter(row => row[0] && row[2])
+  .map(row => `
+    <div class="h2h-card">
+      <div>
+        <div class="opp-name">${row[0]}</div>
+        <div class="opp-record">${row[2]}</div>
       </div>
-    `).join("");
+    </div>
+  `).join("");
 
   document.getElementById("top-player-games").innerHTML = topPlayerGames
     .filter(row => row.some(Boolean))
