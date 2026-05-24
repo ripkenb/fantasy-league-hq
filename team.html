@@ -954,14 +954,51 @@ if (!team) {
 
     player.topSeasons?.forEach(season => {
 
-      topSeasons.innerHTML += `
-        <div class="rank-line">
-          <span>${player.position}</span>
-          <span>${player.name}</span>
-          <span class="good">${season.points}</span>
-          <span>${season.year}</span>
+     topSeasons.innerHTML += `
+
+  <div class="rank-line">
+
+    <div style="
+      display:flex;
+      align-items:center;
+      gap:10px;
+    ">
+
+      <img
+        class="player-headshot"
+        src="${player.image}"
+      >
+
+      <div>
+
+        <div style="
+          font-weight:bold;
+        ">
+          ${player.name}
         </div>
-      `;
+
+        <div style="
+          color:#b8b0a0;
+          font-size:11px;
+        ">
+          ${player.position} • ${player.nflTeam}
+        </div>
+
+      </div>
+
+    </div>
+
+    <span class="good">
+      ${season.points}
+    </span>
+
+    <span>
+      ${season.year}
+    </span>
+
+  </div>
+
+`;
 
     });
 
