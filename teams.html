@@ -1,37 +1,305 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Team Pages | The Dynasty League HQ</title>
+  <title>Franchise Pages | Dynasty League HQ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+
+    * {
+      box-sizing:border-box;
+    }
+
+    body {
+      margin:0;
+      font-family:Arial,sans-serif;
+      color:white;
+      background:
+        radial-gradient(circle at top right, rgba(179,134,40,.15), transparent 30%),
+        #050505;
+    }
+
+    a {
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .page {
+      padding:32px;
+      max-width:1700px;
+      margin:auto;
+    }
+
+    .header {
+      margin-bottom:28px;
+    }
+
+    .header h1 {
+      margin:0;
+      font-size:48px;
+      font-weight:900;
+    }
+
+    .header p {
+      margin-top:10px;
+      color:#b8b0a0;
+      font-size:16px;
+    }
+
+    .teams-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:22px;
+    }
+
+    .team-card {
+      background:
+        linear-gradient(145deg,#141414,#0b0b0b);
+      border:1px solid rgba(226,200,117,.22);
+      border-radius:28px;
+      padding:24px;
+      min-height:380px;
+
+      display:flex;
+      flex-direction:column;
+
+      position:relative;
+      overflow:hidden;
+
+      transition:
+        transform .18s ease,
+        border .18s ease,
+        box-shadow .18s ease;
+    }
+
+    .team-card:hover {
+      transform:translateY(-6px);
+      border:1px solid rgba(226,200,117,.5);
+
+      box-shadow:
+        0 20px 50px rgba(0,0,0,.45),
+        0 0 24px rgba(226,200,117,.08);
+    }
+
+    .team-card::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at top right,
+        rgba(226,200,117,.08),
+        transparent 35%);
+      pointer-events:none;
+    }
+
+    .team-top {
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-bottom:18px;
+      z-index:1;
+    }
+
+    .team-logo {
+      width:90px;
+      height:90px;
+      object-fit:contain;
+
+      filter:
+        drop-shadow(0 8px 18px rgba(0,0,0,.45));
+    }
+
+    .team-name {
+      font-size:34px;
+      font-weight:900;
+      line-height:1;
+      margin-bottom:8px;
+    }
+
+    .team-owner {
+      color:#d0c7b5;
+      font-size:15px;
+    }
+
+    .record-row {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:auto;
+      z-index:1;
+    }
+
+    .stat-box {
+      background:#090909;
+      border:1px solid rgba(226,200,117,.12);
+      border-radius:16px;
+      padding:14px;
+    }
+
+    .stat-label {
+      color:#e2c875;
+      font-size:11px;
+      text-transform:uppercase;
+      margin-bottom:8px;
+      font-weight:bold;
+      letter-spacing:.05em;
+    }
+
+    .stat-value {
+      font-size:28px;
+      font-weight:900;
+    }
+
+    .bottom-link {
+      margin-top:36px;
+    }
+
+    .bottom-link a {
+      color:#e2c875;
+      font-weight:bold;
+    }
+
+    @media(max-width:900px) {
+
+      .page {
+        padding:18px;
+      }
+
+      .header h1 {
+        font-size:34px;
+      }
+
+      .teams-grid {
+        grid-template-columns:1fr;
+      }
+
+      .team-name {
+        font-size:28px;
+      }
+
+    }
+
+  </style>
 </head>
 
-<body style="background:#050505; color:white; font-family:Arial; padding:30px;">
+<body>
 
-  <h1>Franchise Pages</h1>
-  <p>Click a team to open its franchise dashboard.</p>
+  <div class="page">
 
-  <div id="teams-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px;"></div>
+    <div class="header">
+      <h1>Franchise Pages</h1>
+      <p>
+        Team identities, records, championships,
+        scoring history, player stats, and league lore.
+      </p>
+    </div>
 
-  <p><a href="index.html" style="color:#e2c875;">Back to Dashboard</a></p>
+    <div class="teams-grid" id="teams-grid"></div>
+
+    <div class="bottom-link">
+      <a href="index.html">← Back to Dashboard</a>
+    </div>
+
+  </div>
 
   <script src="data.js"></script>
 
   <script>
-    const grid = document.getElementById("teams-grid");
+
+    const grid =
+      document.getElementById("teams-grid");
 
     teams.forEach(team => {
+
+      const wins =
+        Number(team.record.split("-")[0]);
+
+      const losses =
+        Number(team.record.split("-")[1]);
+
+      const winPct =
+        wins + losses > 0
+          ? ((wins / (wins + losses)) * 100).toFixed(1) + "%"
+          : "—";
+
       grid.innerHTML += `
-        <a href="team.html?id=${team.id}" style="text-decoration:none; color:white;">
-          <div style="background:#151515; border:1px solid rgba(226,200,117,.25); border-radius:22px; padding:20px;">
-            <img src="${team.logo}" style="width:100px; height:100px; object-fit:contain;">
-            <h2>${team.name}</h2>
-            <p style="color:#b8b0a0;">Owner: ${team.owner}</p>
-            <p>Record: ${team.record}</p>
-            <p>PF: ${team.pointsFor}</p>
+
+        <a href="team.html?id=${team.id}">
+
+          <div class="team-card">
+
+            <div class="team-top">
+
+              <img
+                class="team-logo"
+                src="${team.logo}"
+              >
+
+              <div>
+
+                <div class="team-name">
+                  ${team.name}
+                </div>
+
+                <div class="team-owner">
+                  Owner: ${team.owner}
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="record-row">
+
+              <div class="stat-box">
+                <div class="stat-label">
+                  Record
+                </div>
+
+                <div class="stat-value">
+                  ${team.record}
+                </div>
+              </div>
+
+              <div class="stat-box">
+                <div class="stat-label">
+                  Win %
+                </div>
+
+                <div class="stat-value">
+                  ${winPct}
+                </div>
+              </div>
+
+              <div class="stat-box">
+                <div class="stat-label">
+                  Points For
+                </div>
+
+                <div class="stat-value">
+                  ${team.pointsFor}
+                </div>
+              </div>
+
+              <div class="stat-box">
+                <div class="stat-label">
+                  Titles
+                </div>
+
+                <div class="stat-value">
+                  ${team.titles}
+                </div>
+              </div>
+
+            </div>
+
           </div>
+
         </a>
+
       `;
     });
+
   </script>
 
 </body>
