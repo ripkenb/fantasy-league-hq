@@ -227,70 +227,186 @@
     }
 
     .bracket-grid {
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:18px;
-    }
+  display:grid;
+  grid-template-columns:1fr 1fr 1.15fr;
+  gap:28px;
+  position:relative;
+}
 
-    .bracket-round {
-      background:#090909;
-      border:1px solid rgba(226,200,117,.16);
-      border-radius:16px;
-      padding:16px;
-    }
-
-    .bracket-round h3 {
-      margin:0 0 12px;
-      color:var(--light-gold);
-      text-transform:uppercase;
-      font-size:14px;
-    }
-
-    .bracket-game {
-      border:1px solid rgba(226,200,117,.18);
-      border-radius:14px;
-      padding:12px;
-      margin-bottom:12px;
-      background:rgba(255,255,255,.02);
-    }
-
-    .bracket-team {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:8px 0;
-    }
-
-    .bracket-team-info {
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .bracket-logo {
-      width:34px;
-      height:34px;
-      object-fit:contain;
-    }
-
-    .bracket-score {
-      font-weight:900;
-    }
-
-    .bracket-winner {
-      color:var(--green);
-    }
-
-    .champion-banner {
-  margin-top:18px;
-  padding:22px;
+.bracket-round {
+  background:#090909;
+  border:1px solid rgba(226,200,117,.16);
   border-radius:18px;
+  padding:18px;
+  min-height:420px;
+  position:relative;
+}
+
+.bracket-round h3 {
+  margin:0 0 6px;
+  color:var(--light-gold);
+  text-transform:uppercase;
+  font-size:15px;
+  text-align:center;
+}
+
+.bracket-subtitle {
+  color:var(--muted);
+  font-size:12px;
+  text-align:center;
+  margin-bottom:22px;
+}
+
+.bracket-matchup {
+  position:relative;
+  margin-bottom:34px;
+}
+
+.bracket-matchup.spaced {
+  margin-top:82px;
+}
+
+.bracket-game {
+  border:1px solid rgba(226,200,117,.35);
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(0,0,0,.45));
+  overflow:hidden;
+  position:relative;
+  z-index:2;
+}
+
+.bracket-team {
+  display:grid;
+  grid-template-columns:38px 42px 1fr 70px;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border-bottom:1px solid rgba(226,200,117,.14);
+}
+
+.bracket-team:last-child {
+  border-bottom:none;
+}
+
+.seed-box {
+  width:30px;
+  height:30px;
+  border-radius:8px;
+  border:1px solid rgba(226,200,117,.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--light-gold);
+  font-weight:900;
+}
+
+.bracket-logo {
+  width:34px;
+  height:34px;
+  object-fit:contain;
+}
+
+.bracket-name {
+  font-weight:800;
+}
+
+.bracket-score {
+  text-align:right;
+  font-weight:900;
+}
+
+.bracket-winner {
+  color:var(--green);
+}
+
+.bracket-loser {
+  color:#ffffff;
+  opacity:.72;
+}
+
+.connector-right::after {
+  content:"";
+  position:absolute;
+  right:-28px;
+  top:50%;
+  width:28px;
+  height:2px;
+  background:var(--light-gold);
+  box-shadow:0 0 10px rgba(226,200,117,.8);
+}
+
+.connector-right::before {
+  content:"";
+  position:absolute;
+  right:-28px;
+  top:50%;
+  width:2px;
+  height:86px;
+  background:var(--light-gold);
+  box-shadow:0 0 10px rgba(226,200,117,.8);
+}
+
+.connector-up::before {
+  transform:translateY(-86px);
+}
+
+.connector-down::before {
+  transform:translateY(0);
+}
+
+.championship-box {
+  margin-top:86px;
+}
+
+.champion-banner {
+  margin-top:22px;
+  padding:24px;
+  border-radius:20px;
   background:
     radial-gradient(circle at center, rgba(226,200,117,.28), transparent 55%),
     linear-gradient(135deg, rgba(179,134,40,.35), rgba(10,10,10,.95));
   border:1px solid rgba(226,200,117,.5);
   text-align:center;
+}
+
+.champion-kicker {
+  color:var(--light-gold);
+  font-size:12px;
+  letter-spacing:.35em;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+
+.champion-title {
+  font-size:38px;
+  font-weight:900;
+  color:var(--light-gold);
+  text-transform:uppercase;
+}
+
+.champion-team {
+  margin-top:8px;
+  font-size:26px;
+  font-weight:900;
+}
+
+@media(max-width:900px) {
+  .bracket-grid {
+    grid-template-columns:1fr;
+  }
+
+  .connector-right::before,
+  .connector-right::after {
+    display:none;
+  }
+
+  .championship-box {
+    margin-top:0;
+  }
+
+  .bracket-matchup.spaced {
+    margin-top:0;
+  }
 }
 
 .champion-kicker {
@@ -665,60 +781,116 @@ function renderSeasonSummary(rows) {
   document.getElementById("playoff-teams").textContent =
     playoffTeams;
 }
-  function renderBracket(rows) {
-  const roundOneLosers =
-    rows.filter(row => row[10] === "Round 1 Loser");
+ function renderBracket(rows) {
+  const sortedBySeed = [...rows].sort((a, b) => Number(a[1]) - Number(b[1]));
 
-  const semiLosers =
-    rows.filter(row => row[10] === "Semi Loser");
+  const seed1 = sortedBySeed.find(row => Number(row[1]) === 1);
+  const seed2 = sortedBySeed.find(row => Number(row[1]) === 2);
+  const seed3 = sortedBySeed.find(row => Number(row[1]) === 3);
+  const seed4 = sortedBySeed.find(row => Number(row[1]) === 4);
+  const seed5 = sortedBySeed.find(row => Number(row[1]) === 5);
+  const seed6 = sortedBySeed.find(row => Number(row[1]) === 6);
 
-  const finalists =
-    rows.filter(row =>
-      row[10] === "Champion" ||
-      row[10] === "Runner-Up"
-    );
+  const champion = rows.find(row => row[10] === "Champion");
+  const runnerUp = rows.find(row => row[10] === "Runner-Up");
+  const semiLosers = rows.filter(row => row[10] === "Semi Loser");
+
+  const semi1Opponent =
+    semiLosers.find(row => row[2] !== seed2?.[2]) || semiLosers[0];
+
+  const semi2Opponent =
+    semiLosers.find(row => row[2] !== seed1?.[2]) || semiLosers[1];
 
   document.getElementById("playoff-bracket").innerHTML = `
     <div class="bracket-grid">
 
       <div class="bracket-round">
         <h3>Round 1</h3>
-        ${roundOneLosers.map(row => bracketTeam(row, "Lost")).join("")}
+        <div class="bracket-subtitle">Seeds 3-6</div>
+
+        <div class="bracket-matchup connector-right connector-up">
+          ${matchupBox(seed3, seed6)}
+        </div>
+
+        <div class="bracket-matchup spaced connector-right connector-down">
+          ${matchupBox(seed4, seed5)}
+        </div>
       </div>
 
       <div class="bracket-round">
         <h3>Semi Finals</h3>
-        ${semiLosers.map(row => bracketTeam(row, "Lost")).join("")}
+        <div class="bracket-subtitle">Top seeds enter</div>
+
+        <div class="bracket-matchup connector-right connector-up">
+          ${matchupBox(seed1, semi1Opponent)}
+        </div>
+
+        <div class="bracket-matchup spaced connector-right connector-down">
+          ${matchupBox(seed2, semi2Opponent)}
+        </div>
       </div>
 
       <div class="bracket-round">
         <h3>Championship</h3>
-        ${finalists.map(row =>
-          bracketTeam(
-            row,
-            row[10] === "Champion" ? "WIN" : "LOSS",
-            row[10] === "Champion"
-          )
-        ).join("")}
+        <div class="bracket-subtitle">Final matchup</div>
 
-        ${finalists.find(row => row[10] === "Champion")
-          ? `
-            <div class="champion-banner">
-  <div class="champion-kicker">${currentSeason} Dynasty League</div>
-  <div class="champion-title">Champion!</div>
-  <div class="champion-team">
-    👑 ${findTeam(finalists.find(row => row[10] === "Champion")[2])?.name || finalists.find(row => row[10] === "Champion")[2]}
-  </div>
-</div>
-          `
-          : ""}
+        <div class="championship-box">
+          ${matchupBox(champion, runnerUp, true)}
+        </div>
+
+        ${champion ? `
+          <div class="champion-banner">
+            <div class="champion-kicker">${currentSeason} Dynasty League</div>
+            <div class="champion-title">Champion!</div>
+            <div class="champion-team">
+              👑 ${findTeam(champion[2])?.name || champion[2]}
+            </div>
+          </div>
+        ` : ""}
       </div>
 
     </div>
   `;
 }
 
-function bracketTeam(row, label, isWinner = false) {
+function matchupBox(teamA, teamB, finalGame = false) {
+  return `
+    <div class="bracket-game">
+      ${bracketTeamLine(teamA, finalGame)}
+      ${bracketTeamLine(teamB, finalGame)}
+    </div>
+  `;
+}
+
+function bracketTeamLine(row, finalGame = false) {
+  if (!row) {
+    return `
+      <div class="bracket-team bracket-loser">
+        <div class="seed-box">—</div>
+        <div></div>
+        <div class="bracket-name">TBD</div>
+        <div class="bracket-score">—</div>
+      </div>
+    `;
+  }
+
+  const seed = row[1];
+  const owner = row[2];
+  const result = row[10];
+  const team = findTeam(owner);
+  const isWinner = result === "Champion" || (finalGame && result === "Champion");
+
+  return `
+    <div class="bracket-team ${isWinner ? "bracket-winner" : ""}">
+      <div class="seed-box">${seed}</div>
+      ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : `<div></div>`}
+      <div class="bracket-name">${team?.name || owner}</div>
+      <div class="bracket-score">
+        ${finalGame ? (result === "Champion" ? "WIN" : "LOSS") : result || "—"}
+      </div>
+    </div>
+  `;
+}
   const owner = row[2];
   const team = findTeam(owner);
 
