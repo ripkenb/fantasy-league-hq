@@ -79,7 +79,7 @@
         <div class="card">
           <div class="section-title">
             <h2>Standings</h2>
-            <span class="pill">Now pulling from data.js</span>
+            <span class="pill">Live from Google Sheets</span>
           </div>
 
           <table>
@@ -113,42 +113,94 @@
     </main>
   </div>
 
-  <script src="data.js"></script>
+ <script src="data.js"></script>
 
-  <script>
-    document.getElementById("team-count").textContent = teams.length;
+<script>
+const PUBLISHED_BASE =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZp4lAXVZrcMa2y_dfi6h3xDjn4gqsFPlVCXFZA_RRLCthhqtDVca9CG8xmK1ZZQD3xxFinaZpqFip/pub?output=csv";
 
-    const standingsBody = document.getElementById("standings-body");
-    const powerBody = document.getElementById("power-body");
+const leagueHomeGid = "23733226";
 
-    teams.forEach((team, index) => {
-      standingsBody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>
-            <div class="team-row">
-              <img class="team-logo" src="${team.logo}">
-              ${team.name}
-            </div>
-          </td>
-          <td>${team.record}</td>
-          <td>${team.pointsFor}</td>
-        </tr>
-      `;
+document.getElementById("team-count").textContent = teams.length;
 
-      powerBody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>
-            <div class="team-row">
-              <img class="team-logo" src="${team.logo}">
-              ${team.name}
-            </div>
-          </td>
-          <td>—</td>
-        </tr>
-      `;
-    });
-  </script>
+function csvUrl(gid, range) {
+  return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
+}
+
+function parseCSV(text) {
+  return text.trim().split("\n").map(row =>
+    row.split(",").map(cell => cell.replace(/^"|"$/g, "").trim())
+  );
+}
+
+async function getRange(gid, range) {
+  const response = await fetch(csvUrl(gid, range));
+  const text = await response.text();
+  return parseCSV(text);
+}
+
+function findTeam(value) {
+  if (!value) return null;
+
+  const cleaned = value.toLowerCase().trim();
+
+  return teams.find(team =>
+    team.name?.toLowerCase().trim() === cleaned ||
+    team.owner?.toLowerCase().trim() === cleaned ||
+    team.id?.toLowerCase().trim() === cleaned
+  );
+}
+
+async function loadDashboard() {
+  const standingsBody = document.getElementById("standings-body");
+  const powerBody = document.getElementById("power-body");
+
+  standingsBody.innerHTML = "";
+  powerBody.innerHTML = "";
+
+  const standings = await getRange(leagueHomeGid, "B51:D60");
+
+  standings.forEach((row, index) => {
+    const teamName = row[0];
+    const record = row[1];
+    const pointsFor = row[2];
+
+    const team = findTeam(teamName);
+
+    standingsBody.innerHTML += `
+      <tr>
+        <td>${index + 1}</td>
+
+        <td>
+          <div class="team-row">
+            ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
+            ${team?.name || teamName}
+          </div>
+        </td>
+
+        <td>${record}</td>
+        <td>${pointsFor}</td>
+      </tr>
+    `;
+
+    powerBody.innerHTML += `
+      <tr>
+        <td>${index + 1}</td>
+
+        <td>
+          <div class="team-row">
+            ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
+            ${team?.name || teamName}
+          </div>
+        </td>
+
+        <td>—</td>
+      </tr>
+    `;
+  });
+}
+
+loadDashboard();
+</script>
 </body>
 </html>
