@@ -515,7 +515,114 @@ function renderSeason(season) {
   document.getElementById("playoff-teams").textContent =
     playoffTeams;
 }
+document.getElementById("bracket-pill").textContent =
+  `${season} Playoffs`;
 
+const seasonPlayoffGames = playoffGames.filter(game =>
+  game[0] === season
+);
+
+const uniqueGames = [];
+
+seasonPlayoffGames.forEach(game => {
+  const matchupId = game[2];
+
+  if (!uniqueGames.find(g => g[2] === matchupId)) {
+    uniqueGames.push(game);
+  }
+});
+
+const bracketHTML = `
+  <div class="bracket-grid">
+
+    <div class="bracket-round">
+      <h3>Round 1</h3>
+
+      ${rows
+        .filter(r => r[10] === "Round 1 Loser")
+        .map(teamRow => {
+          const owner = teamRow[2];
+          const team = findTeam(owner);
+
+          return `
+            <div class="bracket-game">
+              <div class="bracket-team">
+                <div class="bracket-team-info">
+                  ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : ""}
+                  <span>${team?.name || owner}</span>
+                </div>
+
+                <div class="bracket-score">Lost</div>
+              </div>
+            </div>
+          `;
+        }).join("")}
+    </div>
+
+    <div class="bracket-round">
+      <h3>Semi Finals</h3>
+
+      ${rows
+        .filter(r => r[10] === "Semi Loser")
+        .map(teamRow => {
+          const owner = teamRow[2];
+          const team = findTeam(owner);
+
+          return `
+            <div class="bracket-game">
+              <div class="bracket-team">
+                <div class="bracket-team-info">
+                  ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : ""}
+                  <span>${team?.name || owner}</span>
+                </div>
+
+                <div class="bracket-score">Lost</div>
+              </div>
+            </div>
+          `;
+        }).join("")}
+    </div>
+
+    <div class="bracket-round">
+      <h3>Championship</h3>
+
+      ${rows
+        .filter(r =>
+          r[10] === "Champion" ||
+          r[10] === "Runner-Up"
+        )
+        .map(teamRow => {
+          const owner = teamRow[2];
+          const result = teamRow[10];
+          const team = findTeam(owner);
+
+          return `
+            <div class="bracket-game">
+              <div class="bracket-team ${result === "Champion" ? "bracket-winner" : ""}">
+                <div class="bracket-team-info">
+                  ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : ""}
+                  <span>${team?.name || owner}</span>
+                </div>
+
+                <div class="bracket-score">
+                  ${result === "Champion" ? "WIN" : "LOSS"}
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("")}
+
+      ${champion ? `
+        <div class="champion-banner">
+          👑 ${findTeam(champion[2])?.name || champion[2]} — ${season} Champion
+        </div>
+      ` : ""}
+    </div>
+
+  </div>
+`;
+
+document.getElementById("playoff-bracket").innerHTML = bracketHTML;
 loadStandingsData();
 </script>
 
