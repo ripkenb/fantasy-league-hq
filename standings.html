@@ -892,7 +892,7 @@ function bracketTeamLine(row, roundType) {
   const owner = row[2];
   const result = row[10];
   const team = findTeam(owner);
-  const score = getPlayoffScore(owner);
+  const score = getPlayoffScore(owner, roundType);
 
   let label = "";
 
