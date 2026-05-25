@@ -936,37 +936,7 @@ function getPlayoffScore(owner) {
 
   return "";
 }
-  const seed = row[1];
-  const owner = row[2];
-  const result = row[10];
-  const team = findTeam(owner);
-  const score = getPlayoffScore(owner, roundType);
-
-  let label = "";
-
-  if (roundType === "round1") {
-    label = result === "Round 1 Loser" ? "L" : "W";
-  }
-
-  if (roundType === "semi") {
-    label = result === "Semi Loser" ? "L" : "W";
-  }
-
-  if (roundType === "final") {
-    label = result === "Champion" ? "W" : "L";
-  }
-
-  const isWinner = label === "W";
-
-  return `
-    <div class="bracket-team ${isWinner ? "bracket-winner" : "bracket-loser"}">
-      <div class="seed-box">${seed}</div>
-      ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : `<div></div>`}
-      <div class="bracket-name">${team?.name || owner}</div>
-      <div class="bracket-score">${score || label}</div>
-    </div>
-  `;
-}
+ 
   document.querySelectorAll("th[data-sort]").forEach(header => {
   header.addEventListener("click", () => {
     const selectedSort = header.dataset.sort;
