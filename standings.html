@@ -921,28 +921,28 @@ function bracketTeamLine(row, roundType) {
 }
 
 function getPlayoffScore(owner) {
-  if (!window.playoffGameRows) return "";
+  if (!window.playoffGameRows || !window.ownerIdLookup) return "";
 
-  const team = findTeam(owner);
-  if (!team) return "";
+  const sleeperId =
+    window.ownerIdLookup[owner.toLowerCase().trim()];
+
+  if (!sleeperId) return "";
 
   const matchingGame = window.playoffGameRows.find(game =>
     game[0] === currentSeason &&
     (
-      game[4] === team.owner ||
-      game[7] === team.owner ||
-      game[4] === owner ||
-      game[7] === owner
+      game[4] === sleeperId ||
+      game[7] === sleeperId
     )
   );
 
   if (!matchingGame) return "";
 
-  if (matchingGame[4] === team.owner || matchingGame[4] === owner) {
+  if (matchingGame[4] === sleeperId) {
     return matchingGame[5];
   }
 
-  if (matchingGame[7] === team.owner || matchingGame[7] === owner) {
+  if (matchingGame[7] === sleeperId) {
     return matchingGame[8];
   }
 
