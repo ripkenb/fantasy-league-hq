@@ -356,6 +356,11 @@ let allStandings = [];
 
 async function loadStandingsData() {
   const rows = await getRange(standingsGid, "A:K");
+const gameRows = await getRange(gameDataGid, "A:M");
+const logoRows = await getRange(logosGid, "A:C");
+
+console.log("GAME DATA", gameRows);
+console.log("LOGOS", logoRows);
 
   allStandings = rows
     .slice(1)
