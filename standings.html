@@ -69,9 +69,7 @@
       color:#ddd6c8;
     }
 
-    .nav a:hover {
-      background:rgba(226,200,117,.12);
-    }
+    .nav a:hover { background:rgba(226,200,117,.12); }
 
     .nav .active {
       background:linear-gradient(135deg,#1a1a1a,var(--gold));
@@ -82,7 +80,7 @@
 
     .main {
       padding:28px;
-      max-width:1500px;
+      max-width:1550px;
     }
 
     .hero {
@@ -135,6 +133,7 @@
       justify-content:space-between;
       align-items:center;
       margin-bottom:14px;
+      gap:12px;
     }
 
     .section-title h2 {
@@ -152,9 +151,9 @@
       border-radius:999px;
       font-size:12px;
       font-weight:bold;
+      white-space:nowrap;
     }
-
-    table {
+        table {
       width:100%;
       border-collapse:collapse;
     }
@@ -170,6 +169,12 @@
       color:var(--light-gold);
       font-size:12px;
       text-transform:uppercase;
+      cursor:pointer;
+      user-select:none;
+    }
+
+    th:hover {
+      color:white;
     }
 
     .team-row {
@@ -220,96 +225,115 @@
       font-size:24px;
       font-weight:900;
     }
-.bracket-grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-}
 
-.bracket-round {
-  background:#090909;
-  border:1px solid rgba(226,200,117,.16);
-  border-radius:16px;
-  padding:16px;
-}
+    .bracket-grid {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
 
-.bracket-round h3 {
-  margin:0 0 12px;
-  color:var(--light-gold);
-  text-transform:uppercase;
-  font-size:14px;
-}
+    .bracket-round {
+      background:#090909;
+      border:1px solid rgba(226,200,117,.16);
+      border-radius:16px;
+      padding:16px;
+    }
 
-.bracket-game {
-  border:1px solid rgba(226,200,117,.18);
-  border-radius:14px;
-  padding:12px;
-  margin-bottom:12px;
-  background:rgba(255,255,255,.02);
-}
+    .bracket-round h3 {
+      margin:0 0 12px;
+      color:var(--light-gold);
+      text-transform:uppercase;
+      font-size:14px;
+    }
 
-.bracket-team {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding:8px 0;
-}
+    .bracket-game {
+      border:1px solid rgba(226,200,117,.18);
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:12px;
+      background:rgba(255,255,255,.02);
+    }
 
-.bracket-team-info {
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    .bracket-team {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:8px 0;
+    }
 
-.bracket-logo {
-  width:34px;
-  height:34px;
-  object-fit:contain;
-}
+    .bracket-team-info {
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
 
-.bracket-score {
-  font-weight:900;
-}
+    .bracket-logo {
+      width:34px;
+      height:34px;
+      object-fit:contain;
+    }
 
-.bracket-winner {
-  color:var(--green);
-}
+    .bracket-score {
+      font-weight:900;
+    }
 
-.champion-banner {
-  margin-top:14px;
-  padding:16px;
-  border-radius:16px;
-  background:linear-gradient(135deg,rgba(179,134,40,.28),rgba(226,200,117,.12));
-  border:1px solid rgba(226,200,117,.35);
-  font-size:22px;
-  font-weight:900;
-  text-align:center;
-}
+    .bracket-winner {
+      color:var(--green);
+    }
 
-@media(max-width:900px) {
-  .bracket-grid {
-    grid-template-columns:1fr;
-  }
-}
+    .champion-banner {
+      margin-top:14px;
+      padding:16px;
+      border-radius:16px;
+      background:linear-gradient(135deg,rgba(179,134,40,.28),rgba(226,200,117,.12));
+      border:1px solid rgba(226,200,117,.35);
+      font-size:22px;
+      font-weight:900;
+      text-align:center;
+    }
+
     @media(max-width:900px) {
       .app { grid-template-columns:1fr; }
-      .sidebar { border-right:none; border-bottom:1px solid var(--border); }
+
+      .sidebar {
+        border-right:none;
+        border-bottom:1px solid var(--border);
+      }
+
       .main { padding:18px; }
-      .toolbar { flex-direction:column; align-items:flex-start; }
-      .finish-grid { grid-template-columns:1fr; }
-      th, td { font-size:12px; padding:9px 6px; }
+
+      .toolbar {
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .finish-grid,
+      .bracket-grid {
+        grid-template-columns:1fr;
+      }
+
+      th, td {
+        font-size:12px;
+        padding:9px 6px;
+      }
     }
   </style>
 </head>
 <body>
+
 <div class="app">
 
   <aside class="sidebar">
     <img class="league-logo" src="assets/logos/dynasty-league-logo.png.png">
 
-    <div class="side-title">The Dynasty<br>League HQ</div>
-    <div class="subtitle">Est. 2025 · Dynasty. Records. Lore.</div>
+    <div class="side-title">
+      The Dynasty<br>League HQ
+    </div>
+
+    <div class="subtitle">
+      Est. 2025 · Dynasty. Records. Lore.
+    </div>
 
     <div class="nav">
       <a href="index.html">Dashboard</a>
@@ -322,54 +346,91 @@
 
     <section class="hero">
       <h1>League Standings</h1>
-      <p>Regular season standings, playoff finishes, and year-by-year league results.</p>
+
+      <p>
+        Regular season standings, playoff finishes,
+        postseason brackets, and league history.
+      </p>
     </section>
 
     <div class="toolbar">
+
       <div>
-        <label for="season-select" style="color:#b8b0a0;font-size:13px;">Season</label><br>
+        <label
+          for="season-select"
+          style="color:#b8b0a0;font-size:13px;"
+        >
+          Season
+        </label>
+
+        <br>
+
         <select id="season-select"></select>
       </div>
 
-      <span class="pill">Live from Google Sheets</span>
+      <span class="pill">
+        Live from Google Sheets
+      </span>
+
     </div>
 
     <section class="card">
+
       <div class="section-title">
         <h2>Regular Season Standings</h2>
-        <span class="pill" id="season-pill">Season</span>
+
+        <span class="pill" id="season-pill">
+          Season
+        </span>
       </div>
 
       <table>
+
         <thead>
           <tr>
-            <th>Rank</th>
+            <th data-sort="rank">Rank</th>
             <th>Team</th>
-            <th>Record</th>
-            <th>PF</th>
-            <th>PA</th>
-            <th>Playoffs</th>
-            <th>Finish</th>
-            <th>Result</th>
+            <th data-sort="record">Record</th>
+            <th data-sort="pf">PF</th>
+            <th data-sort="pa">PA</th>
+            <th data-sort="playoffs">Playoffs</th>
+            <th data-sort="finish">Finish</th>
+            <th data-sort="result">Result</th>
           </tr>
         </thead>
 
         <tbody id="standings-body"></tbody>
+
       </table>
+
     </section>
 
     <section class="card">
-  <div class="section-title">
-    <h2>Playoff Bracket</h2>
-    <span class="pill" id="bracket-pill">Selected Season</span>
-  </div>
 
-  <div id="playoff-bracket"></div>
-</section>
-        <span class="pill">Playoff Summary</span>
+      <div class="section-title">
+        <h2>Playoff Bracket</h2>
+
+        <span class="pill" id="bracket-pill">
+          Playoffs
+        </span>
+      </div>
+
+      <div id="playoff-bracket"></div>
+
+    </section>
+
+    <section class="card">
+
+      <div class="section-title">
+        <h2>Season Results</h2>
+
+        <span class="pill">
+          Playoff Summary
+        </span>
       </div>
 
       <div class="finish-grid">
+
         <div class="finish-card">
           <div class="finish-label">Champion</div>
           <div class="finish-value" id="champion">—</div>
@@ -384,12 +445,14 @@
           <div class="finish-label">Playoff Teams</div>
           <div class="finish-value" id="playoff-teams">—</div>
         </div>
+
       </div>
+
     </section>
 
   </main>
-</div>
 
+</div>
 <script src="data.js"></script>
 
 <script>
@@ -397,8 +460,6 @@ const PUBLISHED_BASE =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZp4lAXVZrcMa2y_dfi6h3xDjn4gqsFPlVCXFZA_RRLCthhqtDVca9CG8xmK1ZZQD3xxFinaZpqFip/pub?output=csv";
 
 const standingsGid = "1559574906";
-  const gameDataGid = "159359987";
-const logosGid = "356018794";
 
 function csvUrl(gid, range) {
   return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
@@ -429,79 +490,143 @@ function findTeam(owner) {
 }
 
 let allStandings = [];
-
+let currentSeason = "";
+let currentSort = "rank";
+let sortDirection = 1;
 async function loadStandingsData() {
   const rows = await getRange(standingsGid, "A:K");
-const gameRows = await getRange(gameDataGid, "A:M");
-const logoRows = await getRange(logosGid, "A:C");
-
-const playoffGames = gameRows.filter(row =>
-  row[11] === "Playoff"
-);
-
-console.log("PLAYOFF GAMES", playoffGames);
-console.log("LOGOS", logoRows);
 
   allStandings = rows
     .slice(1)
     .filter(row => row[0]);
 
   const seasons = [...new Set(allStandings.map(row => row[0]))]
-    .sort((a, b) => b - a);
+    .sort((a, b) => Number(b) - Number(a));
 
-  const seasonSelect = document.getElementById("season-select");
+  const seasonSelect =
+    document.getElementById("season-select");
 
   seasonSelect.innerHTML = seasons.map(season => `
-    <option value="${season}">${season}</option>
+    <option value="${season}">
+      ${season}
+    </option>
   `).join("");
 
   seasonSelect.addEventListener("change", () => {
-    renderSeason(seasonSelect.value);
+    currentSeason = seasonSelect.value;
+    renderSeason();
   });
 
-  renderSeason(seasons[0]);
+  currentSeason = seasons[0];
+
+  renderSeason();
 }
 
-function renderSeason(season) {
+function getRowsForCurrentSeason() {
   const rows = allStandings
-    .filter(row => row[0] === season)
-    .sort((a, b) => Number(a[1]) - Number(b[1]));
+    .filter(row => row[0] === currentSeason);
 
-  document.getElementById("season-pill").textContent = `${season} Season`;
+  return sortRows(rows);
+}
 
-  document.getElementById("standings-body").innerHTML = rows.map(row => {
-    const rank = row[1];
-    const owner = row[2];
-    const record = row[3];
-    const pf = row[6];
-    const pa = row[7];
-    const madePlayoffs = row[8];
-    const finish = row[9];
-    const result = row[10];
+function sortRows(rows) {
+  return [...rows].sort((a, b) => {
+    let aValue;
+    let bValue;
 
-    const team = findTeam(owner);
+    if (currentSort === "rank") {
+      aValue = Number(a[1]);
+      bValue = Number(b[1]);
+    }
 
-    return `
-      <tr>
-        <td>${rank}</td>
+    if (currentSort === "record") {
+      aValue = Number(a[4]);
+      bValue = Number(b[4]);
+    }
 
-        <td>
-          <div class="team-row">
-            ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
-            ${team?.name || owner}
-          </div>
-        </td>
+    if (currentSort === "pf") {
+      aValue = Number(a[6]);
+      bValue = Number(b[6]);
+    }
 
-        <td>${record}</td>
-        <td>${pf}</td>
-        <td>${pa}</td>
-        <td class="${madePlayoffs === "Y" ? "yes" : "no"}">${madePlayoffs}</td>
-        <td>${finish}</td>
-        <td>${result}</td>
-      </tr>
-    `;
-  }).join("");
+    if (currentSort === "pa") {
+      aValue = Number(a[7]);
+      bValue = Number(b[7]);
+    }
 
+    if (currentSort === "playoffs") {
+      aValue = a[8] === "Y" ? 1 : 0;
+      bValue = b[8] === "Y" ? 1 : 0;
+    }
+
+    if (currentSort === "finish") {
+      aValue = Number(a[9]);
+      bValue = Number(b[9]);
+    }
+
+    if (currentSort === "result") {
+      aValue = a[10] || "";
+      bValue = b[10] || "";
+    }
+
+    if (typeof aValue === "string") {
+      return aValue.localeCompare(bValue) * sortDirection;
+    }
+
+    return (aValue - bValue) * sortDirection;
+  });
+}  
+  function renderSeason() {
+  const rows = getRowsForCurrentSeason();
+
+  document.getElementById("season-pill").textContent =
+    `${currentSeason} Season`;
+
+  document.getElementById("bracket-pill").textContent =
+    `${currentSeason} Playoffs`;
+
+  renderStandingsTable(rows);
+  renderSeasonSummary(rows);
+  renderBracket(rows);
+}
+
+function renderStandingsTable(rows) {
+  document.getElementById("standings-body").innerHTML =
+    rows.map(row => {
+      const rank = row[1];
+      const owner = row[2];
+      const record = row[3];
+      const pf = row[6];
+      const pa = row[7];
+      const madePlayoffs = row[8];
+      const finish = row[9];
+      const result = row[10];
+
+      const team = findTeam(owner);
+
+      return `
+        <tr>
+          <td>${rank}</td>
+
+          <td>
+            <div class="team-row">
+              ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
+              ${team?.name || owner}
+            </div>
+          </td>
+
+          <td>${record}</td>
+          <td>${pf}</td>
+          <td>${pa}</td>
+          <td class="${madePlayoffs === "Y" ? "yes" : "no"}">${madePlayoffs}</td>
+          <td>${finish}</td>
+          <td>${result}</td>
+        </tr>
+      `;
+    }).join("");
+}
+
+function renderSeasonSummary(rows) {
   const champion = rows.find(row => row[10] === "Champion");
   const runnerUp = rows.find(row => row[10] === "Runner-Up");
   const playoffTeams = rows.filter(row => row[8] === "Y").length;
@@ -515,114 +640,89 @@ function renderSeason(season) {
   document.getElementById("playoff-teams").textContent =
     playoffTeams;
 }
-document.getElementById("bracket-pill").textContent =
-  `${season} Playoffs`;
+  function renderBracket(rows) {
+  const roundOneLosers =
+    rows.filter(row => row[10] === "Round 1 Loser");
 
-const seasonPlayoffGames = playoffGames.filter(game =>
-  game[0] === season
-);
+  const semiLosers =
+    rows.filter(row => row[10] === "Semi Loser");
 
-const uniqueGames = [];
+  const finalists =
+    rows.filter(row =>
+      row[10] === "Champion" ||
+      row[10] === "Runner-Up"
+    );
 
-seasonPlayoffGames.forEach(game => {
-  const matchupId = game[2];
+  document.getElementById("playoff-bracket").innerHTML = `
+    <div class="bracket-grid">
 
-  if (!uniqueGames.find(g => g[2] === matchupId)) {
-    uniqueGames.push(game);
-  }
+      <div class="bracket-round">
+        <h3>Round 1</h3>
+        ${roundOneLosers.map(row => bracketTeam(row, "Lost")).join("")}
+      </div>
+
+      <div class="bracket-round">
+        <h3>Semi Finals</h3>
+        ${semiLosers.map(row => bracketTeam(row, "Lost")).join("")}
+      </div>
+
+      <div class="bracket-round">
+        <h3>Championship</h3>
+        ${finalists.map(row =>
+          bracketTeam(
+            row,
+            row[10] === "Champion" ? "WIN" : "LOSS",
+            row[10] === "Champion"
+          )
+        ).join("")}
+
+        ${finalists.find(row => row[10] === "Champion")
+          ? `
+            <div class="champion-banner">
+              👑 ${findTeam(finalists.find(row => row[10] === "Champion")[2])?.name || finalists.find(row => row[10] === "Champion")[2]} Champion!
+            </div>
+          `
+          : ""}
+      </div>
+
+    </div>
+  `;
+}
+
+function bracketTeam(row, label, isWinner = false) {
+  const owner = row[2];
+  const team = findTeam(owner);
+
+  return `
+    <div class="bracket-game">
+      <div class="bracket-team ${isWinner ? "bracket-winner" : ""}">
+        <div class="bracket-team-info">
+          ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : ""}
+          <span>${team?.name || owner}</span>
+        </div>
+
+        <div class="bracket-score">
+          ${label}
+        </div>
+      </div>
+    </div>
+  `;
+}
+  document.querySelectorAll("th[data-sort]").forEach(header => {
+  header.addEventListener("click", () => {
+    const selectedSort = header.dataset.sort;
+
+    if (currentSort === selectedSort) {
+      sortDirection = sortDirection * -1;
+    } else {
+      currentSort = selectedSort;
+      sortDirection = 1;
+    }
+
+    renderSeason();
+  });
 });
 
-const bracketHTML = `
-  <div class="bracket-grid">
-
-    <div class="bracket-round">
-      <h3>Round 1</h3>
-
-      ${rows
-        .filter(r => r[10] === "Round 1 Loser")
-        .map(teamRow => {
-          const owner = teamRow[2];
-          const team = findTeam(owner);
-
-          return `
-            <div class="bracket-game">
-              <div class="bracket-team">
-                <div class="bracket-team-info">
-                  ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : ""}
-                  <span>${team?.name || owner}</span>
-                </div>
-
-                <div class="bracket-score">Lost</div>
-              </div>
-            </div>
-          `;
-        }).join("")}
-    </div>
-
-    <div class="bracket-round">
-      <h3>Semi Finals</h3>
-
-      ${rows
-        .filter(r => r[10] === "Semi Loser")
-        .map(teamRow => {
-          const owner = teamRow[2];
-          const team = findTeam(owner);
-
-          return `
-            <div class="bracket-game">
-              <div class="bracket-team">
-                <div class="bracket-team-info">
-                  ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : ""}
-                  <span>${team?.name || owner}</span>
-                </div>
-
-                <div class="bracket-score">Lost</div>
-              </div>
-            </div>
-          `;
-        }).join("")}
-    </div>
-
-    <div class="bracket-round">
-      <h3>Championship</h3>
-
-      ${rows
-        .filter(r =>
-          r[10] === "Champion" ||
-          r[10] === "Runner-Up"
-        )
-        .map(teamRow => {
-          const owner = teamRow[2];
-          const result = teamRow[10];
-          const team = findTeam(owner);
-
-          return `
-            <div class="bracket-game">
-              <div class="bracket-team ${result === "Champion" ? "bracket-winner" : ""}">
-                <div class="bracket-team-info">
-                  ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : ""}
-                  <span>${team?.name || owner}</span>
-                </div>
-
-                <div class="bracket-score">
-                  ${result === "Champion" ? "WIN" : "LOSS"}
-                </div>
-              </div>
-            </div>
-          `;
-        }).join("")}
-
-      ${champion ? `
-        <div class="champion-banner">
-          👑 ${findTeam(champion[2])?.name || champion[2]} — ${season} Champion
-        </div>
-      ` : ""}
-    </div>
-
-  </div>
-`;
-
-document.getElementById("playoff-bracket").innerHTML = bracketHTML;
 loadStandingsData();
 </script>
 
