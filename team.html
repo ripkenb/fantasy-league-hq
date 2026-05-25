@@ -401,6 +401,75 @@
         grid-template-columns:1fr;
       }
     }
+    .team-nav-link {
+  display:block;
+  padding:12px 14px;
+  border-radius:14px;
+  margin-bottom:8px;
+  color:#ddd6c8;
+}
+
+.team-nav-link:hover {
+  background:rgba(226,200,117,.12);
+}
+
+.team-nav-link.active {
+  background:linear-gradient(135deg,#1a1a1a,var(--gold));
+  color:white;
+  font-weight:bold;
+  border:1px solid var(--border);
+}
+
+.h2h-records {
+  display:flex;
+  gap:18px;
+  margin-top:6px;
+}
+
+.h2h-label {
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+}
+
+.h2h-value {
+  font-size:22px;
+  font-weight:900;
+}
+
+.schedule-game {
+  display:grid;
+  grid-template-columns:50px 52px 1fr 70px 130px;
+  align-items:center;
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid rgba(226,200,117,.12);
+}
+
+.schedule-logo {
+  width:42px;
+  height:42px;
+  object-fit:contain;
+}
+
+.schedule-opponent {
+  font-weight:bold;
+}
+
+.schedule-score {
+  text-align:right;
+  font-weight:bold;
+}
+
+@media(max-width:800px) {
+  .schedule-game {
+    grid-template-columns:40px 44px 1fr 55px;
+  }
+
+  .schedule-score {
+    display:none;
+  }
+}
   </style>
 </head>
 
@@ -546,6 +615,22 @@ async function getRange(gid, range) {
   return parseCSV(text);
 }
 
+function cleanValue(rangeData) {
+  return rangeData.flat().filter(Boolean).pop() || "—";
+}
+
+function findTeamByNameOrOwner(value) {
+  if (!value) return null;
+
+  const cleaned = value.toLowerCase().trim();
+
+  return teams.find(t =>
+    t.name?.toLowerCase().trim() === cleaned ||
+    t.owner?.toLowerCase().trim() === cleaned ||
+    t.id?.toLowerCase().trim() === cleaned
+  );
+}
+
 function playerRow(playerName, value, extra, playerInfo = {}) {
   return `
     <div class="rank-line">
@@ -564,7 +649,29 @@ function playerRow(playerName, value, extra, playerInfo = {}) {
   `;
 }
 
+function buildSidebar() {
+  const nav = document.querySelector(".nav");
+
+  nav.innerHTML = `
+    <a href="index.html">Dashboard</a>
+    <a href="teams.html">Team Pages</a>
+  `;
+
+  teams.forEach(t => {
+    nav.innerHTML += `
+      <a
+        class="team-nav-link ${t.id === teamId ? "active" : ""}"
+        href="team.html?id=${t.id}"
+      >
+        ${t.name}
+      </a>
+    `;
+  });
+}
+
 async function loadTeamPage() {
+  buildSidebar();
+
   if (!team || !gid) {
     document.getElementById("team-name").textContent = "Team Not Found";
     return;
@@ -572,11 +679,11 @@ async function loadTeamPage() {
 
   document.title = `${team.name} | Dynasty League HQ`;
   document.documentElement.style.setProperty("--watermark", `url("${team.logo}")`);
+
   document.getElementById("team-logo").src = team.logo;
   document.getElementById("team-name").textContent = team.name;
   document.getElementById("team-meta").textContent =
     `Owner: ${team.owner} • Live from Google Sheets.`;
-  document.getElementById("active-team-link").textContent = team.name;
 
   const [
     record,
@@ -585,15 +692,18 @@ async function loadTeamPage() {
     playoffRecord,
     playoffWinPct,
     playoffApps,
+    playoffAppPct,
     topScores,
     lowScores,
     awards,
     h2h,
+    playoffH2H,
     topPlayerGames,
     topPlayerSeasons,
     gamesPlayed,
     careerPoints,
-    players
+    players,
+    schedule
   ] = await Promise.all([
     getRange(gid, "I3:J6"),
     getRange(gid, "K3:L6"),
@@ -601,98 +711,116 @@ async function loadTeamPage() {
     getRange(gid, "O3:P6"),
     getRange(gid, "Q3:R6"),
     getRange(gid, "S3:T6"),
+    getRange(gid, "U3:V6"),
     getRange(gid, "B12:D14"),
     getRange(gid, "B18:D20"),
     getRange(gid, "B46:G46"),
     getRange(gid, "I38:M48"),
+    getRange(gid, "O38:S46"),
     getRange(gid, "I12:M21"),
     getRange(gid, "I25:M34"),
     getRange(gid, "O12:R21"),
     getRange(gid, "O25:R34"),
-    getRange(playerSheetGid, "B:E")
+    getRange(playerSheetGid, "B:E"),
+    getRange(gid, "V28:Z41")
   ]);
 
-const playerLookup = {};
-players.forEach(row => {
-  const name = row[0];
-  const position = row[1];
-  const nflTeam = row[2];
-  const image = row[3];
+  const playerLookup = {};
 
-  if (name) {
-    playerLookup[name] = {
-      position,
-      nflTeam,
-      image
-    };
-  }
-});
+  players.forEach(row => {
+    const name = row[0];
+    const position = row[1];
+    const nflTeam = row[2];
+    const image = row[3];
 
-  document.getElementById("record").textContent = record.flat().filter(Boolean).pop() || "—";
-  document.getElementById("win-pct").textContent = winPct.flat().filter(Boolean).pop() || "—";
-  document.getElementById("titles").textContent = titles.flat().filter(Boolean).pop() || "—";
-  document.getElementById("playoff-record").textContent = playoffRecord.flat().filter(Boolean).pop() || "—";
-  document.getElementById("playoff-win-pct").textContent = playoffWinPct.flat().filter(Boolean).pop() || "—";
-  document.getElementById("playoff-apps").textContent = playoffApps.flat().filter(Boolean).pop() || "—";
+    if (name) {
+      playerLookup[name] = { position, nflTeam, image };
+    }
+  });
 
-document.getElementById("top-scores").innerHTML = topScores.map(row => `
-  <div class="score-row">
-    <div class="rank-badge">${row[0]}</div>
-    <div class="score-value good">${row[1]}</div>
-    <div class="score-year">${row[2]}</div>
-  </div>
-`).join("");
+  document.getElementById("record").textContent = cleanValue(record);
+  document.getElementById("win-pct").textContent = cleanValue(winPct);
+  document.getElementById("titles").textContent = cleanValue(titles);
+  document.getElementById("playoff-record").textContent = cleanValue(playoffRecord);
+  document.getElementById("playoff-win-pct").textContent = cleanValue(playoffWinPct);
 
-document.getElementById("low-scores").innerHTML = lowScores.map(row => `
-  <div class="score-row">
-    <div class="rank-badge bad-badge">${row[0]}</div>
-    <div class="score-value bad">${row[1]}</div>
-    <div class="score-year">${row[2]}</div>
-  </div>
-`).join("");
+  document.getElementById("playoff-apps").innerHTML = `
+    <div>${cleanValue(playoffApps)}</div>
+    <div style="font-size:12px;color:#b8b0a0;margin-top:4px;">
+      ${cleanValue(playoffAppPct)} appearance rate
+    </div>
+  `;
 
- const awardLabels = [
-  "MVP",
-  "Playoff-MVP",
-  "Rookie of the Year",
-  "Most Improved Player",
-  "1st Team",
-  "2nd Team"
-];
+  document.getElementById("top-scores").innerHTML = topScores.map(row => `
+    <div class="score-row">
+      <div class="rank-badge">${row[0]}</div>
+      <div class="score-value good">${row[1]}</div>
+      <div class="score-year">${row[2]}</div>
+    </div>
+  `).join("");
 
-document.getElementById("awards-container").innerHTML = awards[0].map((value, index) => `
-  <div class="award-row">
-    <div class="award-name">${awardLabels[index]}</div>
-    <div class="award-value">${value || 0}</div>
-  </div>
-`).join("");
+  document.getElementById("low-scores").innerHTML = lowScores.map(row => `
+    <div class="score-row">
+      <div class="rank-badge bad-badge">${row[0]}</div>
+      <div class="score-value bad">${row[1]}</div>
+      <div class="score-year">${row[2]}</div>
+    </div>
+  `).join("");
 
-document.getElementById("h2h-grid").innerHTML = h2h
-  .filter(row => row[0] && row[0] !== "Owner")
-  .map(row => {
-    const owner = row[0];
-    const record = row[3] || "—";
+  const awardLabels = [
+    "MVP",
+    "Playoff-MVP",
+    "Rookie of the Year",
+    "Most Improved Player",
+    "1st Team",
+    "2nd Team"
+  ];
 
-    const opponentTeam = teams.find(t =>
-      t.owner?.toLowerCase() === owner.toLowerCase()
-    );
+  document.getElementById("awards-container").innerHTML = awards[0].map((value, index) => `
+    <div class="award-row">
+      <div class="award-name">${awardLabels[index]}</div>
+      <div class="award-value">${value || 0}</div>
+    </div>
+  `).join("");
 
-    return `
-      <div class="h2h-card">
+  const playoffLookup = {};
 
-        ${opponentTeam?.logo
-          ? `<img class="opp-logo" src="${opponentTeam.logo}">`
-          : ""
-        }
+  playoffH2H
+    .filter(row => row[0] && row[0] !== "Owner")
+    .forEach(row => {
+      playoffLookup[row[0].toLowerCase().trim()] = row[3] || "—";
+    });
 
-        <div>
-          <div class="opp-name">${owner}</div>
-          <div class="opp-record">${record}</div>
+  document.getElementById("h2h-grid").innerHTML = h2h
+    .filter(row => row[0] && row[0] !== "Owner")
+    .map(row => {
+      const opponentName = row[0];
+      const regularRecord = row[3] || "—";
+      const playoffRecord = playoffLookup[opponentName.toLowerCase().trim()] || "—";
+      const opponentTeam = findTeamByNameOrOwner(opponentName);
+
+      return `
+        <div class="h2h-card">
+          ${opponentTeam?.logo ? `<img class="opp-logo" src="${opponentTeam.logo}">` : ""}
+
+          <div>
+            <div class="opp-name">${opponentName}</div>
+
+            <div class="h2h-records">
+              <div>
+                <div class="h2h-label">Regular</div>
+                <div class="h2h-value">${regularRecord}</div>
+              </div>
+
+              <div>
+                <div class="h2h-label">Playoff</div>
+                <div class="h2h-value">${playoffRecord}</div>
+              </div>
+            </div>
+          </div>
         </div>
-
-      </div>
-    `;
-  }).join("");
+      `;
+    }).join("");
 
   document.getElementById("top-player-games").innerHTML = topPlayerGames
     .filter(row => row.some(Boolean))
@@ -722,8 +850,34 @@ document.getElementById("h2h-grid").innerHTML = h2h
       return playerRow(name, row[3], "PTS", playerLookup[name]);
     }).join("");
 
-  document.getElementById("schedule-container").innerHTML =
-    `<p style="color:#b8b0a0;">Schedule will connect next.</p>`;
+  document.getElementById("schedule-container").innerHTML = schedule
+    .filter(row => row.some(Boolean))
+    .map(row => {
+      const week = row[0];
+      const opponent = row[1];
+      const result = row[2];
+      const score = row[3];
+      const opponentTeam = findTeamByNameOrOwner(opponent);
+
+      return `
+        <div class="schedule-game">
+          <div>${week}</div>
+
+          ${opponentTeam?.logo
+            ? `<img class="schedule-logo" src="${opponentTeam.logo}">`
+            : `<div></div>`
+          }
+
+          <div class="schedule-opponent">${opponent || "—"}</div>
+
+          <div class="${result === "W" ? "good" : result === "L" ? "bad" : ""}">
+            ${result || "—"}
+          </div>
+
+          <div class="schedule-score">${score || ""}</div>
+        </div>
+      `;
+    }).join("");
 
   document.getElementById("glance-ppg").textContent = "—";
   document.getElementById("glance-pf").textContent = "—";
@@ -733,6 +887,9 @@ document.getElementById("h2h-grid").innerHTML = h2h
 
 loadTeamPage();
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
