@@ -220,7 +220,78 @@
       font-size:24px;
       font-weight:900;
     }
+.bracket-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
 
+.bracket-round {
+  background:#090909;
+  border:1px solid rgba(226,200,117,.16);
+  border-radius:16px;
+  padding:16px;
+}
+
+.bracket-round h3 {
+  margin:0 0 12px;
+  color:var(--light-gold);
+  text-transform:uppercase;
+  font-size:14px;
+}
+
+.bracket-game {
+  border:1px solid rgba(226,200,117,.18);
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:12px;
+  background:rgba(255,255,255,.02);
+}
+
+.bracket-team {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:8px 0;
+}
+
+.bracket-team-info {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.bracket-logo {
+  width:34px;
+  height:34px;
+  object-fit:contain;
+}
+
+.bracket-score {
+  font-weight:900;
+}
+
+.bracket-winner {
+  color:var(--green);
+}
+
+.champion-banner {
+  margin-top:14px;
+  padding:16px;
+  border-radius:16px;
+  background:linear-gradient(135deg,rgba(179,134,40,.28),rgba(226,200,117,.12));
+  border:1px solid rgba(226,200,117,.35);
+  font-size:22px;
+  font-weight:900;
+  text-align:center;
+}
+
+@media(max-width:900px) {
+  .bracket-grid {
+    grid-template-columns:1fr;
+  }
+}
     @media(max-width:900px) {
       .app { grid-template-columns:1fr; }
       .sidebar { border-right:none; border-bottom:1px solid var(--border); }
