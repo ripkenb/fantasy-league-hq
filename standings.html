@@ -782,60 +782,56 @@ function renderSeasonSummary(rows) {
     playoffTeams;
 }
  function renderBracket(rows) {
-  const sortedBySeed = [...rows].sort((a, b) => Number(a[1]) - Number(b[1]));
+  const teamsBySeed = [...rows].sort((a, b) => Number(a[1]) - Number(b[1]));
 
-  const seed1 = sortedBySeed.find(row => Number(row[1]) === 1);
-  const seed2 = sortedBySeed.find(row => Number(row[1]) === 2);
-  const seed3 = sortedBySeed.find(row => Number(row[1]) === 3);
-  const seed4 = sortedBySeed.find(row => Number(row[1]) === 4);
-  const seed5 = sortedBySeed.find(row => Number(row[1]) === 5);
-  const seed6 = sortedBySeed.find(row => Number(row[1]) === 6);
+  const seed1 = teamsBySeed.find(row => Number(row[1]) === 1);
+  const seed2 = teamsBySeed.find(row => Number(row[1]) === 2);
+  const seed3 = teamsBySeed.find(row => Number(row[1]) === 3);
+  const seed4 = teamsBySeed.find(row => Number(row[1]) === 4);
+  const seed5 = teamsBySeed.find(row => Number(row[1]) === 5);
+  const seed6 = teamsBySeed.find(row => Number(row[1]) === 6);
 
   const champion = rows.find(row => row[10] === "Champion");
   const runnerUp = rows.find(row => row[10] === "Runner-Up");
-  const semiLosers = rows.filter(row => row[10] === "Semi Loser");
 
-  const semi1Opponent =
-    semiLosers.find(row => row[2] !== seed2?.[2]) || semiLosers[0];
+  const roundOneTeams = [seed3, seed4, seed5, seed6].filter(Boolean);
+  const roundOneWinners = roundOneTeams.filter(row => row[10] !== "Round 1 Loser");
 
-  const semi2Opponent =
-    semiLosers.find(row => row[2] !== seed1?.[2]) || semiLosers[1];
+  const lowestRemaining = [...roundOneWinners].sort((a, b) => Number(b[1]) - Number(a[1]))[0];
+  const otherRemaining = roundOneWinners.find(row => row !== lowestRemaining);
 
   document.getElementById("playoff-bracket").innerHTML = `
     <div class="bracket-grid">
 
       <div class="bracket-round">
         <h3>Round 1</h3>
-        <div class="bracket-subtitle">Seeds 3-6</div>
 
-        <div class="bracket-matchup connector-right connector-up">
-          ${matchupBox(seed3, seed6)}
+        <div class="bracket-matchup">
+          ${matchupBox(seed3, seed6, "round1")}
         </div>
 
-        <div class="bracket-matchup spaced connector-right connector-down">
-          ${matchupBox(seed4, seed5)}
+        <div class="bracket-matchup spaced">
+          ${matchupBox(seed4, seed5, "round1")}
         </div>
       </div>
 
       <div class="bracket-round">
         <h3>Semi Finals</h3>
-        <div class="bracket-subtitle">Top seeds enter</div>
 
-        <div class="bracket-matchup connector-right connector-up">
-          ${matchupBox(seed1, semi1Opponent)}
+        <div class="bracket-matchup">
+          ${matchupBox(seed1, lowestRemaining, "semi")}
         </div>
 
-        <div class="bracket-matchup spaced connector-right connector-down">
-          ${matchupBox(seed2, semi2Opponent)}
+        <div class="bracket-matchup spaced">
+          ${matchupBox(seed2, otherRemaining, "semi")}
         </div>
       </div>
 
       <div class="bracket-round">
         <h3>Championship</h3>
-        <div class="bracket-subtitle">Final matchup</div>
 
         <div class="championship-box">
-          ${matchupBox(champion, runnerUp, true)}
+          ${matchupBox(champion, runnerUp, "final")}
         </div>
 
         ${champion ? `
@@ -853,16 +849,16 @@ function renderSeasonSummary(rows) {
   `;
 }
 
-function matchupBox(teamA, teamB, finalGame = false) {
+function matchupBox(teamA, teamB, roundType) {
   return `
     <div class="bracket-game">
-      ${bracketTeamLine(teamA, finalGame)}
-      ${bracketTeamLine(teamB, finalGame)}
+      ${bracketTeamLine(teamA, roundType)}
+      ${bracketTeamLine(teamB, roundType)}
     </div>
   `;
 }
 
-function bracketTeamLine(row, finalGame = false) {
+function bracketTeamLine(row, roundType) {
   if (!row) {
     return `
       <div class="bracket-team bracket-loser">
@@ -873,6 +869,37 @@ function bracketTeamLine(row, finalGame = false) {
       </div>
     `;
   }
+
+  const seed = row[1];
+  const owner = row[2];
+  const result = row[10];
+  const team = findTeam(owner);
+
+  let label = "";
+
+  if (roundType === "round1") {
+    label = result === "Round 1 Loser" ? "L" : "W";
+  }
+
+  if (roundType === "semi") {
+    label = result === "Semi Loser" ? "L" : "W";
+  }
+
+  if (roundType === "final") {
+    label = result === "Champion" ? "W" : "L";
+  }
+
+  const isWinner = label === "W";
+
+  return `
+    <div class="bracket-team ${isWinner ? "bracket-winner" : "bracket-loser"}">
+      <div class="seed-box">${seed}</div>
+      ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : `<div></div>`}
+      <div class="bracket-name">${team?.name || owner}</div>
+      <div class="bracket-score">${label}</div>
+    </div>
+  `;
+}
 
   const seed = row[1];
   const owner = row[2];
