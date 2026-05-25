@@ -359,7 +359,11 @@ async function loadStandingsData() {
 const gameRows = await getRange(gameDataGid, "A:M");
 const logoRows = await getRange(logosGid, "A:C");
 
-console.log("GAME DATA", gameRows);
+const playoffGames = gameRows.filter(row =>
+  row[11] === "Playoff"
+);
+
+console.log("PLAYOFF GAMES", playoffGames);
 console.log("LOGOS", logoRows);
 
   allStandings = rows
