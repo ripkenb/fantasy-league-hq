@@ -920,7 +920,7 @@ function bracketTeamLine(row, roundType) {
   `;
 }
 
-function getPlayoffScore(owner) {
+function getPlayoffScore(owner, roundType) {
   if (!window.playoffGameRows || !window.ownerIdLookup) return "";
 
   const sleeperId =
@@ -928,8 +928,23 @@ function getPlayoffScore(owner) {
 
   if (!sleeperId) return "";
 
+  let targetWeek = "";
+
+  if (roundType === "round1") {
+    targetWeek = "15";
+  }
+
+  if (roundType === "semi") {
+    targetWeek = "16";
+  }
+
+  if (roundType === "final") {
+    targetWeek = "17";
+  }
+
   const matchingGame = window.playoffGameRows.find(game =>
     game[0] === currentSeason &&
+    game[1] === targetWeek &&
     (
       game[4] === sleeperId ||
       game[7] === sleeperId
@@ -939,11 +954,11 @@ function getPlayoffScore(owner) {
   if (!matchingGame) return "";
 
   if (matchingGame[4] === sleeperId) {
-    return matchingGame[5];
+    return Number(matchingGame[5]).toFixed(2);
   }
 
   if (matchingGame[7] === sleeperId) {
-    return matchingGame[8];
+    return Number(matchingGame[8]).toFixed(2);
   }
 
   return "";
