@@ -900,24 +900,6 @@ function bracketTeamLine(row, roundType) {
     </div>
   `;
 }
-
-  const seed = row[1];
-  const owner = row[2];
-  const result = row[10];
-  const team = findTeam(owner);
-  const isWinner = result === "Champion" || (finalGame && result === "Champion");
-
-  return `
-    <div class="bracket-team ${isWinner ? "bracket-winner" : ""}">
-      <div class="seed-box">${seed}</div>
-      ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : `<div></div>`}
-      <div class="bracket-name">${team?.name || owner}</div>
-      <div class="bracket-score">
-        ${finalGame ? (result === "Champion" ? "WIN" : "LOSS") : result || "—"}
-      </div>
-    </div>
-  `;
-}
   document.querySelectorAll("th[data-sort]").forEach(header => {
   header.addEventListener("click", () => {
     const selectedSort = header.dataset.sort;
