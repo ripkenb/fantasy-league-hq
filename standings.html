@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Standings | Dynasty League HQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { box-sizing:border-box; }
+
+    :root {
+      --gold:#b38628;
+      --light-gold:#e2c875;
+      --green:#22c55e;
+      --red:#ef4444;
+      --muted:#b8b0a0;
+      --border:rgba(226,200,117,.25);
+      --white:#f8f5ed;
+    }
+
+    body {
+      margin:0;
+      font-family:Arial,sans-serif;
+      color:var(--white);
+      background:
+        radial-gradient(circle at top right, rgba(179,134,40,.18), transparent 30%),
+        radial-gradient(circle at top left, rgba(226,200,117,.10), transparent 35%),
+        #050505;
+    }
+
+    a { color:inherit; text-decoration:none; }
+
+    .app {
+      display:grid;
+      grid-template-columns:260px 1fr;
+      min-height:100vh;
+    }
+
+    .sidebar {
+      background:#090909;
+      border-right:1px solid var(--border);
+      padding:24px;
+    }
+
+    .league-logo {
+      width:92px;
+      height:92px;
+      object-fit:contain;
+      margin-bottom:14px;
+    }
+
+    .side-title {
+      font-size:24px;
+      line-height:1.05;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .subtitle {
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:26px;
+    }
+
+    .nav a {
+      display:block;
+      padding:12px 14px;
+      border-radius:14px;
+      margin-bottom:8px;
+      color:#ddd6c8;
+    }
+
+    .nav a:hover {
+      background:rgba(226,200,117,.12);
+    }
+
+    .nav .active {
+      background:linear-gradient(135deg,#1a1a1a,var(--gold));
+      color:white;
+      font-weight:bold;
+      border:1px solid var(--border);
+    }
+
+    .main {
+      padding:28px;
+      max-width:1500px;
+    }
+
+    .hero {
+      background:linear-gradient(135deg,rgba(20,20,20,.98),rgba(75,58,22,.94));
+      border:1px solid var(--border);
+      border-radius:28px;
+      padding:30px;
+      margin-bottom:20px;
+    }
+
+    .hero h1 {
+      margin:0;
+      font-size:44px;
+    }
+
+    .hero p {
+      color:#fff4d6;
+      margin:10px 0 0;
+    }
+
+    .toolbar {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    select {
+      background:#090909;
+      color:white;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px 16px;
+      font-size:15px;
+      font-weight:bold;
+    }
+
+    .card {
+      background:rgba(18,18,18,.96);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:20px;
+      box-shadow:0 18px 40px rgba(0,0,0,.25);
+      margin-bottom:18px;
+    }
+
+    .section-title {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:14px;
+    }
+
+    .section-title h2 {
+      margin:0;
+      color:var(--light-gold);
+      text-transform:uppercase;
+      font-size:20px;
+    }
+
+    .pill {
+      background:rgba(179,134,40,.18);
+      border:1px solid var(--border);
+      color:var(--light-gold);
+      padding:7px 11px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+    }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    th, td {
+      text-align:left;
+      padding:12px 10px;
+      border-bottom:1px solid rgba(226,200,117,.14);
+      font-size:14px;
+    }
+
+    th {
+      color:var(--light-gold);
+      font-size:12px;
+      text-transform:uppercase;
+    }
+
+    .team-row {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:bold;
+    }
+
+    .team-logo {
+      width:38px;
+      height:38px;
+      object-fit:contain;
+      flex-shrink:0;
+    }
+
+    .yes {
+      color:var(--green);
+      font-weight:bold;
+    }
+
+    .no {
+      color:var(--red);
+      font-weight:bold;
+    }
+
+    .finish-grid {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+
+    .finish-card {
+      background:#090909;
+      border:1px solid rgba(226,200,117,.16);
+      border-radius:16px;
+      padding:16px;
+    }
+
+    .finish-label {
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .finish-value {
+      font-size:24px;
+      font-weight:900;
+    }
+
+    @media(max-width:900px) {
+      .app { grid-template-columns:1fr; }
+      .sidebar { border-right:none; border-bottom:1px solid var(--border); }
+      .main { padding:18px; }
+      .toolbar { flex-direction:column; align-items:flex-start; }
+      .finish-grid { grid-template-columns:1fr; }
+      th, td { font-size:12px; padding:9px 6px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <img class="league-logo" src="assets/logos/dynasty-league-logo.png.png">
+
+    <div class="side-title">The Dynasty<br>League HQ</div>
+    <div class="subtitle">Est. 2025 · Dynasty. Records. Lore.</div>
+
+    <div class="nav">
+      <a href="index.html">Dashboard</a>
+      <a href="teams.html">Team Pages</a>
+      <a class="active" href="standings.html">Standings</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section class="hero">
+      <h1>League Standings</h1>
+      <p>Regular season standings, playoff finishes, and year-by-year league results.</p>
+    </section>
+
+    <div class="toolbar">
+      <div>
+        <label for="season-select" style="color:#b8b0a0;font-size:13px;">Season</label><br>
+        <select id="season-select"></select>
+      </div>
+
+      <span class="pill">Live from Google Sheets</span>
+    </div>
+
+    <section class="card">
+      <div class="section-title">
+        <h2>Regular Season Standings</h2>
+        <span class="pill" id="season-pill">Season</span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Team</th>
+            <th>Record</th>
+            <th>PF</th>
+            <th>PA</th>
+            <th>Playoffs</th>
+            <th>Finish</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+
+        <tbody id="standings-body"></tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <h2>Season Results</h2>
+        <span class="pill">Playoff Summary</span>
+      </div>
+
+      <div class="finish-grid">
+        <div class="finish-card">
+          <div class="finish-label">Champion</div>
+          <div class="finish-value" id="champion">—</div>
+        </div>
+
+        <div class="finish-card">
+          <div class="finish-label">Runner-Up</div>
+          <div class="finish-value" id="runner-up">—</div>
+        </div>
+
+        <div class="finish-card">
+          <div class="finish-label">Playoff Teams</div>
+          <div class="finish-value" id="playoff-teams">—</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+
+<script>
+const PUBLISHED_BASE =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZp4lAXVZrcMa2y_dfi6h3xDjn4gqsFPlVCXFZA_RRLCthhqtDVca9CG8xmK1ZZQD3xxFinaZpqFip/pub?output=csv";
+
+const standingsGid = "1559574906";
+
+function csvUrl(gid, range) {
+  return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
+}
+
+function parseCSV(text) {
+  return text.trim().split("\n").map(row =>
+    row.split(",").map(cell => cell.replace(/^"|"$/g, "").trim())
+  );
+}
+
+async function getRange(gid, range) {
+  const response = await fetch(csvUrl(gid, range));
+  const text = await response.text();
+  return parseCSV(text);
+}
+
+function findTeam(owner) {
+  if (!owner) return null;
+
+  const cleaned = owner.toLowerCase().trim();
+
+  return teams.find(team =>
+    team.owner?.toLowerCase().trim() === cleaned ||
+    team.name?.toLowerCase().trim() === cleaned ||
+    team.id?.toLowerCase().trim() === cleaned
+  );
+}
+
+let allStandings = [];
+
+async function loadStandingsData() {
+  const rows = await getRange(standingsGid, "A:K");
+
+  allStandings = rows
+    .slice(1)
+    .filter(row => row[0]);
+
+  const seasons = [...new Set(allStandings.map(row => row[0]))]
+    .sort((a, b) => b - a);
+
+  const seasonSelect = document.getElementById("season-select");
+
+  seasonSelect.innerHTML = seasons.map(season => `
+    <option value="${season}">${season}</option>
+  `).join("");
+
+  seasonSelect.addEventListener("change", () => {
+    renderSeason(seasonSelect.value);
+  });
+
+  renderSeason(seasons[0]);
+}
+
+function renderSeason(season) {
+  const rows = allStandings
+    .filter(row => row[0] === season)
+    .sort((a, b) => Number(a[1]) - Number(b[1]));
+
+  document.getElementById("season-pill").textContent = `${season} Season`;
+
+  document.getElementById("standings-body").innerHTML = rows.map(row => {
+    const rank = row[1];
+    const owner = row[2];
+    const record = row[3];
+    const pf = row[6];
+    const pa = row[7];
+    const madePlayoffs = row[8];
+    const finish = row[9];
+    const result = row[10];
+
+    const team = findTeam(owner);
+
+    return `
+      <tr>
+        <td>${rank}</td>
+
+        <td>
+          <div class="team-row">
+            ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
+            ${team?.name || owner}
+          </div>
+        </td>
+
+        <td>${record}</td>
+        <td>${pf}</td>
+        <td>${pa}</td>
+        <td class="${madePlayoffs === "Y" ? "yes" : "no"}">${madePlayoffs}</td>
+        <td>${finish}</td>
+        <td>${result}</td>
+      </tr>
+    `;
+  }).join("");
+
+  const champion = rows.find(row => row[10] === "Champion");
+  const runnerUp = rows.find(row => row[10] === "Runner-Up");
+  const playoffTeams = rows.filter(row => row[8] === "Y").length;
+
+  document.getElementById("champion").textContent =
+    champion ? (findTeam(champion[2])?.name || champion[2]) : "—";
+
+  document.getElementById("runner-up").textContent =
+    runnerUp ? (findTeam(runnerUp[2])?.name || runnerUp[2]) : "—";
+
+  document.getElementById("playoff-teams").textContent =
+    playoffTeams;
+}
+
+loadStandingsData();
+</script>
+
+</body>
+</html>
