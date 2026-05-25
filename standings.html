@@ -891,24 +891,6 @@ function bracketTeamLine(row, finalGame = false) {
     </div>
   `;
 }
-  const owner = row[2];
-  const team = findTeam(owner);
-
-  return `
-    <div class="bracket-game">
-      <div class="bracket-team ${isWinner ? "bracket-winner" : ""}">
-        <div class="bracket-team-info">
-          ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : ""}
-          <span>${team?.name || owner}</span>
-        </div>
-
-        <div class="bracket-score">
-          ${label}
-        </div>
-      </div>
-    </div>
-  `;
-}
   document.querySelectorAll("th[data-sort]").forEach(header => {
   header.addEventListener("click", () => {
     const selectedSort = header.dataset.sort;
