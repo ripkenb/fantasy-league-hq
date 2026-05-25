@@ -880,6 +880,66 @@ function bracketTeamLine(row, roundType) {
   const owner = row[2];
   const result = row[10];
   const team = findTeam(owner);
+  const score = getPlayoffScore(owner);
+
+  let label = "";
+
+  if (roundType === "round1") {
+    label = result === "Round 1 Loser" ? "L" : "W";
+  }
+
+  if (roundType === "semi") {
+    label = result === "Semi Loser" ? "L" : "W";
+  }
+
+  if (roundType === "final") {
+    label = result === "Champion" ? "W" : "L";
+  }
+
+  const isWinner = label === "W";
+
+  return `
+    <div class="bracket-team ${isWinner ? "bracket-winner" : "bracket-loser"}">
+      <div class="seed-box">${seed}</div>
+      ${team?.logo ? `<img class="bracket-logo" src="${team.logo}">` : `<div></div>`}
+      <div class="bracket-name">${team?.name || owner}</div>
+      <div class="bracket-score">${score || label}</div>
+    </div>
+  `;
+}
+
+function getPlayoffScore(owner) {
+  if (!window.playoffGameRows) return "";
+
+  const team = findTeam(owner);
+  if (!team) return "";
+
+  const matchingGame = window.playoffGameRows.find(game =>
+    game[0] === currentSeason &&
+    (
+      game[4] === team.owner ||
+      game[7] === team.owner ||
+      game[4] === owner ||
+      game[7] === owner
+    )
+  );
+
+  if (!matchingGame) return "";
+
+  if (matchingGame[4] === team.owner || matchingGame[4] === owner) {
+    return matchingGame[5];
+  }
+
+  if (matchingGame[7] === team.owner || matchingGame[7] === owner) {
+    return matchingGame[8];
+  }
+
+  return "";
+}
+  const seed = row[1];
+  const owner = row[2];
+  const result = row[10];
+  const team = findTeam(owner);
   const score = getPlayoffScore(owner, roundType);
 
   let label = "";
