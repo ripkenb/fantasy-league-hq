@@ -746,20 +746,6 @@ function renderStandingsTable(rows) {
     }).join("");
 }
 
-function renderSeasonSummary(rows) {
-  const champion = rows.find(row => row[10] === "Champion");
-  const runnerUp = rows.find(row => row[10] === "Runner-Up");
-  const playoffTeams = rows.filter(row => row[8] === "Y").length;
-
-  document.getElementById("champion").textContent =
-    champion ? (findTeam(champion[2])?.name || champion[2]) : "—";
-
-  document.getElementById("runner-up").textContent =
-    runnerUp ? (findTeam(runnerUp[2])?.name || runnerUp[2]) : "—";
-
-  document.getElementById("playoff-teams").textContent =
-    playoffTeams;
-}
  function renderBracket(rows) {
   const teamsBySeed = [...rows].sort((a, b) => Number(a[1]) - Number(b[1]));
 
