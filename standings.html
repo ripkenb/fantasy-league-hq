@@ -637,6 +637,11 @@ let currentSort = "rank";
 let sortDirection = 1;
 async function loadStandingsData() {
   const rows = await getRange(standingsGid, "A:K");
+const gameRows = await getRange(gameDataGid, "A:M");
+
+window.playoffGameRows = gameRows.filter(row =>
+  row[0] && row[11] === "Playoff"
+);
 
   allStandings = rows
     .slice(1)
