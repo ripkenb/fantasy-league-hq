@@ -283,15 +283,40 @@
     }
 
     .champion-banner {
-      margin-top:14px;
-      padding:16px;
-      border-radius:16px;
-      background:linear-gradient(135deg,rgba(179,134,40,.28),rgba(226,200,117,.12));
-      border:1px solid rgba(226,200,117,.35);
-      font-size:22px;
-      font-weight:900;
-      text-align:center;
-    }
+  margin-top:18px;
+  padding:22px;
+  border-radius:18px;
+  background:
+    radial-gradient(circle at center, rgba(226,200,117,.28), transparent 55%),
+    linear-gradient(135deg, rgba(179,134,40,.35), rgba(10,10,10,.95));
+  border:1px solid rgba(226,200,117,.5);
+  text-align:center;
+}
+
+.champion-kicker {
+  color:var(--light-gold);
+  font-size:12px;
+  letter-spacing:.35em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+
+.champion-title {
+  font-size:34px;
+  font-weight:900;
+  color:var(--light-gold);
+  text-transform:uppercase;
+}
+
+.champion-team {
+  margin-top:6px;
+  font-size:24px;
+  font-weight:900;
+}
+
+.bracket-round {
+  min-height:260px;
+}
 
     @media(max-width:900px) {
       .app { grid-template-columns:1fr; }
@@ -679,8 +704,12 @@ function renderSeasonSummary(rows) {
         ${finalists.find(row => row[10] === "Champion")
           ? `
             <div class="champion-banner">
-              👑 ${findTeam(finalists.find(row => row[10] === "Champion")[2])?.name || finalists.find(row => row[10] === "Champion")[2]} Champion!
-            </div>
+  <div class="champion-kicker">${currentSeason} Dynasty League</div>
+  <div class="champion-title">Champion!</div>
+  <div class="champion-team">
+    👑 ${findTeam(finalists.find(row => row[10] === "Champion")[2])?.name || finalists.find(row => row[10] === "Champion")[2]}
+  </div>
+</div>
           `
           : ""}
       </div>
