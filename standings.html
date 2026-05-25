@@ -639,7 +639,18 @@ let sortDirection = 1;
 async function loadStandingsData() {
   const rows = await getRange(standingsGid, "A:K");
 const gameRows = await getRange(gameDataGid, "A:M");
+const logoRows = await getRange(logosGid, "A:C");
 
+window.ownerIdLookup = {};
+
+logoRows.slice(1).forEach(row => {
+  const name = row[0];
+  const sleeperId = row[2];
+
+  if (name && sleeperId) {
+    window.ownerIdLookup[name.toLowerCase().trim()] = sleeperId;
+  }
+});
 window.playoffGameRows = gameRows.filter(row =>
   row[0] && row[11] === "Playoff"
 );
