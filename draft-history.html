@@ -340,21 +340,21 @@ const logo =
         <img class="player-img" src="${imageUrl || ""}">
 
         <div>
-          <div class="pick-meta">
-            Round ${round} · Pick ${pick} · Overall ${overall}
-          </div>
+  <div class="pick-meta">
+    Round ${round} · Pick ${pick} · Overall ${overall}
+  </div>
 
-          <div class="player-name">${playerName}</div>
+  <div class="player-name">${playerName}</div>
 
-          <div class="player-sub">
-            ${position || ""}${nflTeam ? " · " + nflTeam : ""}
-          </div>
+  <div class="player-sub">
+    ${position || ""}${nflTeam ? " · " + nflTeam : ""}
+  </div>
+</div>
 
-          <div class="owner-row">
+<div class="owner-row">
   ${logo ? `<img class="owner-logo" src="${logo}">` : ""}
   <div>${fantasyTeam || "Unknown Team"}</div>
 </div>
-        </div>
       </div>
     `;
   }).join("");
