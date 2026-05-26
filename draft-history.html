@@ -264,7 +264,7 @@ let allDraftRows = [];
 let currentSeason = "";
 
 async function loadDraftData() {
-  const draftRows = await getRange(draftDataGid, "A:Q");
+  const draftRows = await getRange(draftDataGid, "A:S");
   const logoRows = await getRange(logosGid, "A:C");
 
   window.logoLookup = {};
