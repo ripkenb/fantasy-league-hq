@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Draft History | Dynasty League HQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { box-sizing:border-box; }
+
+    :root {
+      --gold:#b38628;
+      --light-gold:#e2c875;
+      --green:#22c55e;
+      --muted:#b8b0a0;
+      --border:rgba(226,200,117,.25);
+      --white:#f8f5ed;
+    }
+
+    body {
+      margin:0;
+      font-family:Arial,sans-serif;
+      color:var(--white);
+      background:
+        radial-gradient(circle at top right, rgba(179,134,40,.18), transparent 30%),
+        radial-gradient(circle at top left, rgba(226,200,117,.10), transparent 35%),
+        #050505;
+    }
+
+    a { color:inherit; text-decoration:none; }
+
+    .app {
+      display:grid;
+      grid-template-columns:260px 1fr;
+      min-height:100vh;
+    }
+
+    .sidebar {
+      background:#090909;
+      border-right:1px solid var(--border);
+      padding:24px;
+    }
+
+    .league-logo {
+      width:92px;
+      height:92px;
+      object-fit:contain;
+      margin-bottom:14px;
+    }
+
+    .side-title {
+      font-size:24px;
+      line-height:1.05;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .subtitle {
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:26px;
+    }
+
+    .nav a {
+      display:block;
+      padding:12px 14px;
+      border-radius:14px;
+      margin-bottom:8px;
+      color:#ddd6c8;
+    }
+
+    .nav a:hover { background:rgba(226,200,117,.12); }
+
+    .nav .active {
+      background:linear-gradient(135deg,#1a1a1a,var(--gold));
+      color:white;
+      font-weight:bold;
+      border:1px solid var(--border);
+    }
+
+    .main {
+      padding:28px;
+      max-width:1550px;
+    }
+
+    .hero {
+      background:linear-gradient(135deg,rgba(20,20,20,.98),rgba(75,58,22,.94));
+      border:1px solid var(--border);
+      border-radius:28px;
+      padding:30px;
+      margin-bottom:20px;
+    }
+
+    .hero h1 {
+      margin:0;
+      font-size:44px;
+    }
+        .toolbar {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    select {
+      background:#090909;
+      color:white;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px 16px;
+      font-size:15px;
+      font-weight:bold;
+    }
+
+    .draft-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(310px,1fr));
+      gap:16px;
+    }
+
+    .pick-card {
+      background:rgba(18,18,18,.96);
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:16px;
+      display:grid;
+      grid-template-columns:78px 1fr;
+      gap:14px;
+      align-items:center;
+    }
+
+    .player-img {
+      width:78px;
+      height:78px;
+      border-radius:16px;
+      object-fit:cover;
+      background:#111;
+      border:1px solid rgba(226,200,117,.25);
+    }
+
+    .pick-meta {
+      color:var(--light-gold);
+      font-size:12px;
+      font-weight:bold;
+      text-transform:uppercase;
+      margin-bottom:6px;
+    }
+
+    .player-name {
+      font-size:20px;
+      font-weight:900;
+      margin-bottom:5px;
+    }
+
+    .player-sub {
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:10px;
+    }
+
+    .owner-row {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:#ddd6c8;
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    .owner-logo {
+      width:26px;
+      height:26px;
+      object-fit:contain;
+    }
+
+    @media(max-width:900px) {
+      .app { grid-template-columns:1fr; }
+      .sidebar { border-right:none; border-bottom:1px solid var(--border); }
+      .main { padding:18px; }
+      .draft-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <img class="league-logo" src="assets/logos/dynasty-league-logo.png.png">
+
+    <div class="side-title">
+      The Dynasty<br>League HQ
+    </div>
+
+    <div class="subtitle">
+      Est. 2025 · Dynasty. Records. Lore.
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Dashboard</a>
+      <a href="teams.html">Team Pages</a>
+      <a href="standings.html">Standings</a>
+      <a class="active" href="draft-history.html">Draft History</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section class="hero">
+      <h1>Draft History</h1>
+    </section>
+
+    <div class="toolbar">
+      <div>
+        <label for="season-select" style="color:#b8b0a0;font-size:13px;">Season</label><br>
+        <select id="season-select"></select>
+      </div>
+    </div>
+
+    <section class="draft-grid" id="draft-grid"></section>
+
+  </main>
+
+</div>
+<script src="data.js"></script>
+
+<script>
+const PUBLISHED_BASE =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZp4lAXVZrcMa2y_dfi6h3xDjn4gqsFPlVCXFZA_RRLCthhqtDVca9CG8xmK1ZZQD3xxFinaZpqFip/pub?output=csv";
+
+const draftDataGid = "376431048";
+const logosGid = "356018794";
+
+function csvUrl(gid, range) {
+  return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
+}
+
+function parseCSV(text) {
+  return text.trim().split("\n").map(row =>
+    row.split(",").map(cell => cell.replace(/^"|"$/g, "").trim())
+  );
+}
+
+async function getRange(gid, range) {
+  const response = await fetch(csvUrl(gid, range));
+  const text = await response.text();
+  return parseCSV(text);
+}
+
+let allDraftRows = [];
+let currentSeason = "";
+
+async function loadDraftData() {
+  const draftRows = await getRange(draftDataGid, "A:Q");
+  const logoRows = await getRange(logosGid, "A:C");
+
+  window.logoLookup = {};
+
+  logoRows.slice(1).forEach(row => {
+    const name = row[0];
+    const logo = row[1];
+
+    if (name && logo) {
+      window.logoLookup[name.toLowerCase().trim()] = logo;
+    }
+  });
+
+  allDraftRows = draftRows
+    .slice(1)
+    .filter(row => row[0]);
+
+  const seasons = [...new Set(allDraftRows.map(row => row[0]))]
+    .sort((a, b) => Number(b) - Number(a));
+
+  const seasonSelect =
+    document.getElementById("season-select");
+
+  seasonSelect.innerHTML = seasons.map(season => `
+    <option value="${season}">
+      ${season}
+    </option>
+  `).join("");
+
+  seasonSelect.addEventListener("change", () => {
+    currentSeason = seasonSelect.value;
+    renderDraftSeason();
+  });
+
+  currentSeason = seasons[0];
+
+  renderDraftSeason();
+}
+ function renderDraftSeason() {
+  const rows = allDraftRows
+    .filter(row => row[0] === currentSeason)
+    .sort((a, b) => Number(a[7]) - Number(b[7]));
+
+  document.getElementById("draft-grid").innerHTML = rows.map(row => {
+    const round = row[5];
+    const pick = row[6];
+    const overall = row[7];
+    const fantasyTeam = row[10];
+    const playerName = row[12];
+    const position = row[13];
+    const nflTeam = row[14];
+    const imageUrl = row[15];
+
+    const logo =
+      window.logoLookup?.[fantasyTeam?.toLowerCase().trim()];
+
+    return `
+      <div class="pick-card">
+        <img class="player-img" src="${imageUrl || ""}">
+
+        <div>
+          <div class="pick-meta">
+            Round ${round} · Pick ${pick} · Overall ${overall}
+          </div>
+
+          <div class="player-name">${playerName}</div>
+
+          <div class="player-sub">
+            ${position || ""}${nflTeam ? " · " + nflTeam : ""}
+          </div>
+
+          <div class="owner-row">
+            ${logo ? `<img class="owner-logo" src="${logo}">` : ""}
+            ${fantasyTeam || "Unknown Team"}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+loadDraftData();
+</script>
+
+</body>
+</html> 
