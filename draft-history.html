@@ -312,12 +312,13 @@ logoRows.slice(1).forEach(row => {
     const imageUrl = row[15];
 
     const matchingTeam = teams.find(team =>
-  team.ownerId == ownerId ||
-  team.sleeperId == ownerId ||
-  team.owner_id == ownerId
+  team.id?.toLowerCase().trim() === fantasyTeam?.toLowerCase().trim() ||
+  team.name?.toLowerCase().trim() === fantasyTeam?.toLowerCase().trim() ||
+  team.owner?.toLowerCase().trim() === fantasyTeam?.toLowerCase().trim()
 );
 
 const logo =
+  matchingTeam?.logo ||
   window.logoBySleeperId?.[String(ownerId).trim()] ||
   window.logoLookup?.[fantasyTeam?.toLowerCase().trim()];
 
