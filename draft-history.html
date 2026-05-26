@@ -323,6 +323,7 @@ logoRows.slice(1).forEach(row => {
     const position = row[13];
     const nflTeam = row[14];
     const imageUrl = row[15];
+    const college = row[18];
 
     const matchingTeam = teams.find(team =>
   team.id?.toLowerCase().trim() === fantasyTeam?.toLowerCase().trim() ||
@@ -347,8 +348,10 @@ const logo =
   <div class="player-name">${playerName}</div>
 
   <div class="player-sub">
-    ${position || ""}${nflTeam ? " · " + nflTeam : ""}
-  </div>
+  ${position || ""}
+  ${nflTeam ? " · " + nflTeam : ""}
+  ${college ? " · " + college : ""}
+</div>
 </div>
 
 <div class="owner-row">
