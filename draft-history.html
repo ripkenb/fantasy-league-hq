@@ -129,7 +129,16 @@
   font-weight:bold;
   text-align:center;
 }
-
+.pick-card {
+  background:rgba(18,18,18,.96);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:22px;
+  display:grid;
+  grid-template-columns:120px 1fr 120px;
+  gap:22px;
+  align-items:center;
+}
 .player-img {
   width:120px;
   height:120px;
@@ -161,13 +170,14 @@
 
     .owner-row {
   display:flex;
+  flex-direction:column;
   align-items:center;
-  justify-content:space-between;
-  gap:14px;
+  justify-content:center;
+  gap:10px;
   color:#ddd6c8;
   font-size:16px;
   font-weight:bold;
-  margin-top:12px;
+  text-align:center;
 }
 
     .owner-logo {
