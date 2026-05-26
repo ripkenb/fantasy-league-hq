@@ -255,16 +255,21 @@ async function loadDraftData() {
   const logoRows = await getRange(logosGid, "A:C");
 
   window.logoLookup = {};
+window.logoBySleeperId = {};
 
-  logoRows.slice(1).forEach(row => {
-    const name = row[0];
-    const logo = row[1];
+logoRows.slice(1).forEach(row => {
+  const name = row[0];
+  const logo = row[1];
+  const sleeperId = row[2];
 
-    if (name && logo) {
-      window.logoLookup[name.toLowerCase().trim()] = logo;
-    }
-  });
+  if (name && logo) {
+    window.logoLookup[name.toLowerCase().trim()] = logo;
+  }
 
+  if (sleeperId && logo) {
+    window.logoBySleeperId[String(sleeperId).trim()] = logo;
+  }
+});
   allDraftRows = draftRows
     .slice(1)
     .filter(row => row[0]);
@@ -313,7 +318,7 @@ async function loadDraftData() {
 );
 
 const logo =
-  matchingTeam?.logo ||
+  window.logoBySleeperId?.[String(ownerId).trim()] ||
   window.logoLookup?.[fantasyTeam?.toLowerCase().trim()];
 
     return `
