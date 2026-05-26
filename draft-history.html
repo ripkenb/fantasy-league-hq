@@ -300,13 +300,21 @@ async function loadDraftData() {
     const pick = row[6];
     const overall = row[7];
     const fantasyTeam = row[10];
+    const ownerId = row[9];
     const playerName = row[12];
     const position = row[13];
     const nflTeam = row[14];
     const imageUrl = row[15];
 
-    const logo =
-      window.logoLookup?.[fantasyTeam?.toLowerCase().trim()];
+    const matchingTeam = teams.find(team =>
+  team.ownerId == ownerId ||
+  team.sleeperId == ownerId ||
+  team.owner_id == ownerId
+);
+
+const logo =
+  matchingTeam?.logo ||
+  window.logoLookup?.[fantasyTeam?.toLowerCase().trim()];
 
     return `
       <div class="pick-card">
