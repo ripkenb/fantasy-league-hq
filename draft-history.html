@@ -118,15 +118,16 @@
   gap:18px;
 }
 
-.pick-card {
-  background:rgba(18,18,18,.96);
-  border:1px solid var(--border);
-  border-radius:22px;
-  padding:22px;
-  display:grid;
-  grid-template-columns:120px 1fr;
-  gap:22px;
+.owner-row {
+  display:flex;
+  flex-direction:column;
   align-items:center;
+  justify-content:center;
+  gap:10px;
+  color:#ddd6c8;
+  font-size:16px;
+  font-weight:bold;
+  text-align:center;
 }
 
 .player-img {
@@ -340,9 +341,9 @@ const logo =
           </div>
 
           <div class="owner-row">
-            ${logo ? `<img class="owner-logo" src="${logo}">` : ""}
-            ${fantasyTeam || "Unknown Team"}
-          </div>
+  ${logo ? `<img class="owner-logo" src="${logo}">` : ""}
+  <div>${fantasyTeam || "Unknown Team"}</div>
+</div>
         </div>
       </div>
     `;
