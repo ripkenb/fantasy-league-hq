@@ -425,18 +425,24 @@ function renderTrades() {
       return `
         <div class="trade-card">
 
-          <div class="trade-header">
-            <div>${date}</div>
-            <div>Transaction ${transactionId}</div>
-          </div>
+          <<div class="trade-header">
+  <div class="trade-date">${date}</div>
+</div>
 
           <div class="trade-body" style="grid-template-columns:${columnCount};">
 
             ${tradeRows.map((row, index) => {
               const team = row[4];
               const receives = row[5];
-              const logo =
-                window.logoLookup?.[team.toLowerCase().trim()];
+              const matchingTeam = teams.find(t =>
+  t.owner?.toLowerCase().trim() === team.toLowerCase().trim() ||
+  t.name?.toLowerCase().trim() === team.toLowerCase().trim() ||
+  t.id?.toLowerCase().trim() === team.toLowerCase().trim()
+);
+
+const logo =
+  matchingTeam?.logo ||
+  window.logoLookup?.[team.toLowerCase().trim()];
 
               return `
                 ${tradeRows.length === 2 && index === 1
