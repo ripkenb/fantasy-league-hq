@@ -124,11 +124,23 @@
     }
 
     .trade-card {
-      background:rgba(18,18,18,.96);
-      border:1px solid var(--border);
-      border-radius:24px;
-      padding:20px;
-    }
+  background:
+    linear-gradient(
+      135deg,
+      rgba(14,14,14,.98),
+      rgba(25,20,10,.92)
+    );
+
+  border:1px solid rgba(226,200,117,.22);
+  border-radius:30px;
+  padding:24px;
+
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.02),
+    0 12px 30px rgba(0,0,0,.35);
+
+  transition:.2s ease;
+}
 
     .trade-header {
       display:flex;
@@ -156,6 +168,7 @@
       border:1px solid rgba(226,200,117,.16);
       border-radius:18px;
       padding:16px;
+      min-height:230px;
     }
 
     .team-head {
