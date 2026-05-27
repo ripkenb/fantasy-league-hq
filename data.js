@@ -432,7 +432,11 @@ const teams = [
   name: "Crusty Clams",
   logo: "assets/logos/crusty-clams.png.png",
   gid: "540071977",
-  sleeperId: "1129216622843011072"
+  sleeperId: "1129216622843011072",
+  record: "0-0",
+  titles: 0,
+  pointsFor: 0,
+  pointsAgainst: 0
 }
 
 ];
