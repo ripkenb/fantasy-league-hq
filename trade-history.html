@@ -355,13 +355,23 @@ async function loadTradeData() {
       window.logoLookup[name.toLowerCase().trim()] = logo;
     }
   });
-  playerRows.slice(1).forEach(row => {
-  const playerName = row[1];
-  const imageUrl = row[4];
+  window.pickLookup = {};
 
-  if (playerName && imageUrl) {
-    window.playerLookup[playerName.toLowerCase().trim()] = {
-      image: imageUrl
+draftRows.slice(1).forEach(row => {
+  const season = row[0];
+  const round = row[5];
+  const overall = row[7];
+  const playerName = row[12];
+  const imageUrl = row[15];
+  const originalOwner = row[19];
+
+  if (season && round && originalOwner) {
+    const key = `${originalOwner.toLowerCase().trim()}|${season}|${round}`;
+
+    window.pickLookup[key] = {
+      overall,
+      playerName,
+      imageUrl
     };
   }
 });
