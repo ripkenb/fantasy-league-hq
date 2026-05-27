@@ -445,7 +445,11 @@ function assetPills(receives) {
   return receives.split(",").map(asset => {
 
     const cleanAsset = asset.trim();
+const formattedPick = formatDraftPick(cleanAsset);
 
+if (formattedPick) {
+  return formattedPick;
+}
     const matchedPlayer =
       window.playerLookup?.[cleanAsset.toLowerCase().trim()];
 
