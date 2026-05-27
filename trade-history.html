@@ -355,6 +355,16 @@ async function loadTradeData() {
       window.logoLookup[name.toLowerCase().trim()] = logo;
     }
   });
+  playerRows.slice(1).forEach(row => {
+  const playerName = row[1];
+  const imageUrl = row[4];
+
+  if (playerName && imageUrl) {
+    window.playerLookup[playerName.toLowerCase().trim()] = {
+      image: imageUrl
+    };
+  }
+});
   window.pickLookup = {};
 
 draftRows.slice(1).forEach(row => {
@@ -365,14 +375,18 @@ draftRows.slice(1).forEach(row => {
   const imageUrl = row[15];
   const originalOwner = row[19];
 
-  if (season && round && originalOwner) {
+  if (season && round && pickNumber && originalOwner) {
     const key = `${originalOwner.toLowerCase().trim()}|${season}|${round}`;
 
-    window.pickLookup[key] = {
-      pickNumber,
-      playerName,
-      imageUrl
-    };
+    const currentPick = window.pickLookup[key];
+
+    if (!currentPick || Number(pickNumber) < Number(currentPick.pickNumber)) {
+      window.pickLookup[key] = {
+        pickNumber,
+        playerName,
+        imageUrl
+      };
+    }
   }
 });
 
