@@ -360,7 +360,7 @@ async function loadTradeData() {
 draftRows.slice(1).forEach(row => {
   const season = row[0];
   const round = row[5];
-  const overall = row[7];
+  const pickNumber = row[6];
   const playerName = row[12];
   const imageUrl = row[15];
   const originalOwner = row[19];
@@ -369,7 +369,7 @@ draftRows.slice(1).forEach(row => {
     const key = `${originalOwner.toLowerCase().trim()}|${season}|${round}`;
 
     window.pickLookup[key] = {
-      overall,
+      pickNumber,
       playerName,
       imageUrl
     };
@@ -491,7 +491,7 @@ function formatDraftPick(asset) {
     return `<span class="asset-pill">${season} ${suffix} via ${originalOwner}</span>`;
   }
 
-  const pickLabel = `${season} ${round}.${String(pick.overall).padStart(2, "0")} via ${originalOwner}`;
+  const pickLabel = `${season} ${round}.${String(pick.pickNumber).padStart(2, "0")} via ${originalOwner}`;
 
   return `
     <div class="player-asset">
