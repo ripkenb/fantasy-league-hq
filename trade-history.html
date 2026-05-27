@@ -283,6 +283,7 @@ const PUBLISHED_BASE =
 const tradesGid = "1830360245";
 const logosGid = "356018794";
   const playersGid = "206352208";
+  const draftDataGid = "376431048";
 
 function csvUrl(gid, range) {
   return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
@@ -341,6 +342,7 @@ async function loadTradeData() {
   const tradeRows = await getRange(tradesGid, "A:F");
   const logoRows = await getRange(logosGid, "A:C");
   const playerRows = await getRange(playersGid, "A:F");
+  const draftRows = await getRange(draftDataGid, "A:T");
 
   window.logoLookup = {};
   window.playerLookup = {};
