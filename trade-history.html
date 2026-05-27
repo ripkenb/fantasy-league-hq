@@ -469,7 +469,37 @@ if (formattedPick) {
 
   }).join("");
 }
+function formatDraftPick(asset) {
+  const match = asset.match(/^(.+?)\s+(\d{4})\s+Round\s+(\d+)$/i);
 
+  if (!match) return "";
+
+  const originalOwner = match[1].trim();
+  const season = match[2];
+  const round = match[3];
+
+  const key = `${originalOwner.toLowerCase().trim()}|${season}|${round}`;
+  const pick = window.pickLookup?.[key];
+
+  const suffix =
+    round === "1" ? "1st Rd" :
+    round === "2" ? "2nd Rd" :
+    round === "3" ? "3rd Rd" :
+    `${round}th Rd`;
+
+  if (!pick) {
+    return `<span class="asset-pill">${season} ${suffix} via ${originalOwner}</span>`;
+  }
+
+  const pickLabel = `${season} ${round}.${String(pick.overall).padStart(2, "0")} via ${originalOwner}`;
+
+  return `
+    <div class="player-asset">
+      ${pick.imageUrl ? `<img class="asset-player-img" src="${pick.imageUrl}">` : ""}
+      <span class="asset-pill">${pickLabel} (${pick.playerName})</span>
+    </div>
+  `;
+}
 function renderTrades() {
   let rows = allTradeRows.filter(row =>
     row[0] === currentSeason
