@@ -412,11 +412,33 @@ async function loadTradeData() {
 }
 
 function assetPills(receives) {
-  if (!receives) return `<span class="asset-pill">No assets listed</span>`;
 
-  return receives.split(",").map(asset => `
-    <span class="asset-pill">${asset.trim()}</span>
-  `).join("");
+  if (!receives) {
+    return `<span class="asset-pill">No assets listed</span>`;
+  }
+
+  return receives.split(",").map(asset => {
+
+    const cleanAsset = asset.trim();
+
+    const matchedPlayer =
+      window.playerLookup?.[cleanAsset.toLowerCase().trim()];
+
+    if (matchedPlayer?.image) {
+
+      return `
+        <div class="player-asset">
+          <img class="asset-player-img" src="${matchedPlayer.image}">
+          <span class="asset-pill">${cleanAsset}</span>
+        </div>
+      `;
+    }
+
+    return `
+      <span class="asset-pill">${cleanAsset}</span>
+    `;
+
+  }).join("");
 }
 
 function renderTrades() {
