@@ -327,8 +327,10 @@ async function loadTradeData() {
 
   const tradeRows = await getRange(tradesGid, "A:F");
   const logoRows = await getRange(logosGid, "A:C");
+  const playerRows = await getRange(playersGid, "A:F");
 
   window.logoLookup = {};
+  window.playerLookup = {};
 
   logoRows.slice(1).forEach(row => {
     const name = row[0];
@@ -338,6 +340,16 @@ async function loadTradeData() {
       window.logoLookup[name.toLowerCase().trim()] = logo;
     }
   });
+  playerRows.slice(1).forEach(row => {
+  const playerName = row[1];
+  const imageUrl = row[4];
+
+  if (playerName && imageUrl) {
+    window.playerLookup[playerName.toLowerCase().trim()] = {
+      image: imageUrl
+    };
+  }
+});
 
   allTradeRows = tradeRows
     .slice(1)
