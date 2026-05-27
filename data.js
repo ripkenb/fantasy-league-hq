@@ -257,6 +257,14 @@ const teams = [
     pointsAgainst: 1512
 
   },
+  {
+  id: "crusty-clams",
+  owner: "Colton",
+  name: "Crusty Clams",
+  logo: "assets/logos/crusty-clams.png.png",
+  gid: "540071977",
+  sleeperId: "1129216622843011072"
+},
 
   {
 
