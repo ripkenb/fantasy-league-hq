@@ -459,13 +459,22 @@ function renderTrades() {
     row[0] === currentSeason
   );
 
-  const groupedTrades = groupTrades(rows).filter(tradeRows => {
-  if (currentTeam === "All Teams") return true;
+  const groupedTrades = groupTrades(rows)
+  .filter(tradeRows => {
 
-  return tradeRows.some(row =>
-    row[4] === currentTeam
-  );
-});
+    if (currentTeam === "All Teams") return true;
+
+    return tradeRows.some(row =>
+      row[4] === currentTeam
+    );
+  })
+  .sort((a, b) => {
+
+    const dateA = new Date(a[0][2]);
+    const dateB = new Date(b[0][2]);
+
+    return dateB - dateA;
+  });
 
   document.getElementById("trade-list").innerHTML =
     groupedTrades.map(tradeRows => {
