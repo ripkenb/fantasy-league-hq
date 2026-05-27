@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trade History | Dynasty League HQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { box-sizing:border-box; }
+
+    :root {
+      --gold:#b38628;
+      --light-gold:#e2c875;
+      --muted:#b8b0a0;
+      --border:rgba(226,200,117,.25);
+      --white:#f8f5ed;
+    }
+
+    body {
+      margin:0;
+      font-family:Arial,sans-serif;
+      color:var(--white);
+      background:
+        radial-gradient(circle at top right, rgba(179,134,40,.18), transparent 30%),
+        radial-gradient(circle at top left, rgba(226,200,117,.10), transparent 35%),
+        #050505;
+    }
+
+    a { color:inherit; text-decoration:none; }
+
+    .app {
+      display:grid;
+      grid-template-columns:260px 1fr;
+      min-height:100vh;
+    }
+
+    .sidebar {
+      background:#090909;
+      border-right:1px solid var(--border);
+      padding:24px;
+    }
+
+    .league-logo {
+      width:92px;
+      height:92px;
+      object-fit:contain;
+      margin-bottom:14px;
+    }
+
+    .side-title {
+      font-size:24px;
+      line-height:1.05;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .subtitle {
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:26px;
+    }
+
+    .nav a {
+      display:block;
+      padding:12px 14px;
+      border-radius:14px;
+      margin-bottom:8px;
+      color:#ddd6c8;
+    }
+
+    .nav a:hover { background:rgba(226,200,117,.12); }
+
+    .nav .active {
+      background:linear-gradient(135deg,#1a1a1a,var(--gold));
+      color:white;
+      font-weight:bold;
+      border:1px solid var(--border);
+    }
+        .main {
+      padding:28px;
+      max-width:1550px;
+    }
+
+    .hero {
+      background:linear-gradient(135deg,rgba(20,20,20,.98),rgba(75,58,22,.94));
+      border:1px solid var(--border);
+      border-radius:28px;
+      padding:30px;
+      margin-bottom:20px;
+    }
+
+    .hero h1 {
+      margin:0;
+      font-size:44px;
+    }
+
+    .toolbar {
+      display:flex;
+      gap:14px;
+      align-items:end;
+      margin-bottom:20px;
+      flex-wrap:wrap;
+    }
+
+    label {
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    select {
+      background:#090909;
+      color:white;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px 16px;
+      font-size:15px;
+      font-weight:bold;
+      min-width:180px;
+    }
+
+    .trade-list {
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .trade-card {
+      background:rgba(18,18,18,.96);
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:20px;
+    }
+
+    .trade-header {
+      display:flex;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:16px;
+    }
+
+    .trade-body {
+      display:grid;
+      gap:16px;
+      align-items:stretch;
+    }
+
+    .trade-side {
+      background:#090909;
+      border:1px solid rgba(226,200,117,.16);
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .team-head {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    .team-logo {
+      width:54px;
+      height:54px;
+      object-fit:contain;
+    }
+
+    .team-name {
+      font-size:20px;
+      font-weight:900;
+    }
+
+    .receives-label {
+      color:var(--light-gold);
+      font-size:12px;
+      text-transform:uppercase;
+      font-weight:bold;
+      margin-bottom:8px;
+    }
+
+    .asset-list {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .asset-pill {
+      border:1px solid rgba(226,200,117,.25);
+      background:rgba(226,200,117,.08);
+      border-radius:999px;
+      padding:8px 11px;
+      font-size:13px;
+    }
+
+    .trade-arrow {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--light-gold);
+      font-size:26px;
+      font-weight:900;
+    }
+
+    @media(max-width:900px) {
+      .app { grid-template-columns:1fr; }
+      .sidebar { border-right:none; border-bottom:1px solid var(--border); }
+      .main { padding:18px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <img class="league-logo" src="assets/logos/dynasty-league-logo.png.png">
+
+    <div class="side-title">
+      The Dynasty<br>League HQ
+    </div>
+
+    <div class="subtitle">
+      Est. 2025 · Dynasty. Records. Lore.
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Dashboard</a>
+      <a href="teams.html">Team Pages</a>
+      <a href="standings.html">Standings</a>
+      <a href="draft-history.html">Draft History</a>
+      <a class="active" href="trade-history.html">Trade History</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section class="hero">
+      <h1>Trade History</h1>
+    </section>
+
+    <div class="toolbar">
+      <div>
+        <label for="season-select">Season</label><br>
+        <select id="season-select"></select>
+      </div>
+
+      <div>
+        <label for="team-select">Team</label><br>
+        <select id="team-select"></select>
+      </div>
+    </div>
+
+    <section class="trade-list" id="trade-list"></section>
+
+  </main>
+
+</div>
+<script src="data.js"></script>
+
+<script>
+const PUBLISHED_BASE =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZp4lAXVZrcMa2y_dfi6h3xDjn4gqsFPlVCXFZA_RRLCthhqtDVca9CG8xmK1ZZQD3xxFinaZpqFip/pub?output=csv";
+
+const tradesGid = "1830360245";
+const logosGid = "356018794";
+
+function csvUrl(gid, range) {
+  return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
+}
+
+function parseCSV(text) {
+  return text.trim().split("\n").map(row =>
+    row.split(",").map(cell => cell.replace(/^"|"$/g, "").trim())
+  );
+}
+
+async function getRange(gid, range) {
+  const response = await fetch(csvUrl(gid, range));
+  const text = await response.text();
+  return parseCSV(text);
+}
+
+let allTradeRows = [];
+let currentSeason = "";
+let currentTeam = "All Teams";
+
+async function loadTradeData() {
+
+  const tradeRows = await getRange(tradesGid, "A:F");
+  const logoRows = await getRange(logosGid, "A:C");
+
+  window.logoLookup = {};
+
+  logoRows.slice(1).forEach(row => {
+    const name = row[0];
+    const logo = row[1];
+
+    if (name && logo) {
+      window.logoLookup[name.toLowerCase().trim()] = logo;
+    }
+  });
+
+  allTradeRows = tradeRows
+    .slice(1)
+    .filter(row => row[0]);
+
+  const seasons = [...new Set(allTradeRows.map(row => row[0]))]
+    .sort((a,b) => Number(b) - Number(a));
+
+  const teamsList = [
+    "All Teams",
+    ...new Set(allTradeRows.map(row => row[4]))
+  ].sort();
+
+  const seasonSelect =
+    document.getElementById("season-select");
+
+  seasonSelect.innerHTML = seasons.map(season => `
+    <option value="${season}">
+      ${season}
+    </option>
+  `).join("");
+
+  const teamSelect =
+    document.getElementById("team-select");
+
+  teamSelect.innerHTML = teamsList.map(team => `
+    <option value="${team}">
+      ${team}
+    </option>
+  `).join("");
+
+  seasonSelect.addEventListener("change", () => {
+    currentSeason = seasonSelect.value;
+    renderTrades();
+  });
+
+  teamSelect.addEventListener("change", () => {
+    currentTeam = teamSelect.value;
+    renderTrades();
+  });
+
+  currentSeason = seasons[0];
+
+  renderTrades();
+}
+  function groupTrades(rows) {
+  const grouped = {};
+
+  rows.forEach(row => {
+    const transactionId = row[3];
+
+    if (!grouped[transactionId]) {
+      grouped[transactionId] = [];
+    }
+
+    grouped[transactionId].push(row);
+  });
+
+  return Object.values(grouped);
+}
+
+function assetPills(receives) {
+  if (!receives) return `<span class="asset-pill">No assets listed</span>`;
+
+  return receives.split(",").map(asset => `
+    <span class="asset-pill">${asset.trim()}</span>
+  `).join("");
+}
+
+function renderTrades() {
+  let rows = allTradeRows.filter(row =>
+    row[0] === currentSeason
+  );
+
+  if (currentTeam !== "All Teams") {
+    rows = rows.filter(row =>
+      row[4] === currentTeam
+    );
+  }
+
+  const groupedTrades = groupTrades(rows);
+
+  document.getElementById("trade-list").innerHTML =
+    groupedTrades.map(tradeRows => {
+      const firstRow = tradeRows[0];
+      const date = firstRow[2];
+      const transactionId = firstRow[3];
+
+      const columnCount = tradeRows.length === 2
+        ? "1fr 70px 1fr"
+        : `repeat(${tradeRows.length}, 1fr)`;
+
+      return `
+        <div class="trade-card">
+
+          <div class="trade-header">
+            <div>${date}</div>
+            <div>Transaction ${transactionId}</div>
+          </div>
+
+          <div class="trade-body" style="grid-template-columns:${columnCount};">
+
+            ${tradeRows.map((row, index) => {
+              const team = row[4];
+              const receives = row[5];
+              const logo =
+                window.logoLookup?.[team.toLowerCase().trim()];
+
+              return `
+                ${tradeRows.length === 2 && index === 1
+                  ? `<div class="trade-arrow">⇄</div>`
+                  : ""
+                }
+
+                <div class="trade-side">
+                  <div class="team-head">
+                    ${logo ? `<img class="team-logo" src="${logo}">` : ""}
+                    <div class="team-name">${team}</div>
+                  </div>
+
+                  <div class="receives-label">Receives</div>
+
+                  <div class="asset-list">
+                    ${assetPills(receives)}
+                  </div>
+                </div>
+              `;
+            }).join("")}
+
+          </div>
+
+        </div>
+      `;
+    }).join("");
+}
+
+loadTradeData();
+</script>
+
+</body>
+</html>
