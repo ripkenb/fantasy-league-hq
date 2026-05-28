@@ -323,8 +323,6 @@ function parseCSV(text) {
 
   return rows;
 }
-  );
-}
 
 async function getRange(gid, range) {
   const response = await fetch(csvUrl(gid, range));
