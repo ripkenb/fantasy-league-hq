@@ -380,7 +380,11 @@ function buildNoHeaderTable(title, rows, headers, wide = false) {
         <tbody>
           ${body.map(row => `
             <tr>
-              ${row.map(cell => `<td>${cell}</td>`).join("")}
+              ${row.map((cell, index) => `
+  <td>
+    ${index === 0 ? logoCell(cell) : cell}
+  </td>
+`).join("")}
             </tr>
           `).join("")}
         </tbody>
