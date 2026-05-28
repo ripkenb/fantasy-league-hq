@@ -367,7 +367,7 @@ function buildTable(title, rows, wide = false) {
 
   return `
     <td>
-      ${shouldLogo ? logoCell(cell) : cell}
+      ${playerCell(cell) !== cell ? playerCell(cell) : shouldLogo ? logoCell(cell) : cell}
     </td>
   `;
 
