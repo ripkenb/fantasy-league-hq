@@ -472,7 +472,7 @@ function sectionHeader(title, id) {
   async function loadLeagueRecords() {
 
   const [
-    getRange(playerDataGid, "A:F"),
+    playerRows,
     champions,
     regularSeason,
     playoffRecords,
@@ -494,6 +494,7 @@ function sectionHeader(title, id) {
     smallestMargins,
     largestMargins
   ] = await Promise.all([
+    getRange(playerDataGid, "A:F"),
     getRange(ownerSummaryGid, "A:J"),
     getRange(recordsGid, "D10:I28"),
     getRange(recordsGid, "K10:O28"),
@@ -515,6 +516,34 @@ function sectionHeader(title, id) {
     getRange(recordsGid, "E56:H66"),
     getRange(recordsGid, "E70:H80")
   ]);
+    window.playerLookup = {};
+
+playerRows.slice(1).forEach(row => {
+
+  const playerName = row[1];
+  const position = row[2];
+  const imageUrl = row[4];
+
+  if (playerName && imageUrl) {
+
+    const key =
+      `${playerName.toLowerCase().trim()}-${position}`;
+
+    window.playerLookup[key] = {
+      image:imageUrl
+    };
+
+    if (
+      ["QB","RB","WR","TE"].includes(position)
+    ) {
+      window.playerLookup[
+        playerName.toLowerCase().trim()
+      ] = {
+        image:imageUrl
+      };
+    }
+  }
+});
       const html = [
     buildChampions(champions),
 
