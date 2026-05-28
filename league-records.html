@@ -606,7 +606,33 @@ playerRows.slice(1).forEach(row => {
 
   document.getElementById("records-grid").innerHTML = html;
 }
+function sortTable(header, columnIndex) {
+  const table = header.closest("table");
+  const tbody = table.querySelector("tbody");
+  const rows = Array.from(tbody.querySelectorAll("tr"));
 
+  const currentDirection = header.dataset.direction === "asc" ? "desc" : "asc";
+  header.dataset.direction = currentDirection;
+
+  rows.sort((a, b) => {
+    const aText = a.children[columnIndex].innerText.replace("%", "").trim();
+    const bText = b.children[columnIndex].innerText.replace("%", "").trim();
+
+    const aNum = Number(aText);
+    const bNum = Number(bText);
+
+    if (!isNaN(aNum) && !isNaN(bNum)) {
+      return currentDirection === "asc" ? aNum - bNum : bNum - aNum;
+    }
+
+    return currentDirection === "asc"
+      ? aText.localeCompare(bText)
+      : bText.localeCompare(aText);
+  });
+
+  tbody.innerHTML = "";
+  rows.forEach(row => tbody.appendChild(row));
+}
 loadLeagueRecords();
 
 </script>
