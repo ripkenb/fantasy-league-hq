@@ -507,9 +507,40 @@ function buildChampions(rows) {
           <div class="draft-box">
             <h3>${row[0]}</h3>
             <p>${row[1]}</p>
-            <div style="color:var(--muted);font-size:12px;margin-top:6px;">
-              ${row.slice(2).filter(Boolean).join(" · ")}
-            </div>
+           <div style="
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+  margin-top:14px;
+  font-size:11px;
+">
+
+  <div>
+    <div style="color:var(--muted)">1st</div>
+    <div>${row[2] || 0}</div>
+  </div>
+
+  <div>
+    <div style="color:var(--muted)">2nd</div>
+    <div>${row[3] || 0}</div>
+  </div>
+
+  <div>
+    <div style="color:var(--muted)">3rd</div>
+    <div>${row[4] || 0}</div>
+  </div>
+
+  <div>
+    <div style="color:var(--muted)">4th</div>
+    <div>${row[5] || 0}</div>
+  </div>
+
+  <div>
+    <div style="color:var(--muted)">5th</div>
+    <div>${row[6] || 0}</div>
+  </div>
+
+</div>
           </div>
         `).join("")}
       </div>
