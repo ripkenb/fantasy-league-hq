@@ -317,6 +317,22 @@ function logoCell(value) {
     </div>
   `;
 }
+ function playerCell(value) {
+  if (!value) return "";
+
+  const cleaned = value.toLowerCase().trim();
+
+  const player = window.playerLookup?.[cleaned];
+
+  if (!player?.image) return value;
+
+  return `
+    <div class="team-row">
+      <img class="team-logo" src="${player.image}">
+      <span>${value}</span>
+    </div>
+  `;
+} 
 function buildTable(title, rows, wide = false) {
 
   if (!rows?.length) return "";
