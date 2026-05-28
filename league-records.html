@@ -365,11 +365,27 @@ function buildTable(title, rows, wide = false) {
     lowerTitle.includes("record") ||
     lowerTitle.includes("trader");
 
-  return `
-    <td>
-      ${playerCell(cell) !== cell ? playerCell(cell) : shouldLogo ? logoCell(cell) : cell}
-    </td>
-  `;
+ return `
+  <td>
+    ${
+      playerCell(cell) !== cell
+        ? playerCell(cell)
+        : (
+            index === 1 &&
+            (
+              lowerTitle.includes("qb") ||
+              lowerTitle.includes("rb") ||
+              lowerTitle.includes("wr") ||
+              lowerTitle.includes("te")
+            )
+          )
+            ? logoCell(cell)
+            : shouldLogo
+              ? logoCell(cell)
+              : cell
+    }
+  </td>
+`;
 
 }).join("")}
             </tr>
