@@ -100,29 +100,6 @@
       margin:10px 0 0;
     }
 
-    .section-nav {
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:22px;
-      position:sticky;
-      top:0;
-      z-index:10;
-      background:rgba(5,5,5,.92);
-      padding:12px 0;
-      backdrop-filter:blur(10px);
-    }
-
-    .section-nav a {
-      border:1px solid var(--border);
-      background:#090909;
-      color:var(--light-gold);
-      border-radius:999px;
-      padding:10px 14px;
-      font-size:13px;
-      font-weight:bold;
-    }
-
     .records-grid {
       display:grid;
       grid-template-columns:repeat(2,1fr);
@@ -273,15 +250,6 @@
       <p>All-time records, champions, scoring marks, draft trends, and league history.</p>
     </section>
 
-    <div class="section-nav">
-      <a href="#champions">Champions</a>
-      <a href="#team-records">Team Records</a>
-      <a href="#scoring">Scoring</a>
-      <a href="#player-records">Player Records</a>
-      <a href="#draft-trades">Draft & Trades</a>
-      <a href="#margins">Margins</a>
-    </div>
-
     <section class="records-grid" id="records-grid"></section>
 
   </main>
@@ -389,7 +357,7 @@ function buildChampions(rows) {
             <div>
               <div class="champion-owner">${row[1]}</div>
               <div style="color:var(--muted);font-size:13px;">
-                ${row[4]} PF · ${row[2]}-${row[3]}
+                Record: ${row[2]}-${row[3]}
               </div>
             </div>
           </div>
