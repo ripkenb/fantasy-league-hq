@@ -408,10 +408,14 @@ function buildNoHeaderTable(title, rows, headers, wide = false) {
     <section class="record-card ${wide ? "wide" : ""}" id="team-records">
       <h2>${title}</h2>
 
-      <table>
+      <table class="sortable-table">
         <thead>
           <tr>
-            ${headers.map(h => `<th>${h}</th>`).join("")}
+            ${headers.map((h, index) => `
+  <th onclick="sortTable(this, ${index})">
+    ${h}
+  </th>
+`).join("")}
           </tr>
         </thead>
 
