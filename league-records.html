@@ -338,7 +338,23 @@ function buildTable(title, rows, wide = false) {
         <tbody>
           ${body.map(row => `
             <tr>
-              ${row.map(cell => `<td>${cell}</td>`).join("")}
+              ${row.map((cell, index) => {
+
+  const lowerTitle = title.toLowerCase();
+
+  const shouldLogo =
+    index === 0 ||
+    lowerTitle.includes("championship") ||
+    lowerTitle.includes("record") ||
+    lowerTitle.includes("trader");
+
+  return `
+    <td>
+      ${shouldLogo ? logoCell(cell) : cell}
+    </td>
+  `;
+
+}).join("")}
             </tr>
           `).join("")}
         </tbody>
