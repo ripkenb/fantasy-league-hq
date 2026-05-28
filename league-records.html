@@ -275,6 +275,7 @@ const PUBLISHED_BASE =
 
 const recordsGid = "663289779";
 const ownerSummaryGid = "395850369";
+  const playerDataGid = "206352208";
 
 function csvUrl(gid, range) {
   return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
@@ -471,6 +472,7 @@ function sectionHeader(title, id) {
   async function loadLeagueRecords() {
 
   const [
+    getRange(playerDataGid, "A:F"),
     champions,
     regularSeason,
     playoffRecords,
