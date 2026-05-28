@@ -282,7 +282,30 @@ async function getRange(gid, range) {
   const text = await response.text();
   return parseCSV(text);
 }
+function findTeam(value) {
+  if (!value) return null;
 
+  const cleaned = value.toLowerCase().trim();
+
+  return teams.find(team =>
+    team.name?.toLowerCase().trim() === cleaned ||
+    team.owner?.toLowerCase().trim() === cleaned ||
+    team.id?.toLowerCase().trim() === cleaned
+  );
+}
+
+function logoCell(value) {
+  const team = findTeam(value);
+
+  if (!team?.logo) return value;
+
+  return `
+    <div class="team-row">
+      <img class="team-logo" src="${team.logo}">
+      <span>${value}</span>
+    </div>
+  `;
+}
 function buildTable(title, rows, wide = false) {
 
   if (!rows?.length) return "";
