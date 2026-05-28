@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>League Records | Dynasty League HQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { box-sizing:border-box; }
+
+    :root {
+      --gold:#b38628;
+      --light-gold:#e2c875;
+      --muted:#b8b0a0;
+      --border:rgba(226,200,117,.25);
+      --white:#f8f5ed;
+      --green:#22c55e;
+      --red:#ef4444;
+    }
+
+    body {
+      margin:0;
+      font-family:Arial,sans-serif;
+      color:var(--white);
+      background:
+        radial-gradient(circle at top right, rgba(179,134,40,.18), transparent 30%),
+        radial-gradient(circle at top left, rgba(226,200,117,.10), transparent 35%),
+        #050505;
+    }
+
+    a { color:inherit; text-decoration:none; }
+
+    .app {
+      display:grid;
+      grid-template-columns:260px 1fr;
+      min-height:100vh;
+    }
+
+    .sidebar {
+      background:#090909;
+      border-right:1px solid var(--border);
+      padding:24px;
+    }
+
+    .league-logo {
+      width:92px;
+      height:92px;
+      object-fit:contain;
+      margin-bottom:14px;
+    }
+
+    .side-title {
+      font-size:24px;
+      line-height:1.05;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .subtitle {
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:26px;
+    }
+
+    .nav a {
+      display:block;
+      padding:12px 14px;
+      border-radius:14px;
+      margin-bottom:8px;
+      color:#ddd6c8;
+    }
+
+    .nav a:hover { background:rgba(226,200,117,.12); }
+
+    .nav .active {
+      background:linear-gradient(135deg,#1a1a1a,var(--gold));
+      color:white;
+      font-weight:bold;
+      border:1px solid var(--border);
+    }
+        .main {
+      padding:28px;
+      max-width:1600px;
+    }
+
+    .hero {
+      background:linear-gradient(135deg,rgba(20,20,20,.98),rgba(75,58,22,.94));
+      border:1px solid var(--border);
+      border-radius:28px;
+      padding:30px;
+      margin-bottom:20px;
+    }
+
+    .hero h1 {
+      margin:0;
+      font-size:44px;
+    }
+
+    .hero p {
+      color:#fff4d6;
+      margin:10px 0 0;
+    }
+
+    .section-nav {
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:22px;
+      position:sticky;
+      top:0;
+      z-index:10;
+      background:rgba(5,5,5,.92);
+      padding:12px 0;
+      backdrop-filter:blur(10px);
+    }
+
+    .section-nav a {
+      border:1px solid var(--border);
+      background:#090909;
+      color:var(--light-gold);
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    .records-grid {
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:18px;
+    }
+
+    .record-card {
+      background:rgba(18,18,18,.96);
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:20px;
+      box-shadow:0 18px 40px rgba(0,0,0,.25);
+    }
+
+    .record-card.wide {
+      grid-column:1 / -1;
+    }
+
+    .record-card h2 {
+      margin:0 0 14px;
+      color:var(--light-gold);
+      text-transform:uppercase;
+      font-size:19px;
+    }
+        table {
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    th, td {
+      padding:10px 8px;
+      border-bottom:1px solid rgba(226,200,117,.13);
+      text-align:left;
+      font-size:13px;
+      vertical-align:top;
+    }
+
+    th {
+      color:var(--light-gold);
+      text-transform:uppercase;
+      font-size:11px;
+      letter-spacing:.04em;
+    }
+
+    tr:last-child td {
+      border-bottom:none;
+    }
+
+    .rank-cell {
+      color:var(--light-gold);
+      font-weight:900;
+      width:44px;
+    }
+
+    .champion-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+      gap:12px;
+    }
+
+    .champion-card {
+      background:#090909;
+      border:1px solid rgba(226,200,117,.18);
+      border-radius:18px;
+      padding:16px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .champion-year {
+      color:var(--light-gold);
+      font-size:22px;
+      font-weight:900;
+    }
+
+    .champion-owner {
+      font-size:18px;
+      font-weight:900;
+    }
+
+    .draft-chart {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+      gap:12px;
+    }
+
+    .draft-box {
+      background:#090909;
+      border:1px solid rgba(226,200,117,.18);
+      border-radius:18px;
+      padding:16px;
+      text-align:center;
+    }
+
+    .draft-box h3 {
+      margin:0;
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+    }
+
+    .draft-box p {
+      margin:10px 0 0;
+      color:var(--light-gold);
+      font-size:30px;
+      font-weight:900;
+    }
+
+    @media(max-width:1000px) {
+      .app { grid-template-columns:1fr; }
+      .sidebar { border-right:none; border-bottom:1px solid var(--border); }
+      .main { padding:18px; }
+      .records-grid { grid-template-columns:1fr; }
+      .section-nav { position:relative; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <img class="league-logo" src="assets/logos/dynasty-league-logo.png.png">
+
+    <div class="side-title">
+      The Dynasty<br>League HQ
+    </div>
+
+    <div class="subtitle">
+      Est. 2025 · Dynasty. Records. Lore.
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Dashboard</a>
+      <a href="teams.html">Team Pages</a>
+      <a href="standings.html">Standings</a>
+      <a href="draft-history.html">Draft History</a>
+      <a href="trade-history.html">Trade History</a>
+      <a class="active" href="league-records.html">League Records</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section class="hero">
+      <h1>League Records</h1>
+      <p>All-time records, champions, scoring marks, draft trends, and league history.</p>
+    </section>
+
+    <div class="section-nav">
+      <a href="#champions">Champions</a>
+      <a href="#team-records">Team Records</a>
+      <a href="#scoring">Scoring</a>
+      <a href="#player-records">Player Records</a>
+      <a href="#draft-trades">Draft & Trades</a>
+      <a href="#margins">Margins</a>
+    </div>
+
+    <section class="records-grid" id="records-grid"></section>
+
+  </main>
+
+</div>
+<script src="data.js"></script>
+
+<script>
+
+const PUBLISHED_BASE =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZp4lAXVZrcMa2y_dfi6h3xDjn4gqsFPlVCXFZA_RRLCthhqtDVca9CG8xmK1ZZQD3xxFinaZpqFip/pub?output=csv";
+
+const recordsGid = "663289779";
+const ownerSummaryGid = "395850369";
+
+function csvUrl(gid, range) {
+  return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
+}
+
+function parseCSV(text) {
+  return text.trim().split("\n").map(row =>
+    row.split(",").map(cell =>
+      cell.replace(/^"|"$/g, "").trim()
+    )
+  );
+}
+
+async function getRange(gid, range) {
+  const response = await fetch(csvUrl(gid, range));
+  const text = await response.text();
+  return parseCSV(text);
+}
+
+function buildTable(title, rows, wide = false) {
+
+  if (!rows?.length) return "";
+
+  const headers = rows[0];
+  const body = rows.slice(1);
+
+  return `
+    <section class="record-card ${wide ? "wide" : ""}">
+      <h2>${title}</h2>
+
+      <table>
+        <thead>
+          <tr>
+            ${headers.map(h => `<th>${h}</th>`).join("")}
+          </tr>
+        </thead>
+
+        <tbody>
+          ${body.map(row => `
+            <tr>
+              ${row.map(cell => `<td>${cell}</td>`).join("")}
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </section>
+  `;
+}
+function buildNoHeaderTable(title, rows, headers, wide = false) {
+
+  const body = rows.filter(row => row.some(Boolean));
+
+  return `
+    <section class="record-card ${wide ? "wide" : ""}" id="team-records">
+      <h2>${title}</h2>
+
+      <table>
+        <thead>
+          <tr>
+            ${headers.map(h => `<th>${h}</th>`).join("")}
+          </tr>
+        </thead>
+
+        <tbody>
+          ${body.map(row => `
+            <tr>
+              ${row.map(cell => `<td>${cell}</td>`).join("")}
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </section>
+  `;
+}
+
+function buildChampions(rows) {
+
+  const champions = rows
+    .slice(1)
+    .filter(row => row[9] === "Champion")
+    .sort((a,b) => Number(b[0]) - Number(a[0]));
+
+  return `
+    <section class="record-card wide" id="champions">
+      <h2>League Champions</h2>
+
+      <div class="champion-grid">
+        ${champions.map(row => `
+          <div class="champion-card">
+            <div class="champion-year">${row[0]}</div>
+            <div>
+              <div class="champion-owner">${row[1]}</div>
+              <div style="color:var(--muted);font-size:13px;">
+                ${row[4]} PF · ${row[2]}-${row[3]}
+              </div>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}  
+  function buildDraftChart(rows) {
+
+  const cleanRows = rows
+    .slice(1)
+    .filter(row => row.some(Boolean));
+
+  return `
+    <section class="record-card wide" id="draft-trades">
+      <h2>Draft Picks Taken</h2>
+
+      <div class="draft-chart">
+        ${cleanRows.map(row => `
+          <div class="draft-box">
+            <h3>${row[0]}</h3>
+            <p>${row[1]}</p>
+            <div style="color:var(--muted);font-size:12px;margin-top:6px;">
+              ${row.slice(2).filter(Boolean).join(" · ")}
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function sectionHeader(title, id) {
+  return `
+    <section class="record-card wide" id="${id}">
+      <h2>${title}</h2>
+    </section>
+  `;
+}
+  async function loadLeagueRecords() {
+
+  const [
+    champions,
+    regularSeason,
+    playoffRecords,
+    championships,
+    traders,
+    tradeDuos,
+    topSeasonScores,
+    bottomSeasonScores,
+    singleSeasonRecords,
+    qbSeasons,
+    rbSeasons,
+    wrSeasons,
+    teSeasons,
+    qbGames,
+    rbGames,
+    wrGames,
+    teGames,
+    draftPicks,
+    smallestMargins,
+    largestMargins
+  ] = await Promise.all([
+    getRange(ownerSummaryGid, "A:J"),
+    getRange(recordsGid, "D10:I28"),
+    getRange(recordsGid, "K10:O28"),
+    getRange(recordsGid, "Q10:S28"),
+    getRange(recordsGid, "U10:V20"),
+    getRange(recordsGid, "X10:Y15"),
+    getRange(recordsGid, "E30:G40"),
+    getRange(recordsGid, "I30:K40"),
+    getRange(recordsGid, "M30:O40"),
+    getRange(recordsGid, "Q30:T40"),
+    getRange(recordsGid, "W30:Z40"),
+    getRange(recordsGid, "Q43:T53"),
+    getRange(recordsGid, "W43:Z53"),
+    getRange(recordsGid, "AC8:AG18"),
+    getRange(recordsGid, "AC21:AG31"),
+    getRange(recordsGid, "AC34:AG44"),
+    getRange(recordsGid, "AC47:AG57"),
+    getRange(recordsGid, "Q56:X76"),
+    getRange(recordsGid, "E56:H66"),
+    getRange(recordsGid, "E70:H80")
+  ]);
+      const html = [
+    buildChampions(champions),
+
+    buildNoHeaderTable(
+      "Regular Season Records",
+      regularSeason,
+      ["Owner", "Wins", "Losses", "Points For", "Points Against", "Win %"],
+      true
+    ),
+
+    buildTable("Playoff Records", playoffRecords),
+    buildTable("Most Championships", championships),
+    buildTable("Top 10 Traders", traders),
+    buildTable("Top 5 Trade Duos", tradeDuos),
+
+    buildTable("Top 10 Single Season Scores", topSeasonScores),
+    buildTable("Bottom 10 Single Season Scores", bottomSeasonScores),
+    buildTable("Top 10 Single Season Records", singleSeasonRecords),
+
+    buildTable("Top 10 QB Seasons", qbSeasons),
+    buildTable("Top 10 RB Seasons", rbSeasons),
+    buildTable("Top 10 WR Seasons", wrSeasons),
+    buildTable("Top 10 TE Seasons", teSeasons),
+
+    buildTable("Top 10 QB Games", qbGames),
+    buildTable("Top 10 RB Games", rbGames),
+    buildTable("Top 10 WR Games", wrGames),
+    buildTable("Top 10 TE Games", teGames),
+
+    buildDraftChart(draftPicks),
+
+    buildTable("Smallest Margins of Victory", smallestMargins),
+    buildTable("Largest Margins of Victory", largestMargins)
+  ].join("");
+
+  document.getElementById("records-grid").innerHTML = html;
+}
+
+loadLeagueRecords();
+
+</script>
+
+</body>
+</html>
