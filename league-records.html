@@ -395,10 +395,18 @@ function buildTable(title, rows, wide = false) {
   const lowerTitle = title.toLowerCase();
 
   const shouldLogo =
-    index === 0 ||
-    lowerTitle.includes("championship") ||
-    lowerTitle.includes("record") ||
-    lowerTitle.includes("trader");
+  index === 0 ||
+
+  (
+    index === 2 &&
+    (
+      lowerTitle.includes("margin")
+    )
+  ) ||
+
+  lowerTitle.includes("championship") ||
+  lowerTitle.includes("record") ||
+  lowerTitle.includes("trader");
 
  return `
   <td>
