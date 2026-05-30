@@ -386,9 +386,10 @@ function lineupSlot(slotNumber) {
     2: "RB",
     3: "WR",
     4: "WR",
-    5: "FLX",
+    5: "TE",
     6: "FLX",
-    7: "SFLX"
+    7: "FLX",
+    8: "SFLX"
   };
 
   return slots[Number(slotNumber)] || "BN";
@@ -414,7 +415,7 @@ function renderPlayerRows(rows) {
 
         <div>
           <div class="player-name">${playerName}</div>
-          <div class="player-meta">${nflTeam}</div>
+          <div class="player-meta">${slot} · ${nflTeam}</div>
         </div>
 
         <div class="player-points">${points}</div>
@@ -438,9 +439,10 @@ logoRows.slice(1).forEach(row => {
   );
 
   window.logoLookup[String(sleeperId).trim()] = {
-    name: matchingTeam?.name || ownerName,
-    logo: matchingTeam?.logo || ""
-  };
+  name: matchingTeam?.name || ownerName,
+  owner: ownerName,
+  logo: matchingTeam?.logo || ""
+};
 });
 
   const seenGames = new Set();
@@ -558,6 +560,7 @@ function matchupCard(game) {
             ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
             <div>
               <div class="team-name">${team?.name || ownerId}</div>
+<div class="player-meta">${team?.owner || ""}</div>
               <div class="team-score">${Number(teamPoints).toFixed(2)}</div>
               
             </div>
