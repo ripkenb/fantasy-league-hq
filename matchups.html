@@ -147,18 +147,6 @@
   font-weight:800;
 }
 
-    .team-side {
-      display:flex;
-      align-items:center;
-      min-width:0;
-      gap:14px;
-    }
-
-    .team-side.right {
-      justify-content:flex-end;
-      text-align:right;
-    }
-
     .team-logo {
       width:56px;
       height:56px;
@@ -277,12 +265,19 @@
   .app { grid-template-columns:1fr; }
   .sidebar { border-right:none; border-bottom:1px solid var(--border); }
   .main { padding:18px; }
-  .scoreboard { grid-template-columns:1fr; text-align:center; }
-  .team-side,
-  .team-side.right { justify-content:center; text-align:center; }
-  .lineup-grid { grid-template-columns:1fr; }
-  .team-logo {
-  display:none;
+  .scoreboard {
+  grid-template-columns:1fr 90px 1fr;
+  gap:10px;
+  text-align:center;
+}
+  .team-side {
+  justify-content:flex-start;
+  text-align:left;
+}
+
+.team-side.right {
+  justify-content:flex-end;
+  text-align:right;
 }
 
 .team-score {
@@ -291,6 +286,17 @@
 
 .week-label {
   margin:12px 0;
+}
+  .team-name {
+  font-size:16px;
+}
+
+.team-score {
+  font-size:24px;
+}
+
+.player-meta {
+  font-size:10px;
 }
 
 .team-name {
@@ -656,6 +662,5 @@ function toggleLineup(id) {
 loadMatchups();
 
 </script>
-
 </body>
 </html>  
