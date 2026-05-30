@@ -414,7 +414,7 @@ function renderPlayerRows(rows) {
 
         <div>
           <div class="player-name">${playerName}</div>
-          <div class="player-meta">${nflTeam}</div>>
+          <div class="player-meta">${nflTeam}</div>
         </div>
 
         <div class="player-points">${points}</div>
@@ -563,10 +563,11 @@ function matchupCard(game) {
             </div>
           </div>
 
-          <div>${season}</div>
-<div>Week ${week}</div>
-<span class="expand-text">Click to expand</span>
-          </div>
+          <div class="week-label">
+  <div>${season}</div>
+  <div>Week ${week}</div>
+  <span class="expand-text">Click to expand</span>
+</div>
 
           <div class="team-side right">
             <div>
