@@ -263,45 +263,70 @@
 
 @media(max-width:900px) {
   .app { grid-template-columns:1fr; }
-  .sidebar { border-right:none; border-bottom:1px solid var(--border); }
+
+  .sidebar {
+    border-right:none;
+    border-bottom:1px solid var(--border);
+  }
+
   .main { padding:18px; }
+
+  .matchup-header {
+    padding:18px 14px;
+  }
+
   .scoreboard {
-  grid-template-columns:1fr 90px 1fr;
-  gap:10px;
-  text-align:center;
-}
-  .team-side {
-  justify-content:flex-start;
-  text-align:left;
-}
+    grid-template-columns:1fr 82px 1fr;
+    gap:8px;
+    align-items:center;
+  }
 
-.team-side.right {
-  justify-content:flex-end;
-  text-align:right;
-}
+  .team-side,
+  .team-side.right {
+    flex-direction:column;
+    justify-content:center;
+    text-align:center;
+    gap:6px;
+  }
 
-.team-score {
-  font-size:28px;
-}
+  .team-side > div {
+    width:auto;
+  }
 
-.week-label {
-  margin:12px 0;
-}
-  .team-name {
-  font-size:16px;
-}
+  .team-side.right .team-logo {
+    order:-1;
+  }
 
-.team-score {
-  font-size:24px;
-}
+  .team-logo {
+    width:62px;
+    height:62px;
+  }
 
-.player-meta {
-  font-size:10px;
-}
+  .scoreboard .team-name {
+    display:none;
+  }
 
-.team-name {
-  font-size:22px;
-}
+  .team-score {
+    font-size:26px;
+    line-height:1;
+  }
+
+  .player-meta {
+    font-size:12px;
+  }
+
+  .week-label {
+    font-size:16px;
+    margin:0;
+  }
+
+  .expand-text {
+    font-size:11px;
+  }
+
+  .lineup-grid {
+    grid-template-columns:1fr;
+  }
 }
 
   </style>
