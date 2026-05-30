@@ -292,6 +292,7 @@ const PUBLISHED_BASE =
 
 const gameDataGid = "159359987";
 const startersGid = "132792542";
+ const logosGid = "356018794"; 
 function csvUrl(gid, range) {
   return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
 }
@@ -343,9 +344,7 @@ async function getRange(gid, range) {
 let games = [];
 let starters = [];
 function findTeamByOwnerId(ownerId) {
-  return teams.find(team =>
-    String(team.sleeperId).trim() === String(ownerId).trim()
-  );
+  return window.logoLookup?.[String(ownerId).trim()] || null;
 }
 
 function playerRowsForGame(season, week, ownerId, matchupId) {
@@ -388,10 +387,36 @@ function renderPlayerRows(rows) {
 async function loadMatchups() {
   const gameRows = await getRange(gameDataGid, "A:M");
   const starterRows = await getRange(startersGid, "A:N");
+  const logoRows = await getRange(logosGid, "A:C");
 
-  games = gameRows
-    .slice(1)
-    .filter(row => row[0] && row[12] === "Y");
+window.logoLookup = {};
+
+logoRows.slice(1).forEach(row => {
+  const name = row[0];
+  const logo = row[1];
+  const sleeperId = row[2];
+
+  if (sleeperId) {
+    window.logoLookup[String(sleeperId).trim()] = {
+      name,
+      logo
+    };
+  }
+});
+
+  const seenGames = new Set();
+
+games = gameRows
+  .slice(1)
+  .filter(row => row[0] && row[12] === "Y")
+  .filter(row => {
+    const key = `${row[0]}-${row[1]}-${row[2]}`;
+
+    if (seenGames.has(key)) return false;
+
+    seenGames.add(key);
+    return true;
+  });
 
   starters = starterRows
     .slice(1)
