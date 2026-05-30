@@ -397,9 +397,15 @@ logoRows.slice(1).forEach(row => {
   const sleeperId = row[2];
 
   if (sleeperId) {
+
+    const logoPath =
+      logo.startsWith("assets/")
+        ? logo
+        : `assets/logos/${logo}`;
+
     window.logoLookup[String(sleeperId).trim()] = {
       name,
-      logo
+      logo: logoPath
     };
   }
 });
@@ -518,9 +524,7 @@ function matchupCard(game) {
             <div>
               <div class="team-name">${team?.name || ownerId}</div>
               <div class="team-score">${Number(teamPoints).toFixed(2)}</div>
-              <span class="result-pill ${result === "W" ? "win" : "loss"}">
-                ${result} · ${margin}
-              </span>
+              
             </div>
           </div>
 
