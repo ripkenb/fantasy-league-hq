@@ -391,18 +391,11 @@ async function loadMatchups() {
 
 window.logoLookup = {};
 
-logoRows.slice(1).forEach(row => {
-  const ownerName = row[0];
-  const sleeperId = row[2];
-
-  const matchingTeam = teams.find(team =>
-    team.owner?.toLowerCase().trim() === ownerName?.toLowerCase().trim()
-  );
-
-  if (sleeperId && matchingTeam) {
-    window.logoLookup[String(sleeperId).trim()] = {
-      name: matchingTeam.name,
-      logo: matchingTeam.logo
+teams.forEach(team => {
+  if (team.sleeperId) {
+    window.logoLookup[String(team.sleeperId).trim()] = {
+      name: team.name,
+      logo: team.logo
     };
   }
 });
