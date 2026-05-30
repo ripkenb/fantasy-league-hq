@@ -392,33 +392,17 @@ async function loadMatchups() {
 window.logoLookup = {};
 
 logoRows.slice(1).forEach(row => {
-  const name = row[0];
-  const logo = row[1];
+  const ownerName = row[0];
   const sleeperId = row[2];
 
-  if (sleeperId) {
+  const matchingTeam = teams.find(team =>
+    team.owner?.toLowerCase().trim() === ownerName?.toLowerCase().trim()
+  );
 
-    logoRows.slice(1).forEach(row => {
-  const name = row[0];
-  const logo = row[1];
-  const sleeperId = row[2];
-
-  if (sleeperId && logo) {
-    const logoPath =
-      logo.startsWith("http") || logo.startsWith("assets/")
-        ? logo
-        : `assets/logos/${logo}`;
-
+  if (sleeperId && matchingTeam) {
     window.logoLookup[String(sleeperId).trim()] = {
-      name,
-      logo: logoPath
-    };
-  }
-});
-
-    window.logoLookup[String(sleeperId).trim()] = {
-      name,
-      logo: logoPath
+      name: matchingTeam.name,
+      logo: matchingTeam.logo
     };
   }
 });
