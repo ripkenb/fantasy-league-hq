@@ -260,6 +260,13 @@
       color:var(--light-gold);
     }
 
+    .scoreboard {
+  display:grid;
+  grid-template-columns:1fr 180px 1fr;
+  gap:20px;
+  align-items:center;
+}
+
     @media(max-width:900px) {
       .app { grid-template-columns:1fr; }
       .sidebar { border-right:none; border-bottom:1px solid var(--border); }
@@ -595,7 +602,8 @@ function matchupCard(game) {
     ${opponent?.logo ? `<img class="team-logo" src="${opponent.logo}">` : ""}
   </div>
 </div>
-         id="${cardId}">
+
+<div class="lineup-wrap" id="${cardId}">
         <div class="lineup-grid">
           <div>
            <h3>${team?.name || ownerId}</h3>
