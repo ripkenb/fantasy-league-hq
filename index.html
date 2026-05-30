@@ -193,9 +193,13 @@ async function loadDashboard() {
 
   standingsBody.innerHTML = "";
   powerBody.innerHTML = "";
+const scoreboardGrid =
+  document.getElementById("scoreboard-grid");
 
+scoreboardGrid.innerHTML = "";
   const standings = await getRange(leagueHomeGid, "B51:D60");
-
+const scoreboardRows = await getRange(scoreboardGid, "A:L");
+  
   standings.forEach((row, index) => {
     const teamName = row[0];
     const record = row[1];
@@ -235,7 +239,55 @@ async function loadDashboard() {
     `;
   });
 }
+const seenMatchups = new Set();
 
+scoreboardRows
+  .slice(1)
+  .filter(row => row[0] && row[1])
+  .forEach(row => {
+
+    const key = `${row[0]}-${row[1]}-${row[2]}`;
+
+    if (seenMatchups.has(key)) return;
+    seenMatchups.add(key);
+
+    const team1 = findTeam(row[5]);
+    const team2 = findTeam(row[9]);
+
+    scoreboardGrid.innerHTML += `
+      <div class="scoreboard-card">
+
+        <div class="scoreboard-title">
+          <span>Week ${row[1]}</span>
+          <span>${row[0]}</span>
+        </div>
+
+        <div class="score-matchup">
+
+          <div class="score-team">
+            ${team1?.logo ? `<img class="team-logo" src="${team1.logo}">` : ""}
+            <div>${team1?.name || row[5]}</div>
+            <div class="score-owner">${row[5]}</div>
+            <div class="score-owner">${row[11] || ""}</div>
+          </div>
+
+          <div>
+            <div class="score-points">${row[6]}</div>
+            <div class="vs">VS</div>
+            <div class="score-points">${row[10]}</div>
+          </div>
+
+          <div class="score-team right">
+            ${team2?.logo ? `<img class="team-logo" src="${team2.logo}">` : ""}
+            <div>${team2?.name || row[9]}</div>
+            <div class="score-owner">${row[9]}</div>
+          </div>
+
+        </div>
+
+      </div>
+    `;
+});
 loadDashboard();
 </script>
 </body>
