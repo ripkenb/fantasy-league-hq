@@ -438,7 +438,7 @@ logoRows.slice(1).forEach(row => {
     team.owner?.toLowerCase().trim() === ownerName?.toLowerCase().trim()
   );
 
-  window.logoLookup[String(sleeperId).trim()] = {
+ window.logoLookup[String(sleeperId).trim()] = {
   name: matchingTeam?.name || ownerName,
   owner: ownerName,
   logo: matchingTeam?.logo || ""
@@ -557,14 +557,13 @@ function matchupCard(game) {
         <div class="scoreboard">
 
           <div class="team-side">
-            ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
-            <div>
-              <div class="team-name">${team?.name || ownerId}</div>
-<div class="player-meta">${team?.owner || ""}</div>
-              <div class="team-score">${Number(teamPoints).toFixed(2)}</div>
-              
-            </div>
-          </div>
+  ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
+  <div>
+    <div class="team-name">${team?.name || ownerId}</div>
+    <div class="player-meta">${team?.owner || ""}</div>
+    <div class="team-score">${Number(teamPoints).toFixed(2)}</div>
+  </div>
+</div>
 
           <div class="week-label">
   <div>${season}</div>
@@ -574,9 +573,10 @@ function matchupCard(game) {
 
           <div class="team-side right">
             <div>
-              <div class="team-name">${opponent?.name || opponentOwnerId}</div>
-              <div class="team-score">${Number(opponentPoints).toFixed(2)}</div>
-            </div>
+  <div class="team-name">${opponent?.name || opponentOwnerId}</div>
+  <div class="player-meta">${opponent?.owner || ""}</div>
+  <div class="team-score">${Number(opponentPoints).toFixed(2)}</div>
+</div>
             ${opponent?.logo ? `<img class="team-logo" src="${opponent.logo}">` : ""}
           </div>
 
