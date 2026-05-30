@@ -127,8 +127,8 @@
     }
 
     .scoreboard {
-      display:grid;
-      grid-template-columns:1fr auto 1fr;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 140px minmax(0,1fr);
       gap:20px;
       align-items:center;
     }
@@ -136,6 +136,7 @@
     .team-side {
       display:flex;
       align-items:center;
+      min-width:0;
       gap:14px;
     }
 
@@ -241,6 +242,7 @@
     .player-points {
       text-align:right;
       font-weight:900;
+      font-variant-numeric:tabular-nums;
       color:var(--light-gold);
     }
 
@@ -381,15 +383,15 @@ function playerRowsForGame(season, week, ownerId, matchupId) {
 
 function lineupSlot(slotNumber) {
   const slots = {
-    0: "QB",
-    1: "RB",
+    1: "QB",
     2: "RB",
-    3: "WR",
+    3: "RB",
     4: "WR",
-    5: "TE",
-    6: "FLX",
+    5: "WR",
+    6: "TE",
     7: "FLX",
-    8: "SFLX"
+    8: "FLX",
+    9: "SFLX"
   };
 
   return slots[Number(slotNumber)] || "BN";
