@@ -254,11 +254,22 @@
     }
 
     .player-points {
-      text-align:right;
-      font-weight:900;
-      font-variant-numeric:tabular-nums;
-      color:var(--light-gold);
-    }
+  text-align:right;
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+  color:var(--light-gold);
+}
+
+.lineup-title {
+  font-size:18px;
+  font-weight:800;
+  height:50px;
+  display:flex;
+  align-items:flex-end;
+  margin-bottom:10px;
+}
+
+@media(max-width:900px) {
 
     .scoreboard {
   display:grid;
@@ -606,12 +617,16 @@ function matchupCard(game) {
 <div class="lineup-wrap" id="${cardId}">
         <div class="lineup-grid">
           <div>
-           <h3>${team?.name || ownerId}</h3>
+           <div class="lineup-title">
+  ${team?.name || ownerId}
+</div>
             ${renderPlayerRows(teamLineup)}
           </div>
 
           <div>
-            <h3>${opponent?.name || opponentOwnerId}</h3>
+            <div class="lineup-title">
+  ${opponent?.name || opponentOwnerId}
+</div>
             ${renderPlayerRows(opponentLineup)}
           </div>
         </div>
