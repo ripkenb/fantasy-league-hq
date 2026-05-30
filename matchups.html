@@ -436,9 +436,11 @@ function buildFilters() {
   const teamFilter = document.getElementById("teamFilter");
   const seasonFilter = document.getElementById("seasonFilter");
 
-  teams.forEach(team => {
+  Object.entries(window.logoLookup)
+  .sort((a, b) => a[1].name.localeCompare(b[1].name))
+  .forEach(([sleeperId, team]) => {
     teamFilter.innerHTML += `
-      <option value="${team.sleeperId}">
+      <option value="${sleeperId}">
         ${team.name}
       </option>
     `;
