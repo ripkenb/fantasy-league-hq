@@ -202,13 +202,23 @@
     }
 
     .player-row {
-      display:grid;
-      grid-template-columns:44px 1fr 70px;
+  display:grid;
+  grid-template-columns:48px 44px 1fr 70px;
       align-items:center;
       gap:10px;
       padding:9px 0;
       border-bottom:1px solid rgba(226,200,117,.12);
     }
+
+    .slot-badge {
+  border:1px solid rgba(226,200,117,.35);
+  color:var(--light-gold);
+  border-radius:999px;
+  padding:5px 7px;
+  font-size:11px;
+  font-weight:900;
+  text-align:center;
+}
 
     .player-img {
       width:38px;
@@ -368,6 +378,21 @@ function playerRowsForGame(season, week, ownerId, matchupId) {
     .sort((a,b) => Number(a[5]) - Number(b[5]));
 }
 
+function lineupSlot(slotNumber) {
+  const slots = {
+    0: "QB",
+    1: "RB",
+    2: "RB",
+    3: "WR",
+    4: "WR",
+    5: "FLX",
+    6: "FLX",
+    7: "SFLX"
+  };
+
+  return slots[Number(slotNumber)] || "BN";
+}
+  
 function renderPlayerRows(rows) {
   if (!rows.length) {
     return `<div style="color:var(--muted);">No lineup data found.</div>`;
@@ -377,16 +402,18 @@ function renderPlayerRows(rows) {
     const playerName = row[7];
     const position = row[8];
     const nflTeam = row[9];
+    const slot = lineupSlot(row[5]);
     const points = row[10];
     const imageUrl = row[12];
 
     return `
       <div class="player-row">
-        ${imageUrl ? `<img class="player-img" src="${imageUrl}">` : `<div></div>`}
+  <div class="slot-badge">${slot}</div>
+  ${imageUrl ? `<img class="player-img" src="${imageUrl}">` : `<div></div>`}
 
         <div>
           <div class="player-name">${playerName}</div>
-          <div class="player-meta">${position} · ${nflTeam}</div>
+          <div class="player-meta">${nflTeam}</div>>
         </div>
 
         <div class="player-points">${points}</div>
