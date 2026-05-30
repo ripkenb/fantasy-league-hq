@@ -394,6 +394,7 @@ function lineupSlot(slotNumber) {
 
   return slots[Number(slotNumber)] || "BN";
 }
+
   
 function renderPlayerRows(rows) {
   if (!rows.length) {
@@ -586,7 +587,13 @@ function matchupCard(game) {
       <div class="lineup-wrap" id="${cardId}">
         <div class="lineup-grid">
           <div>
-            <h3>${team?.name || ownerId}</h3>
+            <div class="lineup-team-header">
+  ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
+  <div>
+    <div class="team-name">${team?.name || ownerId}</div>
+    <div class="player-meta">${team?.owner || ""}</div>
+  </div>
+</div>
             ${renderPlayerRows(teamLineup)}
           </div>
 
