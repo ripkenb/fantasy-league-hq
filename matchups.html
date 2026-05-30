@@ -126,12 +126,26 @@
       cursor:pointer;
     }
 
-    .scoreboard {
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 140px minmax(0,1fr);
-      gap:20px;
-      align-items:center;
-    }
+    .team-side {
+  min-width:0;
+}
+
+.team-side > div {
+  width:100%;
+}
+
+.team-side.right {
+  justify-content:flex-end;
+  text-align:right;
+}
+
+.team-name {
+  font-size:18px;
+  font-weight:800;
+  min-height:44px;
+  display:flex;
+  align-items:flex-end;
+}
 
     .team-side {
       display:flex;
@@ -560,7 +574,6 @@ function matchupCard(game) {
         <div class="scoreboard">
 
           <div class="team-side">
-  ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
   <div>
     <div class="team-name">${team?.name || ownerId}</div>
     <div class="player-meta">${team?.owner || ""}</div>
@@ -580,7 +593,6 @@ function matchupCard(game) {
   <div class="player-meta">${opponent?.owner || ""}</div>
   <div class="team-score">${Number(opponentPoints).toFixed(2)}</div>
 </div>
-            ${opponent?.logo ? `<img class="team-logo" src="${opponent.logo}">` : ""}
           </div>
 
         </div>
