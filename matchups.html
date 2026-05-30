@@ -570,35 +570,32 @@ function matchupCard(game) {
     <div class="matchup-card">
 
       <div class="matchup-header" onclick="toggleLineup('${cardId}')">
+<div class="scoreboard">
+  <div class="team-side">
+    ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
+    <div>
+      <div class="team-name">${team?.name || ownerId}</div>
+      <div class="player-meta">${team?.owner || ""}</div>
+      <div class="team-score">${Number(teamPoints).toFixed(2)}</div>
+    </div>
+  </div>
 
-        <div class="scoreboard">
+  <div class="week-label">
+    <div>${season}</div>
+    <div>Week ${week}</div>
+    <span class="expand-text">Click to expand</span>
+  </div>
 
-          <div class="team-side">
-  <div>
-    <div class="team-name">${team?.name || ownerId}</div>
-    <div class="player-meta">${team?.owner || ""}</div>
-    <div class="team-score">${Number(teamPoints).toFixed(2)}</div>
+  <div class="team-side right">
+    <div>
+      <div class="team-name">${opponent?.name || opponentOwnerId}</div>
+      <div class="player-meta">${opponent?.owner || ""}</div>
+      <div class="team-score">${Number(opponentPoints).toFixed(2)}</div>
+    </div>
+    ${opponent?.logo ? `<img class="team-logo" src="${opponent.logo}">` : ""}
   </div>
 </div>
-
-          <div class="week-label">
-  <div>${season}</div>
-  <div>Week ${week}</div>
-  <span class="expand-text">Click to expand</span>
-</div>
-
-          <div class="team-side right">
-            <div>
-  <div class="team-name">${opponent?.name || opponentOwnerId}</div>
-  <div class="player-meta">${opponent?.owner || ""}</div>
-  <div class="team-score">${Number(opponentPoints).toFixed(2)}</div>
-</div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="lineup-wrap" id="${cardId}">
+         id="${cardId}">
         <div class="lineup-grid">
           <div>
            <h3>${team?.name || ownerId}</h3>
