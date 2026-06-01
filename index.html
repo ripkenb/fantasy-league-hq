@@ -278,7 +278,56 @@
       align-items:center;
       gap:10px;
     }
+.award-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
 
+.award-row{
+  display:grid;
+  grid-template-columns:42px 54px 1fr auto;
+  align-items:center;
+  gap:12px;
+  padding:10px;
+  border-bottom:1px solid rgba(226,200,117,.12);
+}
+
+.award-row:last-child{
+  border-bottom:none;
+}
+
+.award-rank{
+  color:var(--light-gold);
+  font-weight:900;
+  font-size:18px;
+}
+
+.player-img{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#222;
+  border:1px solid rgba(226,200,117,.25);
+}
+
+.award-name{
+  font-weight:900;
+  color:white;
+}
+
+.award-meta{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.award-change{
+  font-weight:900;
+  min-width:42px;
+  text-align:right;
+}
     .team-logo{
       width:38px;
       height:38px;
