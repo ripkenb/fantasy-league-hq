@@ -597,7 +597,7 @@ document.getElementById("trades-completed").textContent = uniqueTradeIds.size;
         .slice(1)
         .forEach(row => {
           const rank = row[0];
-          const teamName = row[1];
+          const teamName = row[2];
           const change = row[4];
 
           const team = findTeam(teamName);
