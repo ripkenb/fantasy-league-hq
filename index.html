@@ -629,8 +629,9 @@ function renderAwardWatch(rows, containerId, playerRows) {
       const rank = row[0];
 const playerName = row[1];
 const position = row[3];
-const imageUrl = row[4];
 const fantasyTeam = row[5];
+
+const imageUrl = getPlayerImage(playerName, playerRows);
 
       container.innerHTML += `
         <div class="award-row">
