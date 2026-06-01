@@ -537,6 +537,7 @@ const tradesGid = "1830360245";
       scoreboardGrid.innerHTML = "";
 
       const standings = await getRange(leagueHomeGid, "B51:D60");
+      const powerRankings = await getRange(leagueHomeGid, "I15:M25");
 const scoreboardRows = await getRange(scoreboardGid, "A:L");
 const gamesRows = await getRange(gamesHistoryGid, "A:M");
 const tradeRows = await getRange(tradesGid, "A:F");
@@ -590,20 +591,33 @@ document.getElementById("trades-completed").textContent = uniqueTradeIds.size;
           </tr>
         `;
 
-        powerBody.innerHTML += `
-          <tr>
-            <td>${index + 1}</td>
+        powerRankings
+  .slice(1)
+  .forEach(row => {
 
-            <td>
-              <div class="team-row">
-                ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
-                ${team?.name || teamName}
-              </div>
-            </td>
+    const rank = row[0];
+    const teamName = row[1];
+    const change = row[4];
 
-            <td>—</td>
-          </tr>
-        `;
+    const team = findTeam(teamName);
+
+    powerBody.innerHTML += `
+      <tr>
+
+        <td>${rank}</td>
+
+        <td>
+          <div class="team-row">
+            ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
+            ${team?.name || teamName}
+          </div>
+        </td>
+
+        <td>${change}</td>
+
+      </tr>
+    `;
+  });
       });
                 const seenMatchups = new Set();
 
