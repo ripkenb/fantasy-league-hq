@@ -591,34 +591,43 @@ document.getElementById("trades-completed").textContent = uniqueTradeIds.size;
           </tr>
         `;
 
-        powerRankings
-  .slice(1)
-  .forEach(row => {
-
-    const rank = row[0];
-    const teamName = row[1];
-    const change = row[4];
-
-    const team = findTeam(teamName);
-
-    powerBody.innerHTML += `
-      <tr>
-
-        <td>${rank}</td>
-
-        <td>
-          <div class="team-row">
-            ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
-            ${team?.name || teamName}
-          </div>
-        </td>
-
-        <td>${change}</td>
-
-      </tr>
-    `;
-  });
       });
+                });
+
+      powerRankings
+        .slice(1)
+        .forEach(row => {
+          const rank = row[0];
+          const teamName = row[1];
+          const change = row[4];
+
+          const team = findTeam(teamName);
+
+          let changeDisplay = "—";
+
+          if (Number(change) > 0) {
+            changeDisplay = `<span style="color:#4ade80;font-weight:900;">▲ ${change}</span>`;
+          } else if (Number(change) < 0) {
+            changeDisplay = `<span style="color:#f87171;font-weight:900;">▼ ${Math.abs(change)}</span>`;
+          }
+
+          powerBody.innerHTML += `
+            <tr>
+              <td>${rank}</td>
+
+              <td>
+                <div class="team-row">
+                  ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
+                  ${team?.name || teamName}
+                </div>
+              </td>
+
+              <td>${changeDisplay}</td>
+            </tr>
+          `;
+        });
+
+      const seenMatchups = new Set();
                 const seenMatchups = new Set();
 
       scoreboardRows
