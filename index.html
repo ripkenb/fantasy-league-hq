@@ -170,57 +170,69 @@
     }
 
     .scoreboard-card{
-      background:rgba(21,21,21,.94);
-      border:1px solid var(--border);
-      border-radius:22px;
-      padding:16px;
-    }
+  background:#f7f7f7;
+  color:#111;
+  border:1px solid #d6d6d6;
+  border-radius:6px;
+  overflow:hidden;
+  box-shadow:0 8px 18px rgba(0,0,0,.25);
+}
 
-    .scoreboard-title{
-      display:flex;
-      justify-content:space-between;
-      color:var(--light-gold);
-      font-weight:900;
-      margin-bottom:12px;
-    }
+.scoreboard-title{
+  background:#eeeeee;
+  color:#333;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 12px;
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  border-bottom:1px solid #d2d2d2;
+}
 
-    .score-matchup{
-      display:grid;
-      grid-template-columns:1fr auto 1fr;
-      gap:12px;
-      align-items:center;
-    }
+.score-matchup{
+  display:block;
+}
 
-    .score-team{
-      text-align:left;
-      font-weight:800;
-    }
+.espn-team-row{
+  display:grid;
+  grid-template-columns:42px 1fr auto;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border-bottom:1px solid #e1e1e1;
+}
 
-    .score-team.right{
-      text-align:right;
-    }
+.espn-team-row:last-child{
+  border-bottom:none;
+}
 
-    .score-owner{
-      color:var(--muted);
-      font-size:12px;
-      font-weight:400;
-      margin-top:4px;
-    }
+.espn-team-row.winner{
+  background:white;
+  font-weight:900;
+}
 
-    .score-points{
-      font-size:30px;
-      font-weight:900;
-      color:var(--light-gold);
-      text-align:center;
-    }
+.espn-team-row.loser{
+  background:#f3f3f3;
+  color:#555;
+}
 
-    .vs{
-      color:var(--muted);
-      font-size:12px;
-      font-weight:bold;
-      text-align:center;
-      margin:4px 0;
-    }
+.espn-team-name{
+  font-size:15px;
+  font-weight:900;
+}
+
+.score-owner{
+  color:#777;
+  font-size:12px;
+  margin-top:2px;
+}
+
+.espn-score{
+  font-size:26px;
+  font-weight:900;
+}
 
     .grid{
       display:grid;
@@ -615,28 +627,67 @@
           const team1 = findTeam(teamName);
           const team2 = findTeam(opponentName);
 
-          scoreboardGrid.innerHTML += `
-            <div class="scoreboard-card">
+          const score1 = Number(teamScore) || 0;
+const score2 = Number(opponentScore) || 0;
 
-              <div class="scoreboard-title">
-                <span>Week ${week}</span>
-                <span>${season}</span>
-              </div>
+scoreboardGrid.innerHTML += `
+  <div class="scoreboard-card">
 
-              <div class="score-matchup">
-                ${renderTeamMini(team1, teamName)}
+    <div class="scoreboard-title">
+      <span>Week ${week}</span>
+      <span>${season}</span>
+    </div>
 
-                <div>
-                  <div class="score-points">${teamScore}</div>
-                  <div class="vs">VS</div>
-                  <div class="score-points">${opponentScore}</div>
-                </div>
+    <div class="score-matchup">
 
-                ${renderTeamMini(team2, opponentName, true)}
-              </div>
+      <div class="espn-team-row ${score1 >= score2 ? "winner" : "loser"}">
 
-            </div>
-          `;
+        ${team1?.logo
+          ? `<img class="team-logo" src="${team1.logo}">`
+          : `<div></div>`}
+
+        <div>
+          <div class="espn-team-name">
+            ${team1?.name || teamName}
+          </div>
+
+          <div class="score-owner">
+            ${team1?.owner || teamName}
+          </div>
+        </div>
+
+        <div class="espn-score">
+          ${teamScore}
+        </div>
+
+      </div>
+
+      <div class="espn-team-row ${score2 >= score1 ? "winner" : "loser"}">
+
+        ${team2?.logo
+          ? `<img class="team-logo" src="${team2.logo}">`
+          : `<div></div>`}
+
+        <div>
+          <div class="espn-team-name">
+            ${team2?.name || opponentName}
+          </div>
+
+          <div class="score-owner">
+            ${team2?.owner || opponentName}
+          </div>
+        </div>
+
+        <div class="espn-score">
+          ${opponentScore}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+`;
         });
     }
 
