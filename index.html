@@ -518,6 +518,7 @@
     const scoreboardGid = "187248066";
     const gamesHistoryGid = "159359987";
 const tradesGid = "1830360245";
+    const playerStatsGid = "132792542";
 
     function csvUrl(gid, range) {
       return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
@@ -602,6 +603,9 @@ const tradesGid = "1830360245";
 
       const standings = await getRange(leagueHomeGid, "B41:D50");
       const powerRankings = await getRange(leagueHomeGid, "I15:M25");
+      const mvpRows = await getRange(leagueHomeGid, "B55:G60");
+const royRows = await getRange(leagueHomeGid, "I55:N60");
+const playerRows = await getRange(playerStatsGid, "A:N");    
 const scoreboardRows = await getRange(scoreboardGid, "A:L");
 const gamesRows = await getRange(gamesHistoryGid, "A:M");
 const tradeRows = await getRange(tradesGid, "A:F");
