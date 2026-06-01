@@ -452,8 +452,8 @@
 
     const leagueHomeGid = "23733226";
     const scoreboardGid = "187248066";
-
-    document.getElementById("team-count").textContent = teams.length;
+    const gamesHistoryGid = "159359987";
+const tradesGid = "1830360245";
 
     function csvUrl(gid, range) {
       return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
@@ -537,7 +537,35 @@
       scoreboardGrid.innerHTML = "";
 
       const standings = await getRange(leagueHomeGid, "B51:D60");
-      const scoreboardRows = await getRange(scoreboardGid, "A:L");
+const scoreboardRows = await getRange(scoreboardGid, "A:L");
+const gamesRows = await getRange(gamesHistoryGid, "A:M");
+const tradeRows = await getRange(tradesGid, "A:F");
+
+          const gameData = gamesRows.slice(1);
+const tradeData = tradeRows.slice(1);
+
+const seasons = [...new Set(
+  gameData
+    .map(row => row[0])
+    .filter(Boolean)
+)];
+
+const currentSeason = Math.max(...seasons.map(Number));
+
+const countedGameRows = gameData.filter(row =>
+  String(row[12]).trim().toUpperCase() === "Y"
+);
+
+const uniqueTradeIds = new Set(
+  tradeData
+    .map(row => row[3])
+    .filter(Boolean)
+);
+
+document.getElementById("current-season").textContent = currentSeason;
+document.getElementById("seasons-played").textContent = seasons.length;
+document.getElementById("league-games").textContent = Math.round(countedGameRows.length / 2);
+document.getElementById("trades-completed").textContent = uniqueTradeIds.size;
 
       standings.forEach((row, index) => {
         const teamName = row[0];
