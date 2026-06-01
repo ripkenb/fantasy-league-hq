@@ -592,6 +592,68 @@ const tradesGid = "1830360245";
         </div>
       `;
     }
+    function getPlayerImage(playerName, playerRows) {
+  const cleanedName = String(playerName || "").toLowerCase().trim();
+
+  const found = playerRows
+    .slice(1)
+    .find(row =>
+      String(row[7] || "").toLowerCase().trim() === cleanedName &&
+      row[12]
+    );
+
+  return found ? found[12] : "";
+}
+
+function formatChange(change) {
+  const num = Number(change);
+
+  if (num > 0) {
+    return `<span style="color:#4ade80;">▲ ${num}</span>`;
+  }
+
+  if (num < 0) {
+    return `<span style="color:#f87171;">▼ ${Math.abs(num)}</span>`;
+  }
+
+  return `<span style="color:#cfc7b7;">—</span>`;
+}
+
+function renderAwardWatch(rows, containerId, playerRows) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+
+  rows
+    .slice(1)
+    .forEach(row => {
+      const rank = row[0];
+      const playerName = row[1];
+      const fantasyTeam = row[2];
+      const points = row[3];
+      const change = row[5];
+
+      const imageUrl = getPlayerImage(playerName, playerRows);
+
+      container.innerHTML += `
+        <div class="award-row">
+          <div class="award-rank">${rank}</div>
+
+          ${imageUrl
+            ? `<img class="player-img" src="${imageUrl}">`
+            : `<div class="player-img"></div>`}
+
+          <div>
+            <div class="award-name">${playerName}</div>
+            <div class="award-meta">${fantasyTeam} · ${points} pts</div>
+          </div>
+
+          <div class="award-change">
+            ${formatChange(change)}
+          </div>
+        </div>
+      `;
+    });
+}
         async function loadDashboard() {
       const standingsBody = document.getElementById("standings-body");
       const powerBody = document.getElementById("power-body");
@@ -635,6 +697,8 @@ document.getElementById("current-season").textContent = currentSeason;
 document.getElementById("seasons-played").textContent = seasons.length;
 document.getElementById("league-games").textContent = Math.round(countedGameRows.length / 2);
 document.getElementById("trades-completed").textContent = uniqueTradeIds.size;
+          renderAwardWatch(mvpRows, "mvp-watch", playerRows);
+renderAwardWatch(royRows, "roy-watch", playerRows);
 
       standings.forEach((row, index) => {
         const teamName = row[0];
