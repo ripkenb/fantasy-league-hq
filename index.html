@@ -628,12 +628,9 @@ function renderAwardWatch(rows, containerId, playerRows) {
     .forEach(row => {
       const rank = row[0];
 const playerName = row[1];
-const position = row[2];
-const fantasyTeam = row[3];
-const points = row[4];
-const change = row[5];
-
-      const imageUrl = getPlayerImage(playerName, playerRows);
+const position = row[3];
+const imageUrl = row[4];
+const fantasyTeam = row[5];
 
       container.innerHTML += `
         <div class="award-row">
@@ -645,12 +642,12 @@ const change = row[5];
 
           <div>
             <div class="award-name">${playerName}</div>
-            <div class="award-meta">${position} · ${fantasyTeam} · ${points} pts</div>
+            <div class="award-meta">
+  ${position} • ${fantasyTeam}
+</div>
           </div>
 
-          <div class="award-change">
-            ${formatChange(change)}
-          </div>
+          <div class="award-change"></div>
         </div>
       `;
     });
