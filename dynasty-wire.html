@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dynasty Wire | The Dynasty League HQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    *{box-sizing:border-box}
+
+    :root{
+      --black:#050505;
+      --card:#151515;
+      --gold:#b38628;
+      --light-gold:#e2c875;
+      --red:#c91f1f;
+      --white:#f8f5ed;
+      --muted:#b8b0a0;
+      --border:rgba(226,200,117,.25);
+    }
+
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at top right,rgba(201,31,31,.14),transparent 30%),
+        radial-gradient(circle at top left,rgba(179,134,40,.18),transparent 35%),
+        var(--black);
+      color:var(--white);
+      font-family:Arial,sans-serif;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .app{
+      display:grid;
+      grid-template-columns:260px 1fr;
+      min-height:100vh;
+    }
+
+    .sidebar{
+      background:rgba(10,10,10,.95);
+      padding:24px;
+      border-right:1px solid var(--border);
+    }
+
+    .league-logo{
+      width:95px;
+      height:95px;
+      object-fit:contain;
+      margin-bottom:14px;
+    }
+
+    .logo{
+      font-size:24px;
+      font-weight:900;
+      line-height:1.05;
+      margin-bottom:6px;
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:28px;
+    }
+        .nav a,
+    .nav div{
+      display:block;
+      padding:12px 14px;
+      border-radius:14px;
+      color:#ddd6c8;
+      margin-bottom:8px;
+    }
+
+    .nav .active{
+      background:linear-gradient(135deg,var(--red),var(--gold));
+      color:white;
+      font-weight:bold;
+    }
+
+    .nav a:hover,
+    .nav div:hover{
+      background:rgba(226,200,117,.12);
+    }
+
+    .main{
+      padding:28px;
+      max-width:1200px;
+      margin:auto;
+      width:100%;
+    }
+
+    .hero{
+      background:linear-gradient(
+        135deg,
+        rgba(143,21,21,.95),
+        rgba(179,134,40,.9)
+      );
+      border:1px solid var(--border);
+      border-radius:30px;
+      padding:32px;
+      margin-bottom:24px;
+    }
+
+    .hero h1{
+      font-size:42px;
+      margin:0 0 8px;
+    }
+
+    .hero p{
+      margin:0;
+      color:#fff6d7;
+    }
+
+    .feed{
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    .feed-card{
+      background:rgba(21,21,21,.94);
+      border:1px solid var(--border);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 18px 40px rgba(0,0,0,.28);
+    }
+
+    .feed-content{
+      padding:20px;
+    }
+
+    .feed-date{
+      color:var(--light-gold);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:8px;
+    }
+
+    .feed-title{
+      font-size:26px;
+      font-weight:900;
+      margin-bottom:16px;
+    }
+
+    .feed-image{
+      width:100%;
+      display:block;
+      background:#111;
+    }
+
+    @media(max-width:1100px){
+      .app{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        border-right:none;
+        border-bottom:1px solid var(--border);
+      }
+    }
+
+    @media(max-width:700px){
+      .main,
+      .sidebar{
+        padding:18px;
+      }
+
+      .hero h1{
+        font-size:30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+  <aside class="sidebar">
+    <img class="league-logo" src="assets/logos/dynasty-league-logo.png.png">
+
+    <div class="logo">The Dynasty<br>League HQ</div>
+    <div class="subtitle">Dynasty Wire · League Graphics · News</div>
+
+    <div class="nav">
+      <a href="index.html">Dashboard</a>
+      <a href="league-records.html">League Records</a>
+      <div>Season Awards</div>
+      <a href="teams.html">Team Pages</a>
+      <a href="draft-history.html">Draft History</a>
+      <a href="trade-history.html">Trade History</a>
+      <a href="standings.html">Standings</a>
+      <a href="matchups.html">Matchups</a>
+      <div class="active">Dynasty Wire</div>
+      <a href="hall-of-fame.html">Hall of Fame</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section class="hero">
+      <h1>Dynasty Wire</h1>
+      <p>League graphics, weekly drops, trade alerts, award races, and season-long storylines.</p>
+    </section>
+
+    <section class="feed" id="feed"></section>
+
+  </main>
+
+</div>
+<script>
+  const PUBLISHED_BASE =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZp4lAXVZrcMa2y_dfi6h3xDjn4gqsFPlVCXFZA_RRLCthhqtDVca9CG8xmK1ZZQD3xxFinaZpqFip/pub?output=csv";
+
+  const feedGid = "598220983";
+
+  function csvUrl(gid, range) {
+    return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
+  }
+
+  function parseCSV(text) {
+    const rows = [];
+    let row = [];
+    let cell = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const next = text[i + 1];
+
+      if (char === '"' && next === '"') {
+        cell += '"';
+        i++;
+      } else if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === "," && !inQuotes) {
+        row.push(cell.trim());
+        cell = "";
+      } else if ((char === "\n" || char === "\r") && !inQuotes) {
+        if (cell || row.length) {
+          row.push(cell.trim());
+          rows.push(row);
+          row = [];
+          cell = "";
+        }
+      } else {
+        cell += char;
+      }
+    }
+
+    if (cell || row.length) {
+      row.push(cell.trim());
+      rows.push(row);
+    }
+
+    return rows;
+  }
+
+  async function getRange(gid, range) {
+    const response = await fetch(csvUrl(gid, range));
+    const text = await response.text();
+    return parseCSV(text);
+  }
+
+  function convertDriveLink(url) {
+    if (!url) return "";
+
+    const match = url.match(/\/d\/([^/]+)/);
+
+    if (match && match[1]) {
+      return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+    }
+
+    return url;
+  }
+
+  function formatDate(value) {
+    if (!value) return "";
+
+    const date = new Date(value);
+
+    if (isNaN(date)) return value;
+
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    });
+  }
+
+  async function loadFeed() {
+    const feed = document.getElementById("feed");
+    feed.innerHTML = "";
+
+    const rows = await getRange(feedGid, "A:D");
+
+    rows
+      .slice(1)
+      .filter(row => row[0] && row[1] && row[2])
+      .sort((a, b) => new Date(b[0]) - new Date(a[0]))
+      .forEach(row => {
+        const date = row[0];
+        const title = row[1];
+        const imageUrl = convertDriveLink(row[2]);
+
+        feed.innerHTML += `
+          <article class="feed-card">
+            <div class="feed-content">
+              <div class="feed-date">${formatDate(date)}</div>
+              <div class="feed-title">${title}</div>
+            </div>
+
+            <img class="feed-image" src="${imageUrl}" alt="${title}">
+          </article>
+        `;
+      });
+  }
+
+  loadFeed();
+</script>
+
+</body>
+</html>
