@@ -119,38 +119,82 @@
       gap:20px;
     }
 
-    .feed-card{
-      background:rgba(21,21,21,.94);
-      border:1px solid var(--border);
-      border-radius:24px;
-      overflow:hidden;
-      box-shadow:0 18px 40px rgba(0,0,0,.28);
-    }
+   .feed-card{
+  background:#0f0f0f;
+  border:1px solid rgba(226,200,117,.22);
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 18px 40px rgba(0,0,0,.35);
+  transition:.2s ease;
+}
 
-    .feed-content{
-      padding:20px;
-    }
+.feed-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(226,200,117,.45);
+}
 
-    .feed-date{
-      color:var(--light-gold);
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-      margin-bottom:8px;
-    }
-
-    .feed-title{
-      font-size:26px;
-      font-weight:900;
-      margin-bottom:16px;
-    }
-
-    .feed-image{
+.feed-image{
   width:100%;
-  max-height:850px;
-  object-fit:contain;
   display:block;
   background:#050505;
+  cursor:pointer;
+}
+
+.feed-content{
+  padding:18px 22px 20px;
+  border-top:1px solid rgba(226,200,117,.14);
+}
+
+.feed-title{
+  font-size:25px;
+  font-weight:900;
+  margin-bottom:6px;
+}
+
+.feed-date{
+  color:var(--light-gold);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.expand-note{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:10px;
+}
+
+    .image-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.92);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+.image-modal.active{
+  display:flex;
+}
+
+.image-modal img{
+  max-width:95vw;
+  max-height:92vh;
+  object-fit:contain;
+  border-radius:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+
+.modal-close{
+  position:fixed;
+  top:18px;
+  right:24px;
+  color:white;
+  font-size:36px;
+  font-weight:900;
+  cursor:pointer;
 }
   
     @media(max-width:1100px){
@@ -307,20 +351,40 @@
         const imageUrl = convertDriveLink(row[2]);
 
         feed.innerHTML += `
-          <article class="feed-card">
-            <div class="feed-content">
-              <div class="feed-date">${formatDate(date)}</div>
-              <div class="feed-title">${title}</div>
-            </div>
+  <article class="feed-card">
 
-            <img class="feed-image" src="${imageUrl}" alt="${title}">
-          </article>
-        `;
+    <img 
+      class="feed-image" 
+      src="${imageUrl}" 
+      alt="${title}"
+      onclick="openImageModal('${imageUrl}')"
+    >
+
+    <div class="feed-content">
+      <div class="feed-title">${title}</div>
+      <div class="feed-date">${formatDate(date)}</div>
+      <div class="expand-note">Click graphic to expand</div>
+    </div>
+
+  </article>
+`;
       });
   }
 
+function openImageModal(src) {
+  document.getElementById("modal-image").src = src;
+  document.getElementById("image-modal").classList.add("active");
+}
+
+function closeImageModal() {
+  document.getElementById("image-modal").classList.remove("active");
+}
+  
   loadFeed();
 </script>
-
+<div class="image-modal" id="image-modal" onclick="closeImageModal()">
+  <div class="modal-close">×</div>
+  <img id="modal-image" src="">
+</div>
 </body>
 </html>
