@@ -374,10 +374,14 @@ function findPlayer(playerName) {
 
       <div class="player-name">${playerName}</div>
 
-      <div class="team-row">
-        ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
-        <span>${team?.name || owner}</span>
-      </div>
+      ${team?.logo ? `
+  <div style="margin-top:10px;">
+    <img
+      src="${team.logo}"
+      style="width:52px;height:52px;object-fit:contain;"
+    >
+  </div>
+` : ""}
     </div>
   `;
 }
