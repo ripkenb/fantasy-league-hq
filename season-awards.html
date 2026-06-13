@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Season Awards | Dynasty League HQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { box-sizing:border-box; }
+
+    :root {
+      --gold:#b38628;
+      --light-gold:#e2c875;
+      --muted:#b8b0a0;
+      --border:rgba(226,200,117,.25);
+      --white:#f8f5ed;
+    }
+
+    body {
+      margin:0;
+      font-family:Arial,sans-serif;
+      color:var(--white);
+      background:
+        radial-gradient(circle at top right, rgba(179,134,40,.18), transparent 30%),
+        radial-gradient(circle at top left, rgba(226,200,117,.10), transparent 35%),
+        #050505;
+    }
+
+    a { color:inherit; text-decoration:none; }
+
+    .app {
+      display:grid;
+      grid-template-columns:260px 1fr;
+      min-height:100vh;
+    }
+
+    .sidebar {
+      background:#090909;
+      border-right:1px solid var(--border);
+      padding:24px;
+    }
+
+    .league-logo {
+      width:92px;
+      height:92px;
+      object-fit:contain;
+      margin-bottom:14px;
+    }
+
+    .side-title {
+      font-size:24px;
+      line-height:1.05;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .subtitle {
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:26px;
+    }
+        .nav a {
+      display:block;
+      padding:12px 14px;
+      border-radius:14px;
+      margin-bottom:8px;
+      color:#ddd6c8;
+    }
+
+    .nav a:hover,
+    .nav .active {
+      background:rgba(226,200,117,.14);
+      color:white;
+      font-weight:bold;
+    }
+
+    .main {
+      padding:28px;
+      max-width:1700px;
+    }
+
+    .hero {
+      background:linear-gradient(135deg,rgba(20,20,20,.98),rgba(75,58,22,.94));
+      border:1px solid var(--border);
+      border-radius:28px;
+      padding:30px;
+      margin-bottom:20px;
+    }
+
+    .hero h1 {
+      margin:0;
+      font-size:44px;
+    }
+
+    .hero p {
+      color:#fff4d6;
+      margin:10px 0 0;
+    }
+
+    .filters {
+      margin-bottom:22px;
+    }
+
+    select {
+      background:#111;
+      color:white;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px 14px;
+      font-size:14px;
+    }
+
+    .section-title {
+      color:var(--light-gold);
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      margin:28px 0 14px;
+      font-size:22px;
+    }
+        .award-grid {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
+
+    .award-card {
+      background:linear-gradient(145deg,rgba(24,24,24,.98),rgba(35,27,10,.92));
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:20px;
+      min-height:260px;
+      text-align:center;
+      box-shadow:0 18px 40px rgba(0,0,0,.28);
+    }
+
+    .award-label {
+      color:var(--light-gold);
+      font-size:13px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:14px;
+    }
+
+    .player-img {
+      width:96px;
+      height:96px;
+      border-radius:50%;
+      object-fit:cover;
+      background:#111;
+      margin-bottom:12px;
+    }
+
+    .player-name {
+      font-size:22px;
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .team-row {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    .team-logo {
+      width:30px;
+      height:30px;
+      object-fit:contain;
+    }
+        .allpro-grid {
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:14px;
+      margin-bottom:28px;
+    }
+
+    .allpro-card {
+      background:rgba(18,18,18,.96);
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:14px;
+      text-align:center;
+    }
+
+    .position-label {
+      color:var(--light-gold);
+      font-size:12px;
+      font-weight:900;
+      margin-bottom:10px;
+      text-transform:uppercase;
+    }
+
+    .allpro-player {
+      width:72px;
+      height:72px;
+      border-radius:50%;
+      object-fit:cover;
+      margin-bottom:10px;
+    }
+
+    @media(max-width:1200px){
+      .award-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .allpro-grid{
+        grid-template-columns:repeat(4,1fr);
+      }
+    }
+
+    @media(max-width:700px){
+      .app{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        border-right:none;
+        border-bottom:1px solid var(--border);
+      }
+
+      .main{
+        padding:18px;
+      }
+
+      .award-grid,
+      .allpro-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <img class="league-logo" src="assets/logos/dynasty-league-logo.png.png">
+
+    <div class="side-title">
+      The Dynasty<br>League HQ
+    </div>
+
+    <div class="subtitle">
+      Est. 2025 · Dynasty. Records. Lore.
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Dashboard</a>
+      <a href="teams.html">Team Pages</a>
+      <a href="standings.html">Standings</a>
+      <a href="draft-history.html">Draft History</a>
+      <a href="trade-history.html">Trade History</a>
+      <a href="league-records.html">League Records</a>
+      <a href="matchups.html">Matchups</a>
+      <a class="active" href="season-awards.html">Season Awards</a>
+      <a href="hall-of-fame.html">Hall of Fame</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <section class="hero">
+      <h1>Season Awards</h1>
+      <p>League award winners, All-Pro teams, player photos, and franchise recognition by season.</p>
+    </section>
+
+    <div class="filters">
+      <select id="yearFilter"></select>
+    </div>
+
+    <h2 class="section-title">Major Awards</h2>
+    <section class="award-grid" id="majorAwards"></section>
+
+    <h2 class="section-title">First Team All-Pro</h2>
+    <section class="allpro-grid" id="firstTeam"></section>
+
+    <h2 class="section-title">Second Team All-Pro</h2>
+    <section class="allpro-grid" id="secondTeam"></section>
+
+  </main>
+
+</div>
+  <script src="data.js"></script>
+
+<script>
+const PUBLISHED_BASE =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZp4lAXVZrcMa2y_dfi6h3xDjn4gqsFPlVCXFZA_RRLCthhqtDVca9CG8xmK1ZZQD3xxFinaZpqFip/pub?output=csv";
+
+const awardsGid = "1331052160";
+const playersGid = "206352208";
+
+function csvUrl(gid, range) {
+  return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
+} 
+  function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
+
+    if (char === '"' && next === '"') {
+      cell += '"';
+      i++;
+    } else if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === "," && !inQuotes) {
+      row.push(cell.trim());
+      cell = "";
+    } else if ((char === "\n" || char === "\r") && !inQuotes) {
+      if (cell || row.length) {
+        row.push(cell.trim());
+        rows.push(row);
+        row = [];
+        cell = "";
+      }
+    } else {
+      cell += char;
+    }
+  }
+
+  if (cell || row.length) {
+    row.push(cell.trim());
+    rows.push(row);
+  }
+
+  return rows;
+}
+
+async function getRange(gid, range) {
+  const response = await fetch(csvUrl(gid, range));
+  const text = await response.text();
+  return parseCSV(text);
+}
+  let awardRows = [];
+let playerLookup = {};
+
+function findTeam(value) {
+  if (!value) return null;
+
+  const cleaned = value.toLowerCase().trim();
+
+  return teams.find(team =>
+    team.owner?.toLowerCase().trim() === cleaned ||
+    team.name?.toLowerCase().trim() === cleaned ||
+    team.id?.toLowerCase().trim() === cleaned
+  );
+}
+
+function findPlayer(playerName) {
+  if (!playerName) return null;
+  return playerLookup[playerName.toLowerCase().trim()] || null;
+}
+  function awardCard(row) {
+  const award = row[1];
+  const owner = row[2];
+  const playerName = row[3];
+
+  const team = findTeam(owner);
+  const player = findPlayer(playerName);
+
+  return `
+    <div class="award-card">
+      <div class="award-label">${award}</div>
+
+      ${player?.image ? `<img class="player-img" src="${player.image}">` : ""}
+
+      <div class="player-name">${playerName}</div>
+
+      <div class="team-row">
+        ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
+        <span>${team?.name || owner}</span>
+      </div>
+    </div>
+  `;
+}
+
+function allProCard(row) {
+  const award = row[1];
+  const owner = row[2];
+  const playerName = row[3];
+
+  const team = findTeam(owner);
+  const player = findPlayer(playerName);
+
+  return `
+    <div class="allpro-card">
+      <div class="position-label">${award}</div>
+
+      ${player?.image ? `<img class="allpro-player" src="${player.image}">` : ""}
+
+      <div class="player-name" style="font-size:15px;">
+        ${playerName}
+      </div>
+
+      <div class="team-row">
+        ${team?.logo ? `<img class="team-logo" src="${team.logo}">` : ""}
+        <span>${team?.name || owner}</span>
+      </div>
+    </div>
+  `;
+}
+  function renderAwards() {
+  const selectedYear = document.getElementById("yearFilter").value;
+
+  const rows = awardRows.filter(row => row[0] === selectedYear);
+
+  const majorAwards = [
+    "MVP",
+    "Playoff MVP",
+    "Rookie of the Year",
+    "Most Improved"
+  ];
+
+  const firstTeam = [
+    "QB 1", "QB 2",
+    "RB 1", "RB 2",
+    "WR 1", "WR 2",
+    "TE 1"
+  ];
+
+  const secondTeam = [
+    "QB 3", "QB 4",
+    "RB 3", "RB 4",
+    "WR 3", "WR 4",
+    "TE 2"
+  ];
+
+  document.getElementById("majorAwards").innerHTML =
+    rows
+      .filter(row => majorAwards.includes(row[1]))
+      .map(awardCard)
+      .join("");
+
+  document.getElementById("firstTeam").innerHTML =
+    rows
+      .filter(row => firstTeam.includes(row[1]))
+      .map(allProCard)
+      .join("");
+
+  document.getElementById("secondTeam").innerHTML =
+    rows
+      .filter(row => secondTeam.includes(row[1]))
+      .map(allProCard)
+      .join("");
+}
+  async function loadAwards() {
+  const awards = await getRange(awardsGid, "A:D");
+  const players = await getRange(playersGid, "A:F");
+
+  awardRows = awards
+    .slice(1)
+    .filter(row => row[0]);
+
+  players.slice(1).forEach(row => {
+    const playerName = row[1];
+    const imageUrl = row[4];
+
+    if (playerName && imageUrl) {
+      playerLookup[playerName.toLowerCase().trim()] = {
+        image: imageUrl
+      };
+    }
+  });
+
+  const years = [...new Set(awardRows.map(row => row[0]))]
+    .sort((a,b) => Number(b) - Number(a));
+
+  const yearFilter = document.getElementById("yearFilter");
+
+  years.forEach(year => {
+    yearFilter.innerHTML += `
+      <option value="${year}">
+        ${year}
+      </option>
+    `;
+  });
+
+  yearFilter.addEventListener("change", renderAwards);
+
+  renderAwards();
+}
+
+loadAwards();
+
+</script>
+</body>
+</html>
