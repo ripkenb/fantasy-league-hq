@@ -121,7 +121,10 @@ const teams = [
         opponentId: "lake-cle-elum",
         record: "3-2"
       }
-
+{
+  opponentId: "bardic-ballerz",
+  record: "3-2"
+}
     ],
 
     schedule: [
@@ -149,7 +152,12 @@ const teams = [
         score: "137.22 - 118.44"
 
       }
-
+{
+  week: 2,
+  opponent: "Bardic Ballerz",
+  result: "W",
+  score: "137.22 - 118.44"
+}
     ],
 
     players: [
@@ -383,6 +391,18 @@ const teams = [
     pointsAgainst: 1554
 
   },
+
+  {
+  id: "bardic-ballerz",
+  name: "Bardic Ballerz",
+  owner: "OWNER NAME",
+  logo: "assets/logos/bardic-ballerz.png.png",
+  record: "9-5",
+  titles: 0,
+  pointsFor: 1672,
+  pointsAgainst: 1554,
+  
+},
 
   {
 
