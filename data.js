@@ -120,44 +120,14 @@ const teams = [
       {
         opponentId: "lake-cle-elum",
         record: "3-2"
-      }
+      },
 {
   opponentId: "bardic-ballerz",
   record: "3-2"
 }
     ],
 
-    schedule: [
-
-      {
-
-        week: 1,
-
-        opponent: "Jake the Snake",
-
-        result: "L",
-
-        score: "102.14 - 128.66"
-
-      },
-
-      {
-
-        week: 2,
-
-        opponent: "Lake Cle Elum",
-
-        result: "W",
-
-        score: "137.22 - 118.44"
-
-      }
-{
-  week: 2,
-  opponent: "Bardic Ballerz",
-  result: "W",
-  score: "137.22 - 118.44"
-}
+    name: "Bardic Ballerz",
     ],
 
     players: [
