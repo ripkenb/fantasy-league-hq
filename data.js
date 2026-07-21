@@ -371,7 +371,7 @@ players: [
   id: "bardic-ballerz",
   name: "Bardic Ballerz",
   owner: "Brady",
-  logo: "assets/logos/bardic-ballerz.png.png",
+  logo: "assets/logos/bardic-ballerz.png",
   record: "9-5",
   titles: 0,
   pointsFor: 1672,
