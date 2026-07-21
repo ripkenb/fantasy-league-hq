@@ -53,24 +53,26 @@
     }
 
     .team-card {
-      background:
-        linear-gradient(145deg,#141414,#0b0b0b);
-      border:1px solid rgba(226,200,117,.22);
-      border-radius:28px;
-      padding:24px;
-      min-height:380px;
+  background:linear-gradient(145deg,#141414,#0b0b0b);
+  border:1px solid rgba(226,200,117,.22);
+  border-radius:28px;
+  padding:30px;
+  min-height:380px;
 
-      display:flex;
-      flex-direction:column;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
 
-      position:relative;
-      overflow:hidden;
+  position:relative;
+  overflow:hidden;
+  text-align:center;
 
-      transition:
-        transform .18s ease,
-        border .18s ease,
-        box-shadow .18s ease;
-    }
+  transition:
+    transform .18s ease,
+    border .18s ease,
+    box-shadow .18s ease;
+}
 
     .team-card:hover {
       transform:translateY(-6px);
@@ -101,8 +103,8 @@
     }
 
     .team-logo {
-      width:90px;
-      height:90px;
+  width:180px;
+  height:180px;
       object-fit:contain;
 
       filter:
@@ -110,11 +112,12 @@
     }
 
     .team-name {
-      font-size:34px;
-      font-weight:900;
-      line-height:1;
-      margin-bottom:8px;
-    }
+  font-size:30px;
+  font-weight:900;
+  line-height:1.1;
+  text-align:center;
+  margin-top:24px;
+}
 
     .team-owner {
       color:#d0c7b5;
@@ -228,18 +231,14 @@
 
           <div class="team-card">
 
-            <div class="team-top">
+            <img
+  class="team-logo"
+  src="${team.logo}"
+>
 
-              <img
-                class="team-logo"
-                src="${team.logo}"
-              >
-
-              <div>
-
-                <div class="team-name">
-                  ${team.name}
-                </div>
+<div class="team-name">
+  ${team.name}
+</div>
 
                 <div class="team-owner">
                   Owner: ${team.owner}
