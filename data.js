@@ -115,9 +115,9 @@ const teams = [
     record: "1-4"
   },
   {
-    opponentId: "bardic-ballerz",
-    record: "3-2"
-  }
+  opponentId: "lake-cle-elum",
+  record: "3-2"
+}
 ],
 
 schedule: [
@@ -370,7 +370,7 @@ players: [
   {
   id: "bardic-ballerz",
   name: "Bardic Ballerz",
-  owner: "OWNER NAME",
+  owner: "Brady",
   logo: "assets/logos/bardic-ballerz.png.png",
   record: "9-5",
   titles: 0,
