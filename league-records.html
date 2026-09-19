@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,7 +70,9 @@
       color:#ddd6c8;
     }
 
-    .nav a:hover { background:rgba(226,200,117,.12); }
+    .nav a:hover {
+      background:rgba(226,200,117,.12);
+    }
 
     .nav .active {
       background:linear-gradient(135deg,#1a1a1a,var(--gold));
@@ -77,7 +80,8 @@
       font-weight:bold;
       border:1px solid var(--border);
     }
-        .main {
+
+    .main {
       padding:28px;
       max-width:1600px;
     }
@@ -124,7 +128,8 @@
       text-transform:uppercase;
       font-size:19px;
     }
-        table {
+
+    table {
       width:100%;
       border-collapse:collapse;
     }
@@ -143,27 +148,30 @@
       font-size:11px;
       letter-spacing:.04em;
       cursor:pointer;
-transition:.15s ease;
+      transition:.15s ease;
     }
+
     th:hover {
-  color:white;
-}
+      color:white;
+    }
 
     tr:last-child td {
       border-bottom:none;
     }
-.team-row {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:bold;
-}
 
-.team-logo {
-  width:34px;
-  height:34px;
-  object-fit:contain;
-}
+    .team-row {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:bold;
+    }
+
+    .team-logo {
+      width:34px;
+      height:34px;
+      object-fit:contain;
+    }
+
     .rank-cell {
       color:var(--light-gold);
       font-weight:900;
@@ -227,13 +235,17 @@ transition:.15s ease;
 
     @media(max-width:1000px) {
       .app { grid-template-columns:1fr; }
-      .sidebar { border-right:none; border-bottom:1px solid var(--border); }
+      .sidebar {
+        border-right:none;
+        border-bottom:1px solid var(--border);
+      }
       .main { padding:18px; }
       .records-grid { grid-template-columns:1fr; }
       .section-nav { position:relative; }
     }
   </style>
 </head>
+
 <body>
 
 <div class="app">
@@ -271,6 +283,7 @@ transition:.15s ease;
   </main>
 
 </div>
+
 <script src="data.js"></script>
 
 <script>
@@ -280,11 +293,13 @@ const PUBLISHED_BASE =
 
 const recordsGid = "663289779";
 const ownerSummaryGid = "395850369";
-  const playerDataGid = "206352208";
+const playerDataGid = "206352208";
+
 
 function csvUrl(gid, range) {
   return `${PUBLISHED_BASE}&gid=${gid}&range=${range}`;
 }
+
 
 function parseCSV(text) {
   const rows = [];
@@ -293,24 +308,30 @@ function parseCSV(text) {
   let inQuotes = false;
 
   for (let i = 0; i < text.length; i++) {
+
     const char = text[i];
     const next = text[i + 1];
 
     if (char === '"' && next === '"') {
       cell += '"';
       i++;
+
     } else if (char === '"') {
       inQuotes = !inQuotes;
+
     } else if (char === "," && !inQuotes) {
       row.push(cell.trim());
       cell = "";
+
     } else if ((char === "\n" || char === "\r") && !inQuotes) {
+
       if (cell || row.length) {
         row.push(cell.trim());
         rows.push(row);
         row = [];
         cell = "";
       }
+
     } else {
       cell += char;
     }
@@ -324,12 +345,16 @@ function parseCSV(text) {
   return rows;
 }
 
+
 async function getRange(gid, range) {
   const response = await fetch(csvUrl(gid, range));
   const text = await response.text();
   return parseCSV(text);
 }
+
+
 function findTeam(value) {
+
   if (!value) return null;
 
   const cleaned = value.toLowerCase().trim();
@@ -341,7 +366,9 @@ function findTeam(value) {
   );
 }
 
+
 function logoCell(value) {
+
   const team = findTeam(value);
 
   if (!team?.logo) return value;
@@ -353,7 +380,10 @@ function logoCell(value) {
     </div>
   `;
 }
- function playerCell(value) {
+
+
+function playerCell(value) {
+
   if (!value) return "";
 
   const cleaned = value.toLowerCase().trim();
@@ -368,7 +398,9 @@ function logoCell(value) {
       <span>${value}</span>
     </div>
   `;
-} 
+}
+
+
 function buildTable(title, rows, wide = false) {
 
   if (!rows?.length) return "";
@@ -392,45 +424,41 @@ function buildTable(title, rows, wide = false) {
             <tr>
               ${row.map((cell, index) => {
 
-  const lowerTitle = title.toLowerCase();
+                const lowerTitle = title.toLowerCase();
 
-  const shouldLogo =
-  index === 0 ||
+                const shouldLogo =
+                  index === 0 ||
+                  (
+                    index === 2 &&
+                    lowerTitle.includes("margin")
+                  ) ||
+                  lowerTitle.includes("championship") ||
+                  lowerTitle.includes("record") ||
+                  lowerTitle.includes("trader");
 
-  (
-    index === 2 &&
-    (
-      lowerTitle.includes("margin")
-    )
-  ) ||
+                return `
+                  <td>
+                    ${
+                      playerCell(cell) !== cell
+                        ? playerCell(cell)
+                        : (
+                            index === 1 &&
+                            (
+                              lowerTitle.includes("qb") ||
+                              lowerTitle.includes("rb") ||
+                              lowerTitle.includes("wr") ||
+                              lowerTitle.includes("te")
+                            )
+                          )
+                            ? logoCell(cell)
+                            : shouldLogo
+                              ? logoCell(cell)
+                              : cell
+                    }
+                  </td>
+                `;
 
-  lowerTitle.includes("championship") ||
-  lowerTitle.includes("record") ||
-  lowerTitle.includes("trader");
-
- return `
-  <td>
-    ${
-      playerCell(cell) !== cell
-        ? playerCell(cell)
-        : (
-            index === 1 &&
-            (
-              lowerTitle.includes("qb") ||
-              lowerTitle.includes("rb") ||
-              lowerTitle.includes("wr") ||
-              lowerTitle.includes("te")
-            )
-          )
-            ? logoCell(cell)
-            : shouldLogo
-              ? logoCell(cell)
-              : cell
-    }
-  </td>
-`;
-
-}).join("")}
+              }).join("")}
             </tr>
           `).join("")}
         </tbody>
@@ -438,6 +466,8 @@ function buildTable(title, rows, wide = false) {
     </section>
   `;
 }
+
+
 function buildNoHeaderTable(title, rows, headers, wide = false) {
 
   const body = rows.filter(row => row.some(Boolean));
@@ -450,10 +480,10 @@ function buildNoHeaderTable(title, rows, headers, wide = false) {
         <thead>
           <tr>
             ${headers.map((h, index) => `
-  <th onclick="sortTable(this, ${index})">
-    ${h}
-  </th>
-`).join("")}
+              <th onclick="sortTable(this, ${index})">
+                ${h}
+              </th>
+            `).join("")}
           </tr>
         </thead>
 
@@ -461,10 +491,10 @@ function buildNoHeaderTable(title, rows, headers, wide = false) {
           ${body.map(row => `
             <tr>
               ${row.map((cell, index) => `
-  <td>
-    ${index === 0 ? logoCell(cell) : cell}
-  </td>
-`).join("")}
+                <td>
+                  ${index === 0 ? logoCell(cell) : cell}
+                </td>
+              `).join("")}
             </tr>
           `).join("")}
         </tbody>
@@ -472,6 +502,7 @@ function buildNoHeaderTable(title, rows, headers, wide = false) {
     </section>
   `;
 }
+
 
 function buildChampions(rows) {
 
@@ -488,19 +519,23 @@ function buildChampions(rows) {
         ${champions.map(row => `
           <div class="champion-card">
             <div class="champion-year">${row[0]}</div>
+
             <div>
               <div class="champion-owner">${row[1]}</div>
               <div style="color:var(--muted);font-size:13px;">
                 Record: ${row[2]}-${row[3]}
               </div>
             </div>
+
           </div>
         `).join("")}
       </div>
     </section>
   `;
-}  
-  function buildDraftChart(rows) {
+}
+
+
+function buildDraftChart(rows) {
 
   const cleanRows = rows
     .slice(1)
@@ -511,56 +546,62 @@ function buildChampions(rows) {
       <h2>Draft Picks Taken</h2>
 
       <div class="draft-chart">
+
         ${cleanRows.map(row => `
           <div class="draft-box">
+
             <h3>${row[0]}</h3>
+
             <p>
-  ${
-    [2,3,4,5,6]
-      .reduce((sum,index) =>
-        sum + Number(row[index] || 0), 0)
-  }
-</p>
-           <div style="
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:6px;
-  margin-top:14px;
-  font-size:11px;
-">
+              ${
+                [2,3,4,5,6]
+                  .reduce((sum,index) =>
+                    sum + Number(row[index] || 0), 0)
+              }
+            </p>
 
-  <div>
-    <div style="color:var(--muted)">1st</div>
-    <div>${row[2] || 0}</div>
-  </div>
+            <div style="
+              display:grid;
+              grid-template-columns:repeat(5,1fr);
+              gap:6px;
+              margin-top:14px;
+              font-size:11px;
+            ">
 
-  <div>
-    <div style="color:var(--muted)">2nd</div>
-    <div>${row[3] || 0}</div>
-  </div>
+              <div>
+                <div style="color:var(--muted)">1st</div>
+                <div>${row[2] || 0}</div>
+              </div>
 
-  <div>
-    <div style="color:var(--muted)">3rd</div>
-    <div>${row[4] || 0}</div>
-  </div>
+              <div>
+                <div style="color:var(--muted)">2nd</div>
+                <div>${row[3] || 0}</div>
+              </div>
 
-  <div>
-    <div style="color:var(--muted)">4th</div>
-    <div>${row[5] || 0}</div>
-  </div>
+              <div>
+                <div style="color:var(--muted)">3rd</div>
+                <div>${row[4] || 0}</div>
+              </div>
 
-  <div>
-    <div style="color:var(--muted)">5th</div>
-    <div>${row[6] || 0}</div>
-  </div>
+              <div>
+                <div style="color:var(--muted)">4th</div>
+                <div>${row[5] || 0}</div>
+              </div>
 
-</div>
+              <div>
+                <div style="color:var(--muted)">5th</div>
+                <div>${row[6] || 0}</div>
+              </div>
+
+            </div>
           </div>
         `).join("")}
+
       </div>
     </section>
   `;
 }
+
 
 function sectionHeader(title, id) {
   return `
@@ -569,7 +610,9 @@ function sectionHeader(title, id) {
     </section>
   `;
 }
-  async function loadLeagueRecords() {
+
+
+async function loadLeagueRecords() {
 
   const [
     playerRows,
@@ -579,72 +622,103 @@ function sectionHeader(title, id) {
     championships,
     traders,
     tradeDuos,
+
     topSeasonScores,
     bottomSeasonScores,
+
+    topSingleGameScores,
+    bottomSingleGameScores,
+
     singleSeasonRecords,
+
     qbSeasons,
     rbSeasons,
     wrSeasons,
     teSeasons,
+
     qbGames,
     rbGames,
     wrGames,
     teGames,
+
     draftPicks,
     smallestMargins,
     largestMargins
+
   ] = await Promise.all([
+
     getRange(playerDataGid, "A:F"),
     getRange(ownerSummaryGid, "A:J"),
+
     getRange(recordsGid, "D10:I28"),
     getRange(recordsGid, "K10:O28"),
     getRange(recordsGid, "Q10:S28"),
     getRange(recordsGid, "U10:V20"),
     getRange(recordsGid, "X10:Y15"),
+
+    /* SEASON SCORING */
     getRange(recordsGid, "E30:G40"),
     getRange(recordsGid, "I30:K40"),
+
+    /* SINGLE GAME SCORING — NO HEADERS */
+    getRange(recordsGid, "E44:G53"),
+    getRange(recordsGid, "I44:K53"),
+
     getRange(recordsGid, "M30:O40"),
+
+    /* PLAYER SEASON RECORDS */
     getRange(recordsGid, "Q30:T40"),
     getRange(recordsGid, "W30:Z40"),
     getRange(recordsGid, "Q43:T53"),
     getRange(recordsGid, "W43:Z53"),
+
+    /* PLAYER SINGLE GAME RECORDS */
     getRange(recordsGid, "AC8:AG18"),
     getRange(recordsGid, "AC21:AG31"),
     getRange(recordsGid, "AC34:AG44"),
     getRange(recordsGid, "AC47:AG57"),
+
+    /* DRAFT / MARGINS */
     getRange(recordsGid, "Q56:X76"),
     getRange(recordsGid, "E56:H66"),
     getRange(recordsGid, "E70:H80")
   ]);
-    window.playerLookup = {};
 
-playerRows.slice(1).forEach(row => {
 
-  const playerName = row[1];
-  const position = row[2];
-  const imageUrl = row[4];
+  window.playerLookup = {};
 
-  if (playerName && imageUrl) {
+  playerRows.slice(1).forEach(row => {
 
-    const key =
-      `${playerName.toLowerCase().trim()}-${position}`;
+    const playerName = row[1];
+    const position = row[2];
+    const imageUrl = row[4];
 
-    window.playerLookup[key] = {
-      image:imageUrl
-    };
+    if (playerName && imageUrl) {
 
-    if (
-      ["QB","RB","WR","TE"].includes(position)
-    ) {
-      window.playerLookup[
-        playerName.toLowerCase().trim()
-      ] = {
+      const key =
+        `${playerName.toLowerCase().trim()}-${position}`;
+
+      window.playerLookup[key] = {
         image:imageUrl
       };
+
+      if (
+        ["QB","RB","WR","TE"].includes(position)
+      ) {
+        window.playerLookup[
+          playerName.toLowerCase().trim()
+        ] = {
+          image:imageUrl
+        };
+      }
     }
-  }
-});
-      const html = [
+  });
+
+
+  const html = [
+
+    /* LEAGUE HISTORY */
+
     buildChampions(champions),
 
     buildNoHeaderTable(
@@ -656,48 +730,145 @@ playerRows.slice(1).forEach(row => {
 
     buildTable("Playoff Records", playoffRecords),
     buildTable("Most Championships", championships),
+
     buildTable("Top 10 Traders", traders),
     buildTable("Top 5 Trade Duos", tradeDuos),
 
-    buildTable("Top 10 Single Season Scores", topSeasonScores),
-    buildTable("Bottom 10 Single Season Scores", bottomSeasonScores),
-    buildTable("Top 10 Single Season Records", singleSeasonRecords),
 
-    buildTable("Top 10 QB Seasons", qbSeasons),
-    buildTable("Top 10 RB Seasons", rbSeasons),
-    buildTable("Top 10 WR Seasons", wrSeasons),
-    buildTable("Top 10 TE Seasons", teSeasons),
+    /* SCORING RECORDS */
 
-    buildTable("Top 10 QB Games", qbGames),
-    buildTable("Top 10 RB Games", rbGames),
-    buildTable("Top 10 WR Games", wrGames),
-    buildTable("Top 10 TE Games", teGames),
+    buildTable(
+      "Top 10 Single Season Scores",
+      topSeasonScores
+    ),
+
+    buildTable(
+      "Bottom 10 Single Season Scores",
+      bottomSeasonScores
+    ),
+
+    buildNoHeaderTable(
+      "Top 10 Single Game Scores",
+      topSingleGameScores,
+      ["Team", "Score", "Year"]
+    ),
+
+    buildNoHeaderTable(
+      "Bottom 10 Single Game Scores",
+      bottomSingleGameScores,
+      ["Team", "Score", "Year"]
+    ),
+
+    buildTable(
+      "Top 10 Single Season Records",
+      singleSeasonRecords
+    ),
+
+
+    /* PLAYER SEASON RECORDS */
+
+    buildTable(
+      "Top 10 QB Seasons",
+      qbSeasons
+    ),
+
+    buildTable(
+      "Top 10 RB Seasons",
+      rbSeasons
+    ),
+
+    buildTable(
+      "Top 10 WR Seasons",
+      wrSeasons
+    ),
+
+    buildTable(
+      "Top 10 TE Seasons",
+      teSeasons
+    ),
+
+
+    /* PLAYER SINGLE GAME RECORDS */
+
+    buildTable(
+      "Top 10 QB Games",
+      qbGames
+    ),
+
+    buildTable(
+      "Top 10 RB Games",
+      rbGames
+    ),
+
+    buildTable(
+      "Top 10 WR Games",
+      wrGames
+    ),
+
+    buildTable(
+      "Top 10 TE Games",
+      teGames
+    ),
+
+
+    /* DRAFT HISTORY */
 
     buildDraftChart(draftPicks),
 
-    buildTable("Smallest Margins of Victory", smallestMargins),
-    buildTable("Largest Margins of Victory", largestMargins)
+
+    /* GAME MARGINS */
+
+    buildTable(
+      "Smallest Margins of Victory",
+      smallestMargins
+    ),
+
+    buildTable(
+      "Largest Margins of Victory",
+      largestMargins
+    )
+
   ].join("");
+
 
   document.getElementById("records-grid").innerHTML = html;
 }
+
+
 function sortTable(header, columnIndex) {
+
   const table = header.closest("table");
   const tbody = table.querySelector("tbody");
   const rows = Array.from(tbody.querySelectorAll("tr"));
 
-  const currentDirection = header.dataset.direction === "asc" ? "desc" : "asc";
+  const currentDirection =
+    header.dataset.direction === "asc"
+      ? "desc"
+      : "asc";
+
   header.dataset.direction = currentDirection;
 
   rows.sort((a, b) => {
-    const aText = a.children[columnIndex].innerText.replace("%", "").trim();
-    const bText = b.children[columnIndex].innerText.replace("%", "").trim();
+
+    const aText =
+      a.children[columnIndex]
+        .innerText
+        .replace("%", "")
+        .trim();
+
+    const bText =
+      b.children[columnIndex]
+        .innerText
+        .replace("%", "")
+        .trim();
 
     const aNum = Number(aText);
     const bNum = Number(bText);
 
     if (!isNaN(aNum) && !isNaN(bNum)) {
-      return currentDirection === "asc" ? aNum - bNum : bNum - aNum;
+      return currentDirection === "asc"
+        ? aNum - bNum
+        : bNum - aNum;
     }
 
     return currentDirection === "asc"
@@ -706,11 +877,17 @@ function sortTable(header, columnIndex) {
   });
 
   tbody.innerHTML = "";
-  rows.forEach(row => tbody.appendChild(row));
+
+  rows.forEach(row =>
+    tbody.appendChild(row)
+  );
 }
+
+
 loadLeagueRecords();
 
 </script>
 
 </body>
 </html>
+```
