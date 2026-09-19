@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -235,13 +234,21 @@
 
     @media(max-width:1000px) {
       .app { grid-template-columns:1fr; }
+
       .sidebar {
         border-right:none;
         border-bottom:1px solid var(--border);
       }
+
       .main { padding:18px; }
-      .records-grid { grid-template-columns:1fr; }
-      .section-nav { position:relative; }
+
+      .records-grid {
+        grid-template-columns:1fr;
+      }
+
+      .section-nav {
+        position:relative;
+      }
     }
   </style>
 </head>
@@ -251,6 +258,7 @@
 <div class="app">
 
   <aside class="sidebar">
+
     <img class="league-logo" src="assets/logos/dynasty-league-logo.png.png">
 
     <div class="side-title">
@@ -269,7 +277,9 @@
       <a href="trade-history.html">Trade History</a>
       <a class="active" href="league-records.html">League Records</a>
     </div>
+
   </aside>
+
 
   <main class="main">
 
@@ -283,6 +293,7 @@
   </main>
 
 </div>
+
 
 <script src="data.js"></script>
 
@@ -302,6 +313,7 @@ function csvUrl(gid, range) {
 
 
 function parseCSV(text) {
+
   const rows = [];
   let row = [];
   let cell = "";
@@ -313,31 +325,38 @@ function parseCSV(text) {
     const next = text[i + 1];
 
     if (char === '"' && next === '"') {
+
       cell += '"';
       i++;
 
     } else if (char === '"') {
+
       inQuotes = !inQuotes;
 
     } else if (char === "," && !inQuotes) {
+
       row.push(cell.trim());
       cell = "";
 
     } else if ((char === "\n" || char === "\r") && !inQuotes) {
 
       if (cell || row.length) {
+
         row.push(cell.trim());
         rows.push(row);
+
         row = [];
         cell = "";
       }
 
     } else {
+
       cell += char;
     }
   }
 
   if (cell || row.length) {
+
     row.push(cell.trim());
     rows.push(row);
   }
@@ -347,8 +366,10 @@ function parseCSV(text) {
 
 
 async function getRange(gid, range) {
+
   const response = await fetch(csvUrl(gid, range));
   const text = await response.text();
+
   return parseCSV(text);
 }
 
@@ -413,6 +434,7 @@ function buildTable(title, rows, wide = false) {
       <h2>${title}</h2>
 
       <table>
+
         <thead>
           <tr>
             ${headers.map(h => `<th>${h}</th>`).join("")}
@@ -420,8 +442,11 @@ function buildTable(title, rows, wide = false) {
         </thead>
 
         <tbody>
+
           ${body.map(row => `
+
             <tr>
+
               ${row.map((cell, index) => {
 
                 const lowerTitle = title.toLowerCase();
@@ -459,10 +484,15 @@ function buildTable(title, rows, wide = false) {
                 `;
 
               }).join("")}
+
             </tr>
+
           `).join("")}
+
         </tbody>
+
       </table>
+
     </section>
   `;
 }
@@ -473,32 +503,46 @@ function buildNoHeaderTable(title, rows, headers, wide = false) {
   const body = rows.filter(row => row.some(Boolean));
 
   return `
-    <section class="record-card ${wide ? "wide" : ""}" id="team-records">
+    <section class="record-card ${wide ? "wide" : ""}">
+
       <h2>${title}</h2>
 
       <table class="sortable-table">
+
         <thead>
+
           <tr>
+
             ${headers.map((h, index) => `
               <th onclick="sortTable(this, ${index})">
                 ${h}
               </th>
             `).join("")}
+
           </tr>
+
         </thead>
 
         <tbody>
+
           ${body.map(row => `
+
             <tr>
+
               ${row.map((cell, index) => `
                 <td>
                   ${index === 0 ? logoCell(cell) : cell}
                 </td>
               `).join("")}
+
             </tr>
+
           `).join("")}
+
         </tbody>
+
       </table>
+
     </section>
   `;
 }
@@ -513,23 +557,37 @@ function buildChampions(rows) {
 
   return `
     <section class="record-card wide" id="champions">
+
       <h2>League Champions</h2>
 
       <div class="champion-grid">
+
         ${champions.map(row => `
+
           <div class="champion-card">
-            <div class="champion-year">${row[0]}</div>
+
+            <div class="champion-year">
+              ${row[0]}
+            </div>
 
             <div>
-              <div class="champion-owner">${row[1]}</div>
+
+              <div class="champion-owner">
+                ${row[1]}
+              </div>
+
               <div style="color:var(--muted);font-size:13px;">
                 Record: ${row[2]}-${row[3]}
               </div>
+
             </div>
 
           </div>
+
         `).join("")}
+
       </div>
+
     </section>
   `;
 }
@@ -543,11 +601,13 @@ function buildDraftChart(rows) {
 
   return `
     <section class="record-card wide" id="draft-trades">
+
       <h2>Draft Picks Taken</h2>
 
       <div class="draft-chart">
 
         ${cleanRows.map(row => `
+
           <div class="draft-box">
 
             <h3>${row[0]}</h3>
@@ -555,8 +615,11 @@ function buildDraftChart(rows) {
             <p>
               ${
                 [2,3,4,5,6]
-                  .reduce((sum,index) =>
-                    sum + Number(row[index] || 0), 0)
+                  .reduce(
+                    (sum,index) =>
+                      sum + Number(row[index] || 0),
+                    0
+                  )
               }
             </p>
 
@@ -594,16 +657,20 @@ function buildDraftChart(rows) {
               </div>
 
             </div>
+
           </div>
+
         `).join("")}
 
       </div>
+
     </section>
   `;
 }
 
 
 function sectionHeader(title, id) {
+
   return `
     <section class="record-card wide" id="${id}">
       <h2>${title}</h2>
@@ -615,8 +682,10 @@ function sectionHeader(title, id) {
 async function loadLeagueRecords() {
 
   const [
+
     playerRows,
     champions,
+
     regularSeason,
     playoffRecords,
     championships,
@@ -631,6 +700,9 @@ async function loadLeagueRecords() {
 
     singleSeasonRecords,
 
+    winningStreaks,
+    losingStreaks,
+
     qbSeasons,
     rbSeasons,
     wrSeasons,
@@ -642,6 +714,7 @@ async function loadLeagueRecords() {
     teGames,
 
     draftPicks,
+
     smallestMargins,
     largestMargins
 
@@ -650,42 +723,69 @@ async function loadLeagueRecords() {
     getRange(playerDataGid, "A:F"),
     getRange(ownerSummaryGid, "A:J"),
 
+    /* ALL-TIME TEAM RECORDS */
+
     getRange(recordsGid, "D10:I28"),
     getRange(recordsGid, "K10:O28"),
     getRange(recordsGid, "Q10:S28"),
     getRange(recordsGid, "U10:V20"),
     getRange(recordsGid, "X10:Y15"),
 
+
     /* SEASON SCORING */
+
     getRange(recordsGid, "E30:G40"),
     getRange(recordsGid, "I30:K40"),
 
+
     /* SINGLE GAME SCORING — NO HEADERS */
+
     getRange(recordsGid, "E44:G53"),
     getRange(recordsGid, "I44:K53"),
 
+
+    /* BEST SINGLE-SEASON RECORD */
+
     getRange(recordsGid, "M30:O40"),
 
+
+    /* WIN / LOSS STREAKS — NO HEADERS */
+
+    getRange(recordsGid, "J71:L75"),
+    getRange(recordsGid, "N71:P75"),
+
+
     /* PLAYER SEASON RECORDS */
+
     getRange(recordsGid, "Q30:T40"),
     getRange(recordsGid, "W30:Z40"),
     getRange(recordsGid, "Q43:T53"),
     getRange(recordsGid, "W43:Z53"),
 
+
     /* PLAYER SINGLE GAME RECORDS */
+
     getRange(recordsGid, "AC8:AG18"),
     getRange(recordsGid, "AC21:AG31"),
     getRange(recordsGid, "AC34:AG44"),
     getRange(recordsGid, "AC47:AG57"),
 
-    /* DRAFT / MARGINS */
+
+    /* DRAFT */
+
     getRange(recordsGid, "Q56:X76"),
+
+
+    /* GAME MARGINS */
+
     getRange(recordsGid, "E56:H66"),
     getRange(recordsGid, "E70:H80")
+
   ]);
 
 
   window.playerLookup = {};
+
 
   playerRows.slice(1).forEach(row => {
 
@@ -702,14 +802,17 @@ async function loadLeagueRecords() {
         image:imageUrl
       };
 
+
       if (
         ["QB","RB","WR","TE"].includes(position)
       ) {
+
         window.playerLookup[
           playerName.toLowerCase().trim()
         ] = {
           image:imageUrl
         };
+
       }
     }
   });
@@ -717,47 +820,94 @@ async function loadLeagueRecords() {
 
   const html = [
 
-    /* LEAGUE HISTORY */
+    /* =====================================================
+       LEAGUE HISTORY
+       ===================================================== */
 
     buildChampions(champions),
+
 
     buildNoHeaderTable(
       "Regular Season Records",
       regularSeason,
-      ["Owner", "Wins", "Losses", "Win %", "Points For", "Points Against"],
+      [
+        "Owner",
+        "Wins",
+        "Losses",
+        "Win %",
+        "Points For",
+        "Points Against"
+      ],
       true
     ),
 
-    buildTable("Playoff Records", playoffRecords),
-    buildTable("Most Championships", championships),
 
-    buildTable("Top 10 Traders", traders),
-    buildTable("Top 5 Trade Duos", tradeDuos),
+    buildTable(
+      "Playoff Records",
+      playoffRecords
+    ),
 
 
-    /* SCORING RECORDS */
+    buildTable(
+      "Most Championships",
+      championships
+    ),
+
+
+    buildTable(
+      "Top 10 Traders",
+      traders
+    ),
+
+
+    buildTable(
+      "Top 5 Trade Duos",
+      tradeDuos
+    ),
+
+
+
+    /* =====================================================
+       SCORING RECORDS
+       ===================================================== */
 
     buildTable(
       "Top 10 Single Season Scores",
       topSeasonScores
     ),
 
+
     buildTable(
       "Bottom 10 Single Season Scores",
       bottomSeasonScores
     ),
 
+
     buildNoHeaderTable(
       "Top 10 Single Game Scores",
       topSingleGameScores,
-      ["Team", "Score", "Year"]
+      [
+        "Team",
+        "Score",
+        "Year"
+      ]
     ),
+
 
     buildNoHeaderTable(
       "Bottom 10 Single Game Scores",
       bottomSingleGameScores,
-      ["Team", "Score", "Year"]
+      [
+        "Team",
+        "Score",
+        "Year"
+      ]
     ),
+
+
+    /* =====================================================
+       SINGLE-SEASON RECORD
+       ===================================================== */
 
     buildTable(
       "Top 10 Single Season Records",
@@ -765,22 +915,55 @@ async function loadLeagueRecords() {
     ),
 
 
-    /* PLAYER SEASON RECORDS */
+
+    /* =====================================================
+       WINNING / LOSING STREAKS
+       ===================================================== */
+
+    buildNoHeaderTable(
+      "Top 5 Winning Streaks",
+      winningStreaks,
+      [
+        "Team",
+        "Streak",
+        "Season(s)"
+      ]
+    ),
+
+
+    buildNoHeaderTable(
+      "Top 5 Losing Streaks",
+      losingStreaks,
+      [
+        "Team",
+        "Streak",
+        "Season(s)"
+      ]
+    ),
+
+
+
+    /* =====================================================
+       PLAYER SEASON RECORDS
+       ===================================================== */
 
     buildTable(
       "Top 10 QB Seasons",
       qbSeasons
     ),
 
+
     buildTable(
       "Top 10 RB Seasons",
       rbSeasons
     ),
 
+
     buildTable(
       "Top 10 WR Seasons",
       wrSeasons
     ),
+
 
     buildTable(
       "Top 10 TE Seasons",
@@ -788,22 +971,28 @@ async function loadLeagueRecords() {
     ),
 
 
-    /* PLAYER SINGLE GAME RECORDS */
+
+    /* =====================================================
+       PLAYER SINGLE GAME RECORDS
+       ===================================================== */
 
     buildTable(
       "Top 10 QB Games",
       qbGames
     ),
 
+
     buildTable(
       "Top 10 RB Games",
       rbGames
     ),
 
+
     buildTable(
       "Top 10 WR Games",
       wrGames
     ),
+
 
     buildTable(
       "Top 10 TE Games",
@@ -811,17 +1000,26 @@ async function loadLeagueRecords() {
     ),
 
 
-    /* DRAFT HISTORY */
 
-    buildDraftChart(draftPicks),
+    /* =====================================================
+       DRAFT HISTORY
+       ===================================================== */
+
+    buildDraftChart(
+      draftPicks
+    ),
 
 
-    /* GAME MARGINS */
+
+    /* =====================================================
+       GAME MARGINS
+       ===================================================== */
 
     buildTable(
       "Smallest Margins of Victory",
       smallestMargins
     ),
+
 
     buildTable(
       "Largest Margins of Victory",
@@ -831,22 +1029,35 @@ async function loadLeagueRecords() {
   ].join("");
 
 
-  document.getElementById("records-grid").innerHTML = html;
+  document
+    .getElementById("records-grid")
+    .innerHTML = html;
 }
 
 
 function sortTable(header, columnIndex) {
 
-  const table = header.closest("table");
-  const tbody = table.querySelector("tbody");
-  const rows = Array.from(tbody.querySelectorAll("tr"));
+  const table =
+    header.closest("table");
+
+  const tbody =
+    table.querySelector("tbody");
+
+  const rows =
+    Array.from(
+      tbody.querySelectorAll("tr")
+    );
+
 
   const currentDirection =
     header.dataset.direction === "asc"
       ? "desc"
       : "asc";
 
-  header.dataset.direction = currentDirection;
+
+  header.dataset.direction =
+    currentDirection;
+
 
   rows.sort((a, b) => {
 
@@ -862,21 +1073,35 @@ function sortTable(header, columnIndex) {
         .replace("%", "")
         .trim();
 
-    const aNum = Number(aText);
-    const bNum = Number(bText);
 
-    if (!isNaN(aNum) && !isNaN(bNum)) {
+    const aNum =
+      Number(aText);
+
+    const bNum =
+      Number(bText);
+
+
+    if (
+      !isNaN(aNum) &&
+      !isNaN(bNum)
+    ) {
+
       return currentDirection === "asc"
         ? aNum - bNum
         : bNum - aNum;
+
     }
+
 
     return currentDirection === "asc"
       ? aText.localeCompare(bText)
       : bText.localeCompare(aText);
+
   });
 
+
   tbody.innerHTML = "";
+
 
   rows.forEach(row =>
     tbody.appendChild(row)
@@ -890,4 +1115,3 @@ loadLeagueRecords();
 
 </body>
 </html>
-```
